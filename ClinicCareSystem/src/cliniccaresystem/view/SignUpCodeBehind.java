@@ -1,14 +1,19 @@
 package cliniccaresystem.view;
 
+import java.io.IOException;
+
+import cliniccaresystem.Main;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import cliniccaresystem.viewmodel.SignUpViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SignUpCodeBehind {
 	
@@ -126,6 +131,18 @@ public class SignUpCodeBehind {
     @FXML
     void onSignUp(ActionEvent event) {
     	ResultCode result = this.viewmodel.signUp();
+    	
+    	if (!result.equals(ResultCode.Success)) {
+    		this.errorLabel.textProperty().setValue(result.toString());
+    	} else {
+    		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        	
+        	try {
+    			Main.changeScene(currentStage, Main.LOGIN_PAGE_PATH, Main.LOGIN_PAGE_TITLE);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
     }
 
 }

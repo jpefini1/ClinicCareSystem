@@ -2,6 +2,8 @@ package cliniccaresystem.viewmodel;
 
 import java.time.LocalDate;
 
+import cliniccaresystem.model.Credentials;
+import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Nurse;
 import cliniccaresystem.model.ResultCode;
@@ -41,13 +43,47 @@ public class SignUpViewModel {
 	
 	
 	public ResultCode signUp() {
-		return null;
+		var infoIsValid = this.checkIfSignUpInfoIsValid().equals(ResultCode.IsValid);
+		
+		if (infoIsValid) {
+			String street = this.streetProperty.getValue();
+			String city = this.cityProperty.getValue();
+			USState state = this.stateProperty.getValue();
+			String zipcode = this.zipCodeProperty.getValue();
+			MailingAddress mAddress = new MailingAddress(street, city, state, zipcode);
+			
+			String firstName = this.firstNameProperty.getValue();
+			String lastName = this.lastNameProperty.getValue();
+			LocalDate dateOfBirth = this.dateOfBirthProperty.getValue();
+			String phoneNumber = this.phoneNumberProperty.getValue();
+			Nurse nurse = new Nurse(firstName, lastName, dateOfBirth, mAddress, phoneNumber);
+			
+			String username = this.usernameProperty.getValue();
+			String password = this.passwordProperty.getValue();
+			Credentials credentials = new Credentials(username, password);
+			
+			
+			return DatabaseClient.AddNurse(nurse, credentials);
+		}
+		
+		return ResultCode.IncorrectInput;
 	}
 	
 	
 	
-	
 	private ResultCode checkIfSignUpInfoIsValid() {
+		var credentialsAreValid = this.checkifCredentialsInfoIsValid().equals(ResultCode.IsValid);
+		var personalInfoIsValid = this.checkIfPersonalInfoIsValid().equals(ResultCode.IsValid);
+		var mailingAddressIsValid = this.checkIfMailingAddressInfoIsValid().equals(ResultCode.IsValid);
+		
+		if (credentialsAreValid && personalInfoIsValid && mailingAddressIsValid) {
+			return ResultCode.IsValid;
+		} else {
+			return ResultCode.IncorrectInput;
+		}
+	}
+	
+	private ResultCode checkifCredentialsInfoIsValid() {
 		if (this.usernameProperty.getValue() == null || this.usernameProperty.getValue().isBlank()) {
 			return ResultCode.IncorrectInput;
 		}
@@ -56,6 +92,10 @@ public class SignUpViewModel {
 			return ResultCode.IncorrectInput;
 		}
 		
+		return ResultCode.IsValid;
+	}
+	
+	private ResultCode checkIfPersonalInfoIsValid() {
 		if (this.firstNameProperty.getValue() == null || this.firstNameProperty.getValue().isBlank()) {
 			return ResultCode.IncorrectInput;
 		}
@@ -73,6 +113,10 @@ public class SignUpViewModel {
 			return ResultCode.IncorrectInput;
 		}
 		
+		return ResultCode.IsValid;
+	}
+
+	private ResultCode checkIfMailingAddressInfoIsValid() {
 		if (this.streetProperty.getValue() == null || this.firstNameProperty.getValue().isBlank()) {
 			return ResultCode.IncorrectInput;
 		}
@@ -85,12 +129,12 @@ public class SignUpViewModel {
 			return ResultCode.IncorrectInput;
 		}
 		
-		if (this.phoneNumberProperty.getValue() == null || this.phoneNumberProperty.getValue().isBlank()
-				|| this.phoneNumberProperty.getValue().length() < 5) {
+		if (this.zipCodeProperty.getValue() == null || this.zipCodeProperty.getValue().isBlank()
+				|| this.zipCodeProperty.getValue().length() < 5) {
 			return ResultCode.IncorrectInput;
 		}
 		
-		return ResultCode.Success;
+		return ResultCode.IsValid;
 	}
 
 

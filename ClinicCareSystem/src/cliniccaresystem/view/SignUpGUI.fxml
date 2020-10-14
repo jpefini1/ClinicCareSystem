@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="246.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.HomepageCodeBehind">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="246.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.SignUpCodeBehind">
    <children>
       <TextField fx:id="firstNameTextField" layoutX="103.0" layoutY="174.0" prefHeight="26.0" prefWidth="129.0" />
       <TextField fx:id="lastNameTextField" layoutX="103.0" layoutY="206.0" prefHeight="26.0" prefWidth="130.0" />
@@ -31,7 +31,6 @@
             <Font size="11.0" />
          </font>
       </Label>
-      <Button layoutX="63.0" layoutY="484.0" mnemonicParsing="false" onAction="#onSignUp" prefHeight="26.0" prefWidth="120.0" text="Sign Up" />
       <Label layoutX="15.0" layoutY="14.0" text="Nurse Sign Up:">
          <font>
             <Font size="14.0" />
@@ -42,5 +41,6 @@
       <Label layoutX="13.0" layoutY="76.0" text="Username" />
       <Label layoutX="13.0" layoutY="108.0" text="Password:" />
       <TextField fx:id="usernameTextField" layoutX="102.0" layoutY="71.0" prefHeight="26.0" prefWidth="130.0" />
+      <Button layoutX="67.0" layoutY="471.0" mnemonicParsing="false" onAction="#onSignUp" prefHeight="34.0" prefWidth="112.0" text="Sign Up" />
    </children>
 </AnchorPane>
