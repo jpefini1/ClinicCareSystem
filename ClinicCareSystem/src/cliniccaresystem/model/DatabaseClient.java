@@ -43,10 +43,17 @@ public class DatabaseClient {
 											"PRIMARY KEY ( patientId ), " +
 											"FOREIGN KEY ( userId ) references user ( id )) ";
 		
+		String createNurseTableCommand = "CREATE TABLE IF NOT EXISTS nurse ( " +
+											"userId INTEGER NOT NULL UNIQUE, " +
+											"nurseId INTEGER NOT NULL AUTO_INCREMENT, " +
+											"PRIMARY KEY ( nurseId ), " +
+											"FOREIGN KEY ( userId ) references user ( id )) ";
+		
 		sendCommandToServer(createAddressTableCommand);
 		sendCommandToServer(createUserTableCommand);
 		sendCommandToServer(createCredentialsTableCommand);
 		sendCommandToServer(createPatientTableCommand);
+		sendCommandToServer(createNurseTableCommand);
 		
 		//String insert = "INSERT INTO address ( addressId, street, city, state, zipcode ) VALUES (?,?,?,?,?)";
 		
