@@ -1,5 +1,6 @@
 package cliniccaresystem;
 	
+import cliniccaresystem.model.DatabaseClient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -9,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
 	
-	public static final String LOGIN_PAGE_PATH = "view/Login.fxml";
+	public static final String LOGIN_PAGE_PATH = "view/LoginGUI.fxml";
 	public static final String LOGIN_PAGE_TITLE = "Login";
 	
 	@Override
@@ -23,6 +24,7 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
+		DatabaseClient.createTables();
 	}
 	
 	public static void main(String[] args) {
