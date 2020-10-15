@@ -81,7 +81,21 @@ public class DatabaseClient {
 		var generatedNurseKey = insertNurse(nurse);
 		nurse.setNurseId(generatedNurseKey);
 		
-		sendQueryToServer("SELECT * FROM nurse");
+		return ResultCode.Success;
+	}
+	
+	public static ResultCode AddPatient(Patient patient) {
+		MailingAddress mAddress = patient.getMailingAddress();
+		var generatedAddressKey = insertMailingAddress(mAddress);
+		
+		var generatedUserKey = insertUser(patient, generatedAddressKey);
+		patient.setUserId(generatedUserKey);
+		
+		var generatedPatientKey = insertPatient(patient);
+		patient.setPatientId(generatedPatientKey);
+		
+		sendQueryToServer("SELECT * FROM patient");
+		
 		return ResultCode.Success;
 	}
 	
@@ -203,6 +217,30 @@ public class DatabaseClient {
 		return -1;
 	}
 	
+	private static int insertPatient(User user) {
+		String insertNurse = "INSERT INTO patient ( userId, patientId ) VALUES (?,?)";
+		
+		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+        		PreparedStatement pStatement =  con.prepareStatement(insertNurse, Statement.RETURN_GENERATED_KEYS);  
+        	)
+		{ 
+			pStatement.setInt(1, user.getUserId());
+			pStatement.setString(2, null);
+			
+			pStatement.executeUpdate();
+			
+			var generatedUserKeyResult = pStatement.getGeneratedKeys();
+			generatedUserKeyResult.next();
+			return Integer.parseInt(generatedUserKeyResult.getString(1));
+        }
+        catch (Exception e) 
+        {
+            System.out.println(e.toString());
+        }
+		
+		return -1;
+	}
+	
 	private static ResultSet sendQueryToServer(String sqlQuery) {
 		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING); 
         		Statement stmt =  con.createStatement();  
@@ -213,7 +251,7 @@ public class DatabaseClient {
 			
 			while (rs.next()) {
 				System.out.print(rs.getString(1));
-				System.out.println(" " + rs.getString(1));
+				System.out.println(" " + rs.getString(2));
 			}
 			
 			return rs;

@@ -4,17 +4,17 @@ import java.time.LocalDate;
 
 import cliniccaresystem.model.Credentials;
 import cliniccaresystem.model.DatabaseClient;
+import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Nurse;
+import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class SignUpViewModel {
-
-	private SimpleStringProperty usernameProperty;
-	private SimpleStringProperty passwordProperty;
+public class PatientRegistrationViewModel {
+	
 	private SimpleStringProperty firstNameProperty;
 	private SimpleStringProperty lastNameProperty;
 	private SimpleObjectProperty<LocalDate> dateOfBirthProperty;
@@ -22,14 +22,15 @@ public class SignUpViewModel {
 	private SimpleStringProperty streetProperty;
 	private SimpleStringProperty cityProperty;
 	private SimpleObjectProperty<USState> stateProperty;
+	private SimpleObjectProperty<Gender> genderProperty;
 	private SimpleStringProperty zipCodeProperty;
+	
+	private Patient newPatient = null;
 	
 	/**
 	 * Instantiates a new login gui view model.
 	 */
-	public SignUpViewModel() {
-		this.usernameProperty = new SimpleStringProperty();
-		this.passwordProperty = new SimpleStringProperty();
+	public PatientRegistrationViewModel() {
 		this.firstNameProperty = new SimpleStringProperty();
 		this.lastNameProperty = new SimpleStringProperty();
 		this.dateOfBirthProperty = new SimpleObjectProperty<LocalDate>();
@@ -37,15 +38,16 @@ public class SignUpViewModel {
 		this.streetProperty = new SimpleStringProperty();
 		this.cityProperty = new SimpleStringProperty();
 		this.stateProperty = new SimpleObjectProperty<USState>();
+		this.genderProperty = new SimpleObjectProperty<Gender>();
 		this.zipCodeProperty = new SimpleStringProperty();
 	}
 	
+
 	
-	
-	public ResultCode signUp() {
-		var infoIsValid = this.checkIfSignUpInfoIsValid().equals(ResultCode.IsValid);
+	public ResultCode registerPatient() {
+		var isInfoValid = this.checkIfPatientInfoIsValid().equals(ResultCode.IsValid);
 		
-		if (infoIsValid) {
+		if (isInfoValid) {
 			String street = this.streetProperty.getValue();
 			String city = this.cityProperty.getValue();
 			USState state = this.stateProperty.getValue();
@@ -56,42 +58,29 @@ public class SignUpViewModel {
 			String lastName = this.lastNameProperty.getValue();
 			LocalDate dateOfBirth = this.dateOfBirthProperty.getValue();
 			String phoneNumber = this.phoneNumberProperty.getValue();
-			Nurse nurse = new Nurse(firstName, lastName, dateOfBirth, mAddress, phoneNumber);
+			Patient patient = new Patient(firstName, lastName, dateOfBirth, mAddress, phoneNumber);
 			
-			String username = this.usernameProperty.getValue();
-			String password = this.passwordProperty.getValue();
-			Credentials credentials = new Credentials(username, password);
+			var result = DatabaseClient.AddPatient(patient);
 			
-			return DatabaseClient.AddNurse(nurse, credentials);
-		}
-		
-		return ResultCode.IncorrectInput;
-	}
-	
-	
-	
-	private ResultCode checkIfSignUpInfoIsValid() {
-		var credentialsAreValid = this.checkifCredentialsInfoIsValid().equals(ResultCode.IsValid);
-		var personalInfoIsValid = this.checkIfPersonalInfoIsValid().equals(ResultCode.IsValid);
-		var mailingAddressIsValid = this.checkIfMailingAddressInfoIsValid().equals(ResultCode.IsValid);
-		
-		if (credentialsAreValid && personalInfoIsValid && mailingAddressIsValid) {
-			return ResultCode.IsValid;
+			if (result.equals(ResultCode.Success)) {
+				this.newPatient = patient;
+			}
+			
+			return result;
 		} else {
 			return ResultCode.IncorrectInput;
 		}
 	}
 	
-	private ResultCode checkifCredentialsInfoIsValid() {
-		if (this.usernameProperty.getValue() == null || this.usernameProperty.getValue().isBlank()) {
+	private ResultCode checkIfPatientInfoIsValid() {
+		var personalInfoIsValid = this.checkIfPersonalInfoIsValid().equals(ResultCode.IsValid);
+		var mailingAddressIsValid = this.checkIfMailingAddressInfoIsValid().equals(ResultCode.IsValid);
+		
+		if (personalInfoIsValid && mailingAddressIsValid) {
+			return ResultCode.IsValid;
+		} else {
 			return ResultCode.IncorrectInput;
 		}
-		
-		if (this.passwordProperty.getValue() == null || this.passwordProperty.getValue().isBlank()) {
-			return ResultCode.IncorrectInput;
-		}
-		
-		return ResultCode.IsValid;
 	}
 	
 	private ResultCode checkIfPersonalInfoIsValid() {
@@ -136,15 +125,7 @@ public class SignUpViewModel {
 		return ResultCode.IsValid;
 	}
 
-
 	
-	public SimpleStringProperty usernameProperty() {
-		return usernameProperty;
-	}
-
-	public SimpleStringProperty passwordProperty() {
-		return passwordProperty;
-	}
 
 	public SimpleStringProperty firstNameProperty() {
 		return firstNameProperty;
@@ -173,9 +154,12 @@ public class SignUpViewModel {
 	public SimpleObjectProperty<USState> stateProperty() {
 		return stateProperty;
 	}
+	
+	public SimpleObjectProperty<Gender> genderProperty() {
+		return genderProperty;
+	}
 
 	public SimpleStringProperty zipCodeProperty() {
 		return zipCodeProperty;
 	}
-
 }

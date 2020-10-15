@@ -12,7 +12,7 @@ private int patientId;
 	
 	public Patient(String firstName, String lastName, LocalDate dateOfBirth, MailingAddress mailingAddress, String phoneNumber) {
 		super(null, firstName, lastName, dateOfBirth, mailingAddress, phoneNumber);
-		this.setPatientId(patientId);
+		//this.setPatientId(patientId);
 	}
 	
 	public int getPatientId() {

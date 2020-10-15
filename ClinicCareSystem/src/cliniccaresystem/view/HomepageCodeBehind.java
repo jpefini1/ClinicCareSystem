@@ -54,7 +54,12 @@ public class HomepageCodeBehind {
     
     @FXML
     void onRegisterPatient(ActionEvent event) {
-    	
+    	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();	
+    	try {
+			Main.changeScene(currentStage, Main.PATIENT_REGISTRATION_PAGE_PATH, Main.PATIENT_REGISTRATION_PAGE_TITLE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
 }
