@@ -33,9 +33,6 @@ public class Main extends Application {
 		primaryStage.setTitle(Main.LOGIN_PAGE_TITLE);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		//DatabaseClient.dropTables();
-		//DatabaseClient.createTables();
 	}
 	
 	public static void main(String[] args) {

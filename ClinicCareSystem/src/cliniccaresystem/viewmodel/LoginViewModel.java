@@ -36,7 +36,6 @@ public class LoginViewModel {
 		User activeUser = null;
 		if (result) {
 			activeUser = DatabaseClient.ValidateCredentials(this.usernameProperty.getValue(), this.passwordProperty.getValue());
-			System.out.println("Was valid info");
 		}
 		
 		if (activeUser != null) {

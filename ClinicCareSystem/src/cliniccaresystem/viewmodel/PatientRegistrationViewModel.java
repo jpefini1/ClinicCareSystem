@@ -58,7 +58,8 @@ public class PatientRegistrationViewModel {
 			String lastName = this.lastNameProperty.getValue();
 			LocalDate dateOfBirth = this.dateOfBirthProperty.getValue();
 			String phoneNumber = this.phoneNumberProperty.getValue();
-			Patient patient = new Patient(firstName, lastName, dateOfBirth, mAddress, phoneNumber);
+			Gender gender = this.genderProperty.getValue();
+			Patient patient = new Patient(firstName, lastName, dateOfBirth, mAddress, phoneNumber, gender);
 			
 			var result = DatabaseClient.AddPatient(patient);
 			

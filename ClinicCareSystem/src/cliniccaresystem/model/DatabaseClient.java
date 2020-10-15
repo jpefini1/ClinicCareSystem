@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseClient {
 
@@ -45,6 +47,7 @@ public class DatabaseClient {
 		String createPatientTableCommand = "CREATE TABLE IF NOT EXISTS patient ( " +
 											"userId INTEGER NOT NULL UNIQUE, " +
 											"patientId INTEGER NOT NULL AUTO_INCREMENT, " +
+											"gender varchar(6) NOT NULL, " +
 											"PRIMARY KEY ( patientId ), " +
 											"FOREIGN KEY ( userId ) references user ( id )) ";
 		
@@ -93,8 +96,6 @@ public class DatabaseClient {
 		
 		var generatedPatientKey = insertPatient(patient);
 		patient.setPatientId(generatedPatientKey);
-		
-		sendQueryToServer("SELECT * FROM patient");
 		
 		return ResultCode.Success;
 	}
@@ -217,15 +218,16 @@ public class DatabaseClient {
 		return -1;
 	}
 	
-	private static int insertPatient(User user) {
-		String insertNurse = "INSERT INTO patient ( userId, patientId ) VALUES (?,?)";
+	private static int insertPatient(Patient patient) {
+		String insertNurse = "INSERT INTO patient ( userId, patientId, gender ) VALUES (?,?,?)";
 		
 		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING); 
         		PreparedStatement pStatement =  con.prepareStatement(insertNurse, Statement.RETURN_GENERATED_KEYS);  
         	)
 		{ 
-			pStatement.setInt(1, user.getUserId());
+			pStatement.setInt(1, patient.getUserId());
 			pStatement.setString(2, null);
+			pStatement.setString(3, patient.getGender().toString());
 			
 			pStatement.executeUpdate();
 			
@@ -239,6 +241,38 @@ public class DatabaseClient {
         }
 		
 		return -1;
+	}
+	
+	public static List<Patient> getAllPatients() {
+		var patients = new ArrayList<Patient>();
+		
+		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+        		Statement stmt =  con.createStatement();  
+				Statement stmt1 =  con.createStatement();
+				Statement stmt2 =  con.createStatement();  
+        	)
+		{ 
+			ResultSet rs = stmt.executeQuery("SELECT * FROM patient");
+			
+			while (rs.next()) {
+				ResultSet user = stmt1.executeQuery("SELECT * FROM user WHERE id=" + rs.getInt(1));
+				user.next();
+				ResultSet addressData = stmt2.executeQuery("SELECT * FROM address WHERE addressId=" + user.getString(5));
+				addressData.next();
+				
+				MailingAddress address = new MailingAddress(addressData.getString(2), addressData.getString(3), USState.valueOf(addressData.getString(4)), addressData.getString(5));
+				Patient patient = new Patient(rs.getInt(2), user.getString(2), user.getString(3), user.getDate(4).toLocalDate(), address, user.getString(6), Gender.valueOf(rs.getString(3)));
+				patients.add(patient);
+			}
+			
+			return patients;
+        }
+        catch (Exception e) 
+        {
+            System.out.println(e.toString());
+        }
+		
+		return null;
 	}
 	
 	private static ResultSet sendQueryToServer(String sqlQuery) {

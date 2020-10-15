@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cliniccaresystem.model.ActiveUser;
+import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import javafx.beans.property.ListProperty;
@@ -19,7 +20,7 @@ public class HomepageViewModel {
 	private List<Patient> patientList;
 	
 	public HomepageViewModel() {
-		this.patientList = new ArrayList<Patient>();
+		this.patientList = DatabaseClient.getAllPatients();
 		this.patientListProperty = new SimpleListProperty<Patient>(FXCollections.observableArrayList(this.patientList));
 		this.patientListProperty.set(FXCollections.observableArrayList(this.patientList));
 		this.userInfoProperty = new SimpleStringProperty();
