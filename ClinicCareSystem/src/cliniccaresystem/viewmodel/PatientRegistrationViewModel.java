@@ -2,6 +2,7 @@ package cliniccaresystem.viewmodel;
 
 import java.time.LocalDate;
 
+import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Credentials;
 import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.Gender;
@@ -25,8 +26,6 @@ public class PatientRegistrationViewModel {
 	private SimpleObjectProperty<Gender> genderProperty;
 	private SimpleStringProperty zipCodeProperty;
 	
-	private Patient newPatient = null;
-	
 	/**
 	 * Instantiates a new login gui view model.
 	 */
@@ -42,35 +41,44 @@ public class PatientRegistrationViewModel {
 		this.zipCodeProperty = new SimpleStringProperty();
 	}
 	
-
-	
 	public ResultCode registerPatient() {
 		var isInfoValid = this.checkIfPatientInfoIsValid().equals(ResultCode.IsValid);
 		
 		if (isInfoValid) {
-			String street = this.streetProperty.getValue();
-			String city = this.cityProperty.getValue();
-			USState state = this.stateProperty.getValue();
-			String zipcode = this.zipCodeProperty.getValue();
-			MailingAddress mAddress = new MailingAddress(street, city, state, zipcode);
-			
-			String firstName = this.firstNameProperty.getValue();
-			String lastName = this.lastNameProperty.getValue();
-			LocalDate dateOfBirth = this.dateOfBirthProperty.getValue();
-			String phoneNumber = this.phoneNumberProperty.getValue();
-			Gender gender = this.genderProperty.getValue();
-			Patient patient = new Patient(firstName, lastName, dateOfBirth, mAddress, phoneNumber, gender);
-			
-			var result = DatabaseClient.AddPatient(patient);
+			Patient patient = this.createPatient();
+			ResultCode result = DatabaseClient.AddPatient(patient);
 			
 			if (result.equals(ResultCode.Success)) {
-				this.newPatient = patient;
+				ActiveUser.addPatient(patient);
+				return ResultCode.Success;
+			} else {
+				return ResultCode.ConnectionFailed;
 			}
-			
-			return result;
 		} else {
 			return ResultCode.IncorrectInput;
 		}
+	}
+
+	private Patient createPatient() {
+		MailingAddress mAddress = this.createMailingAddress();
+		
+		String firstName = this.firstNameProperty.getValue();
+		String lastName = this.lastNameProperty.getValue();
+		LocalDate dateOfBirth = this.dateOfBirthProperty.getValue();
+		String phoneNumber = this.phoneNumberProperty.getValue();
+		Gender gender = this.genderProperty.getValue();
+		Patient patient = new Patient(firstName, lastName, dateOfBirth, mAddress, phoneNumber, gender);
+		
+		return patient;
+	}
+
+	private MailingAddress createMailingAddress() {
+		String street = this.streetProperty.getValue();
+		String city = this.cityProperty.getValue();
+		USState state = this.stateProperty.getValue();
+		String zipcode = this.zipCodeProperty.getValue();
+		MailingAddress mAddress = new MailingAddress(street, city, state, zipcode);
+		return mAddress;
 	}
 	
 	private ResultCode checkIfPatientInfoIsValid() {

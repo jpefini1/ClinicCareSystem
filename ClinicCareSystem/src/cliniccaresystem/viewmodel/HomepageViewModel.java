@@ -1,12 +1,8 @@
 package cliniccaresystem.viewmodel;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import cliniccaresystem.model.ActiveUser;
-import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.Patient;
-import cliniccaresystem.model.ResultCode;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,12 +16,10 @@ public class HomepageViewModel {
 	private List<Patient> patientList;
 	
 	public HomepageViewModel() {
-		this.patientList = DatabaseClient.getAllPatients();
+		this.patientList = ActiveUser.getPatients();
 		this.patientListProperty = new SimpleListProperty<Patient>(FXCollections.observableArrayList(this.patientList));
 		this.patientListProperty.set(FXCollections.observableArrayList(this.patientList));
 		this.userInfoProperty = new SimpleStringProperty();
-		
-		System.out.println(ActiveUser.getActiveUser().toString());
 		this.userInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 	}
 	

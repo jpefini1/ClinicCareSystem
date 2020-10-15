@@ -45,13 +45,21 @@ public class LoginCodeBehind {
 	private void setupChangeListeners() {
 		this.usernameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^.{0,20}")) {
-				this.usernameTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.usernameTextField.setText("");
+				} else {
+					this.usernameTextField.setText(oldValue);
+				}
 			}
 		});
 		
 		this.passwordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^.{0,20}")) {
-				this.passwordTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.passwordTextField.setText("");
+				} else {
+					this.passwordTextField.setText(oldValue);
+				}
 			}
 		});
 	}

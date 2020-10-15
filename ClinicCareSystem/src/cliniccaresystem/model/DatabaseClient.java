@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -266,29 +265,6 @@ public class DatabaseClient {
 			}
 			
 			return patients;
-        }
-        catch (Exception e) 
-        {
-            System.out.println(e.toString());
-        }
-		
-		return null;
-	}
-	
-	private static ResultSet sendQueryToServer(String sqlQuery) {
-		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING); 
-        		Statement stmt =  con.createStatement();  
-				
-        	)
-		{ 
-			ResultSet rs = stmt.executeQuery(sqlQuery);
-			
-			while (rs.next()) {
-				System.out.print(rs.getString(1));
-				System.out.println(" " + rs.getString(2));
-			}
-			
-			return rs;
         }
         catch (Exception e) 
         {

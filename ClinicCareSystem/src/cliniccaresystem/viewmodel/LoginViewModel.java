@@ -40,6 +40,7 @@ public class LoginViewModel {
 		
 		if (activeUser != null) {
 			ActiveUser.setActiveUser(activeUser);
+			ActiveUser.setPatients(DatabaseClient.getAllPatients());
 			return ResultCode.Success;
 		} else {
 			return ResultCode.InvalidLogin;

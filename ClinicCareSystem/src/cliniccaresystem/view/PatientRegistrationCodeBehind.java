@@ -82,37 +82,61 @@ public class PatientRegistrationCodeBehind {
 	private void setupChangeListeners() {
 		this.firstNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^[a-zA-Z]{0,30}")) {
-				this.firstNameTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.firstNameTextField.setText("");
+				} else {
+					this.firstNameTextField.setText(oldValue);
+				}
 			}
 		});
 		
 		this.lastNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^[a-zA-Z]{0,30}")) {
-				this.lastNameTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.lastNameTextField.setText("");
+				} else {
+					this.lastNameTextField.setText(oldValue);
+				}
 			}
 		});
 		
 		this.phoneNumberTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^[0-9]{0,10}")) {
-				this.phoneNumberTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.phoneNumberTextField.setText("");
+				} else {
+					this.phoneNumberTextField.setText(oldValue);
+				}
 			}
 		});
 		
 		this.streetTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^.{0,100}")) {
-				this.streetTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.streetTextField.setText("");
+				} else {
+					this.streetTextField.setText(oldValue);
+				}
 			}
 		});
 		
 		this.cityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^[a-zA-Z]{0,100}")) {
-				this.cityTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.cityTextField.setText("");
+				} else {
+					this.cityTextField.setText(oldValue);
+				}
 			}
 		});
 		
 		this.zipcodeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("^[0-9]{0,5}")) {
-				this.zipcodeTextField.setText(oldValue);
+				if (oldValue == null || oldValue.isEmpty()) {
+					this.zipcodeTextField.setText("");
+				} else {
+					this.zipcodeTextField.setText(oldValue);
+				}
 			}
 		});
 	}
@@ -130,6 +154,17 @@ public class PatientRegistrationCodeBehind {
     			e.printStackTrace();
     		}
     	}
+    }
+    
+    @FXML
+    void onCancel(ActionEvent event) {
+    	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    	
+    	try {
+			Main.changeScene(currentStage, Main.HOMEPAGE_PAGE_PATH, Main.HOMEPAGE_PAGE_TITLE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
 }

@@ -19,6 +19,6 @@
       <Label layoutX="55.0" layoutY="144.0" text="Password:" />
       <Button layoutX="50.0" layoutY="195.0" mnemonicParsing="false" onAction="#onLogin" prefHeight="38.0" prefWidth="99.0" text="Login" />
       <Button layoutX="178.0" layoutY="195.0" mnemonicParsing="false" onAction="#onGoToSignUpPage" prefHeight="38.0" prefWidth="99.0" text="Sign Up" />
-      <Label fx:id="errorLabel" layoutX="144.0" layoutY="239.0" prefHeight="18.0" prefWidth="39.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="errorLabel" contentDisplay="CENTER" layoutX="97.0" layoutY="239.0" prefHeight="18.0" prefWidth="134.0" textAlignment="CENTER" textFill="RED" wrapText="true" />
    </children>
 </AnchorPane>
