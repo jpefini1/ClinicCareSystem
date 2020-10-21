@@ -22,14 +22,18 @@ private Gender gender;
 		return patientId;
 	}
 
-	public void setPatientId(int nurseId) {
-		this.patientId = nurseId;
+	public void setPatientId(int patientId) {
+		this.patientId = patientId;
 	}
-	
+
 	public Gender getGender() {
-		return this.gender;
+		return gender;
 	}
-	
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public String toString() {
 		return this.getFirstName() + " " + this.getLastName() + " " + this.getDateOfBirth().toString() + " " + this.getGender() + " ID: " + this.patientId;

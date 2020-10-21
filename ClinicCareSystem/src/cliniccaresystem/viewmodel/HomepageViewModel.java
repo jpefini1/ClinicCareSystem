@@ -6,7 +6,9 @@ import cliniccaresystem.model.Patient;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.scene.control.MultipleSelectionModel;
 
 public class HomepageViewModel {
 

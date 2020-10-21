@@ -9,7 +9,9 @@ import cliniccaresystem.viewmodel.HomepageViewModel;
 import cliniccaresystem.viewmodel.LoginViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,6 +24,9 @@ public class HomepageCodeBehind {
 
     @FXML
     private Label userInfoLabel;
+    
+    @FXML
+    private Button editPatientButton;
     
     private HomepageViewModel viewmodel;
     
@@ -37,6 +42,7 @@ public class HomepageCodeBehind {
 	private void bindToViewModel() {
 		this.userInfoLabel.textProperty().bindBidirectional(this.viewmodel.userInfoProperty());
 		this.patientListView.setItems(this.viewmodel.patientListProperty());
+		this.editPatientButton.disableProperty().bind(this.patientListView.getSelectionModel().selectedItemProperty().isNull());
 	}
 
 
@@ -60,6 +66,22 @@ public class HomepageCodeBehind {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+    
+    @FXML
+    void onEditPatient(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource(Main.EDIT_PATIENT_PAGE_PATH));
+		loader.load();
+		
+		var codeBehind = (EditPatientCodeBehind) loader.getController();
+		codeBehind.setSelectedPatient(this.patientListView.getSelectionModel().getSelectedItem());
+		
+		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		Scene newScene = new Scene(loader.getRoot());
+		currentStage.setScene(newScene);
+		currentStage.setTitle(Main.EDIT_PATIENT_PAGE_TITLE);
+    
     }
 
 }

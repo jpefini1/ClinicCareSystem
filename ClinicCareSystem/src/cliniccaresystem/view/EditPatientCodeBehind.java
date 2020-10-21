@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import cliniccaresystem.Main;
 import cliniccaresystem.model.Gender;
+import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
+import cliniccaresystem.viewmodel.EditPatientViewModel;
 import cliniccaresystem.viewmodel.PatientRegistrationViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class PatientRegistrationCodeBehind {
+public class EditPatientCodeBehind {
 
     @FXML
     private TextField firstNameTextField;
@@ -47,22 +49,18 @@ public class PatientRegistrationCodeBehind {
     private ComboBox<Gender> genderComboBox;
 
     @FXML
+    private Button updateButton;
+
+    @FXML
     private Label errorLabel;
-    
+
     @FXML
     private Label nurseInfoLabel;
     
-    @FXML
-    private Button registerButton;
+    private EditPatientViewModel viewmodel;
     
-    @FXML
-    private Button closeButton;
-    
-    private PatientRegistrationViewModel viewmodel;
-
-    
-	public PatientRegistrationCodeBehind() {
-		this.viewmodel = new PatientRegistrationViewModel();
+	public EditPatientCodeBehind() {
+		this.viewmodel = new EditPatientViewModel();
 	}
 
 	@FXML 
@@ -70,7 +68,7 @@ public class PatientRegistrationCodeBehind {
 		this.bindToViewModel(); 
 		this.setupChangeListeners();
 	}
-
+	
 	private void bindToViewModel() {
 		this.firstNameTextField.textProperty().bindBidirectional(this.viewmodel.firstNameProperty());
 		this.lastNameTextField.textProperty().bindBidirectional(this.viewmodel.lastNameProperty());
@@ -149,23 +147,6 @@ public class PatientRegistrationCodeBehind {
 	}
 
     @FXML
-    void onRegister(ActionEvent event) {
-    	var result = this.viewmodel.registerPatient();
-    	
-    	if (result.equals(ResultCode.Success)) {
-    		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        	
-        	try {
-    			Main.changeScene(currentStage, Main.HOMEPAGE_PAGE_PATH, Main.PATIENT_REGISTRATION_PAGE_TITLE);
-    		} catch (IOException e) {
-    			e.printStackTrace();
-    		}
-    	} else {
-    		this.errorLabel.textProperty().setValue("Invalid Info");
-    	}
-    }
-    
-    @FXML
     void onCancel(ActionEvent event) {
     	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
     	
@@ -176,4 +157,23 @@ public class PatientRegistrationCodeBehind {
 		}
     }
 
+    @FXML
+    void onUpdate(ActionEvent event) {
+    	var result = this.viewmodel.updatePatient();
+    	
+    	if (result.equals(ResultCode.Success)) {
+    		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        	
+        	try {
+    			Main.changeScene(currentStage, Main.HOMEPAGE_PAGE_PATH, Main.HOMEPAGE_PAGE_TITLE);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    }
+
+    public void setSelectedPatient(Patient patient) {
+    	this.viewmodel.setSelectedPatient(patient);
+    }
 }
+

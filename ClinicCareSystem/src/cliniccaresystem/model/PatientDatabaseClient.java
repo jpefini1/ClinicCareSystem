@@ -1,6 +1,7 @@
 package cliniccaresystem.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,11 +64,38 @@ public class PatientDatabaseClient extends DatabaseClient{
 				
 			MailingAddress address = new MailingAddress(addressData.getString(2), addressData.getString(3), USState.valueOf(addressData.getString(4)), addressData.getString(5));
 			Patient patient = new Patient(rs.getInt(2), user.getString(2), user.getString(3), user.getDate(4).toLocalDate(), address, user.getString(6), Gender.valueOf(rs.getString(3)));
+			patient.setUserId(rs.getInt(1));
 			patients.add(patient);
 		}
 			
 		con.commit();
 		return patients;
+	}
+	
+	public static ResultCode updatePatient(Patient patient) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		con.setAutoCommit(false);
+		
+		PreparedStatement editUser = con.prepareStatement("UPDATE user SET fname = ?, lname = ?, dob = ?, mAddress = ?, pNumber = ? WHERE id = ?");  
+		editUser.setString(1, patient.getFirstName());
+		editUser.setString(2, patient.getLastName());
+		editUser.setDate(3, Date.valueOf(patient.getDateOfBirth()));
+		
+		var addressId = UserDatabaseClient.insertMailingAddress(con, patient.getMailingAddress());
+		editUser.setInt(4, addressId);
+		editUser.setString(5, patient.getPhoneNumber());
+		editUser.setInt(6, patient.getUserId());
+		editUser.executeUpdate();
+		
+		/*
+		 * PreparedStatement editPatient =
+		 * con.prepareStatement("UPDATE patient SET gender = ? WHERE patientId = ?");
+		 * editPatient.setString(1, patient.getGender().toString());
+		 * editPatient.setInt(2, patient.getPatientId()); editPatient.executeUpdate();
+		 */
+		
+		con.commit();
+		return ResultCode.Success;
 	}
 
 }

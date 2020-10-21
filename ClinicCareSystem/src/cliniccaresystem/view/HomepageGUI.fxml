@@ -16,5 +16,6 @@
       </Button>
       <Button layoutX="9.0" layoutY="358.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="26.0" prefWidth="86.0" text="Logout" />
       <Label fx:id="userInfoLabel" layoutX="10.0" layoutY="5.0" prefHeight="18.0" prefWidth="254.0" />
+      <Button fx:id="editPatientButton" disable="true" layoutX="19.0" layoutY="83.0" mnemonicParsing="false" onAction="#onEditPatient" text="Edit Patient" />
    </children>
 </AnchorPane>

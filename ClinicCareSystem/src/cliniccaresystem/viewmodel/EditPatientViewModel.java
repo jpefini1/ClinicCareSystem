@@ -4,11 +4,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import cliniccaresystem.model.ActiveUser;
-import cliniccaresystem.model.Credentials;
-import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.MailingAddress;
-import cliniccaresystem.model.Nurse;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.PatientDatabaseClient;
 import cliniccaresystem.model.ResultCode;
@@ -16,8 +13,8 @@ import cliniccaresystem.model.USState;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class PatientRegistrationViewModel {
-	
+public class EditPatientViewModel {
+
 	private SimpleStringProperty firstNameProperty;
 	private SimpleStringProperty lastNameProperty;
 	private SimpleObjectProperty<LocalDate> dateOfBirthProperty;
@@ -28,7 +25,9 @@ public class PatientRegistrationViewModel {
 	private SimpleObjectProperty<Gender> genderProperty;
 	private SimpleStringProperty zipCodeProperty;
 	
-	public PatientRegistrationViewModel() {
+	private Patient selectedPatient;
+	
+	public EditPatientViewModel() {
 		this.firstNameProperty = new SimpleStringProperty();
 		this.lastNameProperty = new SimpleStringProperty();
 		this.dateOfBirthProperty = new SimpleObjectProperty<LocalDate>();
@@ -40,22 +39,20 @@ public class PatientRegistrationViewModel {
 		this.zipCodeProperty = new SimpleStringProperty();
 	}
 	
-	public ResultCode registerPatient() {
+	public ResultCode updatePatient() {
 		var isInfoValid = this.checkIfPatientInfoIsValid().equals(ResultCode.IsValid);
 		
 		if (isInfoValid) {
 			try {
-				Patient patient = this.createPatient();
-				ResultCode result = PatientDatabaseClient.AddPatient(patient);
+				Patient patient = this.createUpdatedPatient();
+				var result = PatientDatabaseClient.updatePatient(patient);
 				
 				if (result.equals(ResultCode.Success)) {
-					ActiveUser.addPatient(patient);
-					result = ResultCode.Success;
-				} else {
-					result = ResultCode.ConnectionError;
+					ActiveUser.getPatients().remove(this.selectedPatient);
+					ActiveUser.getPatients().add(patient);
+					
+					return ResultCode.Success;
 				}
-				
-				return result;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -64,8 +61,8 @@ public class PatientRegistrationViewModel {
 			return ResultCode.IncorrectInput;
 		}
 	}
-
-	private Patient createPatient() {
+	
+	private Patient createUpdatedPatient() {
 		MailingAddress mAddress = this.createMailingAddress();
 		
 		String firstName = this.firstNameProperty.getValue();
@@ -74,6 +71,9 @@ public class PatientRegistrationViewModel {
 		String phoneNumber = this.phoneNumberProperty.getValue();
 		Gender gender = this.genderProperty.getValue();
 		Patient patient = new Patient(firstName, lastName, dateOfBirth, mAddress, phoneNumber, gender);
+		
+		patient.setPatientId(this.selectedPatient.getPatientId());
+		patient.setUserId(this.selectedPatient.getUserId());
 		
 		return patient;
 	}
@@ -86,8 +86,8 @@ public class PatientRegistrationViewModel {
 		MailingAddress mAddress = new MailingAddress(street, city, state, zipcode);
 		return mAddress;
 	}
-	
-	public ResultCode checkIfPatientInfoIsValid() {
+
+	private ResultCode checkIfPatientInfoIsValid() {
 		var personalInfoIsValid = this.checkIfPersonalInfoIsValid().equals(ResultCode.IsValid);
 		var mailingAddressIsValid = this.checkIfMailingAddressInfoIsValid().equals(ResultCode.IsValid);
 		
@@ -139,7 +139,7 @@ public class PatientRegistrationViewModel {
 		
 		return ResultCode.IsValid;
 	}
-
+	
 	public SimpleStringProperty firstNameProperty() {
 		return firstNameProperty;
 	}
@@ -174,5 +174,24 @@ public class PatientRegistrationViewModel {
 
 	public SimpleStringProperty zipCodeProperty() {
 		return zipCodeProperty;
+	}
+
+	public void setSelectedPatient(Patient patient) {
+		this.selectedPatient = patient;
+		this.populateProperties();
+	}
+
+	private void populateProperties() {
+		this.firstNameProperty.setValue(this.selectedPatient.getFirstName());
+		this.lastNameProperty.setValue(this.selectedPatient.getLastName());
+		this.dateOfBirthProperty.setValue(this.selectedPatient.getDateOfBirth());
+		this.phoneNumberProperty.setValue(this.selectedPatient.getPhoneNumber());
+		this.genderProperty.setValue(this.selectedPatient.getGender());
+		
+		var address = this.selectedPatient.getMailingAddress();
+		this.streetProperty.setValue(address.getStreet());
+		this.cityProperty.setValue(address.getCity());
+		this.stateProperty.setValue(address.getState());
+		this.zipCodeProperty.setValue(address.getZipcode());
 	}
 }

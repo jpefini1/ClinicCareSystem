@@ -4,14 +4,20 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class UserDatabaseClient extends DatabaseClient {
 	
 	protected static int insertMailingAddress(Connection con, MailingAddress mAddress) throws SQLException {
-		String insertAddress = "INSERT INTO address ( addressId, street, city, state, zipcode ) VALUES (?,?,?,?,?)";
 		
+		var existingAddressId = checkForExistingAddress(con, mAddress);
+		if (existingAddressId != -1) {
+			return existingAddressId;
+		}
+		
+		String insertAddress = "INSERT INTO address ( addressId, street, city, state, zipcode ) VALUES (?,?,?,?,?)";
         PreparedStatement pStatement =  con.prepareStatement(insertAddress, Statement.RETURN_GENERATED_KEYS);
 		pStatement.setString(1, null);
 		pStatement.setString(2, mAddress.getStreet());
@@ -24,6 +30,22 @@ public class UserDatabaseClient extends DatabaseClient {
 		var generatedAddressKeyResult = pStatement.getGeneratedKeys();
 		generatedAddressKeyResult.next();
 		return Integer.parseInt(generatedAddressKeyResult.getString(1));
+	}
+	
+	private static int checkForExistingAddress(Connection con, MailingAddress address) throws SQLException {
+		String selectAddressId = "SELECT addressId FROM address WHERE street = ? AND city = ? AND state = ? AND zipcode = ?";	
+        PreparedStatement select =  con.prepareStatement(selectAddressId, Statement.RETURN_GENERATED_KEYS);
+        select.setString(1, address.getStreet());
+        select.setString(2, address.getCity());
+        select.setString(3, address.getState().toString());
+        select.setString(4, address.getZipcode());
+        ResultSet addressId = select.executeQuery();
+        
+        if (addressId.next()) {
+        	return addressId.getInt(1);
+        } else {
+        	return -1;
+        }
 	}
 	
 	public static int insertUser(Connection con, User user, int addressId) throws SQLException {
