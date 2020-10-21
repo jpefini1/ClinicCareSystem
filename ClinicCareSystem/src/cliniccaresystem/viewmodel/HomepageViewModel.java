@@ -40,7 +40,7 @@ public class HomepageViewModel {
 		ActiveUser.setActiveUser(null);
 	}
 	
-	public void searchPatients() {
+	public ResultCode searchPatients() {
 		String fName = this.firstNameSearchProperty.getValue();
 		String lName = this.lastNameSearchProperty.getValue();
 		LocalDate dob = this.dobSearchProperty.getValue();
@@ -49,14 +49,26 @@ public class HomepageViewModel {
 			try {
 				this.patientList = PatientDatabaseClient.searchForPatients(fName, lName, dob);
 				this.patientListProperty.set(FXCollections.observableArrayList(this.patientList));
+				return ResultCode.Success;
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}	
+			}
+			return ResultCode.ConnectionError;
 		}
+		return ResultCode.IncorrectInput;
 	}
 	
 	public void showAllPatients() {
-		
+		try {
+			this.patientList = PatientDatabaseClient.getAllPatients();
+			this.patientListProperty.set(FXCollections.observableArrayList(this.patientList));
+			
+			this.firstNameSearchProperty.setValue("");
+			this.lastNameSearchProperty.setValue("");
+			this.dobSearchProperty.setValue(null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean isValidSearch() {

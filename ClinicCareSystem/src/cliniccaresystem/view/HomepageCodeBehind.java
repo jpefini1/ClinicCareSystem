@@ -5,6 +5,7 @@ import java.io.IOException;
 import cliniccaresystem.Main;
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Patient;
+import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.viewmodel.HomepageViewModel;
 import cliniccaresystem.viewmodel.LoginViewModel;
 import javafx.event.ActionEvent;
@@ -105,11 +106,16 @@ public class HomepageCodeBehind {
     
     @FXML
     void onSearch(ActionEvent event) {
-    	this.viewmodel.searchPatients();
+    	var result = this.viewmodel.searchPatients();
+    	
+    	if (result == ResultCode.Success) {
+    		this.showAllButton.setDisable(false);
+    	}
     }
 
     @FXML
     void onShowAll(ActionEvent event) {
     	this.viewmodel.showAllPatients();
+    	this.showAllButton.setDisable(true);
     }
 }

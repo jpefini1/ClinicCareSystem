@@ -27,7 +27,7 @@
       <DatePicker fx:id="dobDatePicker" editable="false" layoutX="202.0" layoutY="32.0" prefHeight="26.0" prefWidth="90.0" promptText="Birthdate" />
       <TextField fx:id="lastNameTextField" layoutX="112.0" layoutY="32.0" prefHeight="26.0" prefWidth="86.0" promptText="Last Name" />
       <TextField fx:id="firstNameTextField" layoutX="10.0" layoutY="32.0" prefHeight="26.0" prefWidth="98.0" promptText="First name" />
-      <Button fx:id="showAllButton" layoutX="297.0" layoutY="11.0" mnemonicParsing="false" onAction="#onShowAll" prefHeight="23.0" prefWidth="54.0" text="Show All">
+      <Button fx:id="showAllButton" disable="true" layoutX="297.0" layoutY="11.0" mnemonicParsing="false" onAction="#onShowAll" prefHeight="23.0" prefWidth="54.0" text="Show All">
          <font>
             <Font size="10.0" />
          </font>
