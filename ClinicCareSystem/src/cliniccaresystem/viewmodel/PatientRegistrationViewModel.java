@@ -1,5 +1,6 @@
 package cliniccaresystem.viewmodel;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import cliniccaresystem.model.ActiveUser;
@@ -9,6 +10,7 @@ import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Nurse;
 import cliniccaresystem.model.Patient;
+import cliniccaresystem.model.PatientDatabaseClient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import javafx.beans.property.SimpleObjectProperty;
@@ -45,15 +47,22 @@ public class PatientRegistrationViewModel {
 		var isInfoValid = this.checkIfPatientInfoIsValid().equals(ResultCode.IsValid);
 		
 		if (isInfoValid) {
-			Patient patient = this.createPatient();
-			ResultCode result = DatabaseClient.AddPatient(patient);
-			
-			if (result.equals(ResultCode.Success)) {
-				ActiveUser.addPatient(patient);
-				return ResultCode.Success;
-			} else {
-				return ResultCode.ConnectionFailed;
+			try {
+				Patient patient = this.createPatient();
+				ResultCode result = PatientDatabaseClient.AddPatient(patient);
+				
+				if (result.equals(ResultCode.Success)) {
+					ActiveUser.addPatient(patient);
+					result = ResultCode.Success;
+				} else {
+					result = ResultCode.ConnectionError;
+				}
+				
+				return result;
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
+			return ResultCode.ConnectionError;
 		} else {
 			return ResultCode.IncorrectInput;
 		}

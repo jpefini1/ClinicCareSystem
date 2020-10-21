@@ -1,11 +1,13 @@
 package cliniccaresystem.viewmodel;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import cliniccaresystem.model.Credentials;
 import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Nurse;
+import cliniccaresystem.model.NurseDatabaseClient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import javafx.beans.property.SimpleObjectProperty;
@@ -44,11 +46,16 @@ public class SignUpViewModel {
 		var infoIsValid = this.checkIfSignUpInfoIsValid().equals(ResultCode.IsValid);
 		
 		if (infoIsValid) {
-			MailingAddress mAddress = this.createMailingAddress();
-			Nurse nurse = this.createNurse(mAddress);
-			Credentials credentials = this.createCredentials();
-			
-			return DatabaseClient.AddNurse(nurse, credentials);
+			try {
+				MailingAddress mAddress = this.createMailingAddress();
+				Nurse nurse = this.createNurse(mAddress);
+				Credentials credentials = this.createCredentials();
+				
+				return NurseDatabaseClient.AddNurse(nurse, credentials);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return ResultCode.ConnectionError;
 		}
 		
 		return ResultCode.IncorrectInput;

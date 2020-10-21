@@ -153,6 +153,8 @@ public class PatientRegistrationCodeBehind {
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
+    	} else {
+    		this.errorLabel.textProperty().setValue("Invalid Info");
     	}
     }
     

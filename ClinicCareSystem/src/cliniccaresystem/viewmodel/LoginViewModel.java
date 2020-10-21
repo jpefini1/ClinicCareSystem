@@ -1,12 +1,15 @@
 package cliniccaresystem.viewmodel;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Credentials;
+import cliniccaresystem.model.CredentialsDatabaseClient;
 import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Nurse;
+import cliniccaresystem.model.PatientDatabaseClient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import cliniccaresystem.model.User;
@@ -31,20 +34,26 @@ public class LoginViewModel {
 	}
 	
 	public ResultCode Login() {
-		var result = this.checkifInfoIsValid().equals(ResultCode.IsValid);
-		
+		var isInfoValid = this.checkifInfoIsValid().equals(ResultCode.IsValid);
 		User activeUser = null;
-		if (result) {
-			activeUser = DatabaseClient.ValidateCredentials(this.usernameProperty.getValue(), this.passwordProperty.getValue());
+		
+		try {
+			if (isInfoValid) {
+				activeUser = CredentialsDatabaseClient.ValidateCredentials(this.usernameProperty.getValue(), this.passwordProperty.getValue());
+			}
+		
+			if (activeUser != null) {
+				ActiveUser.setActiveUser(activeUser);
+				ActiveUser.setPatients(PatientDatabaseClient.getAllPatients());
+				return ResultCode.Success;
+			} else {
+				return ResultCode.InvalidLogin;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
-		if (activeUser != null) {
-			ActiveUser.setActiveUser(activeUser);
-			ActiveUser.setPatients(DatabaseClient.getAllPatients());
-			return ResultCode.Success;
-		} else {
-			return ResultCode.InvalidLogin;
-		}
+		return ResultCode.ConnectionError;
 	}
 	
 	private ResultCode checkifInfoIsValid() {
