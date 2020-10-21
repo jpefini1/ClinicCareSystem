@@ -65,5 +65,4 @@ public class UserDatabaseClient extends DatabaseClient {
 		generatedUserKeyResult.next();
 		return Integer.parseInt(generatedUserKeyResult.getString(1));
 	}
-
 }

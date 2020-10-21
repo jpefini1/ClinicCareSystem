@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,15 +88,59 @@ public class PatientDatabaseClient extends DatabaseClient{
 		editUser.setInt(6, patient.getUserId());
 		editUser.executeUpdate();
 		
-		/*
-		 * PreparedStatement editPatient =
-		 * con.prepareStatement("UPDATE patient SET gender = ? WHERE patientId = ?");
-		 * editPatient.setString(1, patient.getGender().toString());
-		 * editPatient.setInt(2, patient.getPatientId()); editPatient.executeUpdate();
-		 */
-		
 		con.commit();
 		return ResultCode.Success;
 	}
 
+	public static List<Patient> searchForPatients(String fName, String lName, LocalDate dob) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING);
+		
+		PreparedStatement filteredUsersStatement = getSearchStatement(con, fName, lName, dob);
+		ResultSet filteredUsers = filteredUsersStatement.executeQuery();
+		
+		List<Patient> filteredPatients = new ArrayList<Patient>();
+		
+		while (filteredUsers.next()) {
+			PreparedStatement selectedPatientId = con.prepareStatement("SELECT * FROM patient WHERE userId = ?");
+			selectedPatientId.setInt(1, filteredUsers.getInt(1));
+			
+			ResultSet patientId = selectedPatientId.executeQuery();
+			
+			if (patientId.next()) {
+				PreparedStatement selectedAddress = con.prepareStatement("SELECT * FROM address WHERE addressId = ?");
+				selectedAddress.setInt(1, filteredUsers.getInt(5));
+				
+				ResultSet addressData = selectedAddress.executeQuery();
+				addressData.next();
+					
+				MailingAddress address = new MailingAddress(addressData.getString(2), addressData.getString(3), USState.valueOf(addressData.getString(4)), addressData.getString(5));
+				Patient patient = new Patient(patientId.getInt(2), filteredUsers.getString(2), filteredUsers.getString(3), filteredUsers.getDate(4).toLocalDate(), address, filteredUsers.getString(6), Gender.valueOf(patientId.getString(3)));
+				patient.setUserId(filteredUsers.getInt(1));
+				filteredPatients.add(patient);
+			}
+		}
+		
+		return filteredPatients;
+	}
+	
+	private static PreparedStatement getSearchStatement(Connection con, String fName, String lName, LocalDate dob) throws SQLException {
+		
+		PreparedStatement filteredUsersStatement;
+		if (!fName.isBlank() && !lName.isBlank()) {
+			if (dob != null) {
+				filteredUsersStatement =  con.prepareStatement("SELECT * FROM user WHERE fname = ? AND lname = ? AND dob = ?");
+				filteredUsersStatement.setString(1, fName);
+				filteredUsersStatement.setString(2, lName);
+				filteredUsersStatement.setDate(3, Date.valueOf(dob));
+			} else {
+				filteredUsersStatement =  con.prepareStatement("SELECT * FROM user WHERE fname = ? AND lname = ?");
+				filteredUsersStatement.setString(1, fName);
+				filteredUsersStatement.setString(2, lName);
+			}
+		} else {
+			filteredUsersStatement =  con.prepareStatement("SELECT * FROM user WHERE dob = ?");
+			filteredUsersStatement.setDate(1, Date.valueOf(dob));
+		}
+		return filteredUsersStatement;
+	}
 }
