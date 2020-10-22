@@ -82,6 +82,8 @@ public class EditPatientCodeBehind {
 		this.stateComboBox.valueProperty().bindBidirectional(this.viewmodel.stateProperty());
 		this.genderComboBox.getItems().addAll(Gender.values());
 		this.genderComboBox.valueProperty().bindBidirectional(this.viewmodel.genderProperty());
+		
+		this.nurseInfoLabel.textProperty().bindBidirectional(this.viewmodel.nurseInfoProperty());
 	}
 	
 	private void setupChangeListeners() {

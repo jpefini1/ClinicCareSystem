@@ -24,6 +24,7 @@ public class EditPatientViewModel {
 	private SimpleObjectProperty<USState> stateProperty;
 	private SimpleObjectProperty<Gender> genderProperty;
 	private SimpleStringProperty zipCodeProperty;
+	private SimpleStringProperty nurseInfoProperty;
 	
 	private Patient selectedPatient;
 	
@@ -37,6 +38,9 @@ public class EditPatientViewModel {
 		this.stateProperty = new SimpleObjectProperty<USState>();
 		this.genderProperty = new SimpleObjectProperty<Gender>();
 		this.zipCodeProperty = new SimpleStringProperty();
+		
+		this.nurseInfoProperty = new SimpleStringProperty();
+		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 	}
 	
 	public ResultCode updatePatient() {
@@ -174,6 +178,10 @@ public class EditPatientViewModel {
 
 	public SimpleStringProperty zipCodeProperty() {
 		return zipCodeProperty;
+	}
+	
+	public SimpleStringProperty nurseInfoProperty() {
+		return nurseInfoProperty;
 	}
 
 	public void setSelectedPatient(Patient patient) {
