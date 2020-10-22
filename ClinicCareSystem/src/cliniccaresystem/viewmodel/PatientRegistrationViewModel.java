@@ -120,11 +120,11 @@ public class PatientRegistrationViewModel {
 	}
 
 	private ResultCode checkIfMailingAddressInfoIsValid() {
-		if (this.streetProperty.getValue() == null || this.firstNameProperty.getValue().isBlank()) {
+		if (this.streetProperty.getValue() == null || this.streetProperty.getValue().isBlank()) {
 			return ResultCode.IncorrectInput;
 		}
 		
-		if (this.cityProperty.getValue() == null || this.firstNameProperty.getValue().isBlank()) {
+		if (this.cityProperty.getValue() == null || this.cityProperty.getValue().isBlank()) {
 			return ResultCode.IncorrectInput;
 		}
 		

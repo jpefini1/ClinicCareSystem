@@ -91,7 +91,7 @@ public class EditPatientViewModel {
 		return mAddress;
 	}
 
-	private ResultCode checkIfPatientInfoIsValid() {
+	public ResultCode checkIfPatientInfoIsValid() {
 		var personalInfoIsValid = this.checkIfPersonalInfoIsValid().equals(ResultCode.IsValid);
 		var mailingAddressIsValid = this.checkIfMailingAddressInfoIsValid().equals(ResultCode.IsValid);
 		
@@ -117,6 +117,14 @@ public class EditPatientViewModel {
 		
 		if (this.phoneNumberProperty.getValue() == null || this.phoneNumberProperty.getValue().isBlank()
 				|| this.phoneNumberProperty.getValue().length() < 10) {
+			return ResultCode.IncorrectInput;
+		}
+		
+		if (this.stateProperty.getValue() == null) {
+			return ResultCode.IncorrectInput;
+		}
+		
+		if (this.genderProperty.getValue() == null) {
 			return ResultCode.IncorrectInput;
 		}
 		

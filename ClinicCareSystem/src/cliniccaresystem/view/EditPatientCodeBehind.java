@@ -95,6 +95,12 @@ public class EditPatientCodeBehind {
 					this.firstNameTextField.setText(oldValue);
 				}
 			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
+			}
 		});
 		
 		this.lastNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -104,6 +110,12 @@ public class EditPatientCodeBehind {
 				} else {
 					this.lastNameTextField.setText(oldValue);
 				}
+			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
 			}
 		});
 		
@@ -115,6 +127,12 @@ public class EditPatientCodeBehind {
 					this.phoneNumberTextField.setText(oldValue);
 				}
 			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
+			}
 		});
 		
 		this.streetTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -124,6 +142,12 @@ public class EditPatientCodeBehind {
 				} else {
 					this.streetTextField.setText(oldValue);
 				}
+			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
 			}
 		});
 		
@@ -135,6 +159,12 @@ public class EditPatientCodeBehind {
 					this.cityTextField.setText(oldValue);
 				}
 			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
+			}
 		});
 		
 		this.zipcodeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -144,6 +174,36 @@ public class EditPatientCodeBehind {
 				} else {
 					this.zipcodeTextField.setText(oldValue);
 				}
+			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
+			}
+		});
+		
+		this.dobDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
+			}
+		});
+		
+		this.stateComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
+			}
+		});
+		
+		this.genderComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.updateButton.setDisable(false);
+			} else {
+				this.updateButton.setDisable(true);
 			}
 		});
 	}
@@ -171,6 +231,8 @@ public class EditPatientCodeBehind {
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
+    	} else {
+    		this.errorLabel.setText("Invalid Input");
     	}
     }
 

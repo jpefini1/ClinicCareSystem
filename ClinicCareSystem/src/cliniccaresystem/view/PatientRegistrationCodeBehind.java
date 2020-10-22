@@ -95,6 +95,12 @@ public class PatientRegistrationCodeBehind {
 					this.firstNameTextField.setText(oldValue);
 				}
 			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
+			}
 		});
 		
 		this.lastNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -104,6 +110,12 @@ public class PatientRegistrationCodeBehind {
 				} else {
 					this.lastNameTextField.setText(oldValue);
 				}
+			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
 			}
 		});
 		
@@ -115,6 +127,12 @@ public class PatientRegistrationCodeBehind {
 					this.phoneNumberTextField.setText(oldValue);
 				}
 			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
+			}
 		});
 		
 		this.streetTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -124,6 +142,12 @@ public class PatientRegistrationCodeBehind {
 				} else {
 					this.streetTextField.setText(oldValue);
 				}
+			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
 			}
 		});
 		
@@ -135,6 +159,12 @@ public class PatientRegistrationCodeBehind {
 					this.cityTextField.setText(oldValue);
 				}
 			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
+			}
 		});
 		
 		this.zipcodeTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -144,6 +174,36 @@ public class PatientRegistrationCodeBehind {
 				} else {
 					this.zipcodeTextField.setText(oldValue);
 				}
+			}
+			
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
+			}
+		});
+		
+		this.dobDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
+			}
+		});
+		
+		this.stateComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
+			}
+		});
+		
+		this.genderComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfPatientInfoIsValid().equals(ResultCode.IsValid)) {
+				this.registerButton.setDisable(false);
+			} else {
+				this.registerButton.setDisable(true);
 			}
 		});
 	}
