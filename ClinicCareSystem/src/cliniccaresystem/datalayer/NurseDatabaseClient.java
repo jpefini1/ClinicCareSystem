@@ -3,8 +3,10 @@ package cliniccaresystem.datalayer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import cliniccaresystem.model.Credentials;
 import cliniccaresystem.model.MailingAddress;
@@ -37,6 +39,22 @@ public class NurseDatabaseClient extends DatabaseClient{
 		
 		con.commit();
 		return ResultCode.Success;
+	}
+	
+	public static int GetNurseIdOf(User user) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		
+		String selectNurseIdCommand = "SELECT nurseId FROM nurse WHERE userId = ?";	
+        PreparedStatement selectNurseId =  con.prepareStatement(selectNurseIdCommand, Statement.RETURN_GENERATED_KEYS);
+        selectNurseId.setInt(1, user.getUserId());
+        
+        ResultSet rs = selectNurseId.executeQuery();
+        
+        if (rs.next()) {
+        	return rs.getInt(1);
+        } else {
+        	return -1;
+        }
 	}
 	
 	private static int insertNurse(Connection con, User user) throws SQLException {

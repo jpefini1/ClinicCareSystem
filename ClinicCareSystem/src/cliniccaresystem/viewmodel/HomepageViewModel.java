@@ -2,6 +2,7 @@ package cliniccaresystem.viewmodel;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +98,10 @@ public class HomepageViewModel {
 		return false;
 	}
 	
+	public boolean hasAppointPassed(Appointment newValue) {
+		return newValue.getAppointmentDateTime().isBefore(LocalDateTime.now());
+	}
+	
 	public SimpleStringProperty userInfoProperty() {
 		return userInfoProperty;
 	}
@@ -132,4 +137,6 @@ public class HomepageViewModel {
 		
 		return ResultCode.Success;
 	}
+
+	
 }

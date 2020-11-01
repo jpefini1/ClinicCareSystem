@@ -5,8 +5,8 @@ import java.io.IOException;
 import cliniccaresystem.Main;
 import cliniccaresystem.model.Appointment;
 import cliniccaresystem.model.Patient;
+import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.viewmodel.AppointmentDetailsViewModel;
-import cliniccaresystem.viewmodel.CreateAppointmentViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -80,6 +80,7 @@ public class AppointmentDetailsCodeBehind {
    	@FXML 
    	void initialize() { 
    		this.bindToViewModel(); 
+   		this.setupChangeListeners();
    	}
 
 	private void bindToViewModel() {
@@ -95,7 +96,93 @@ public class AppointmentDetailsCodeBehind {
    		this.nurseInfoLabel.textProperty().bindBidirectional(this.viewmodel.nurseInfoProperty());
    		this.patientInfoLabel.textProperty().bindBidirectional(this.viewmodel.patientInfoProperty());
    		this.inputResultsButton.disableProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsDisabled());
+   		this.updateButton.visibleProperty().bindBidirectional(this.viewmodel.updateIsVisibleProperty());
+   		this.inputResultsButton.visibleProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsVisible());
    	}
+	
+	private void setupChangeListeners() {
+		this.systolicBPTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.matches("^[0-9]{1,3}") || newValue.isBlank()) {
+				if (this.viewmodel.areRoutineResultsValid().equals(ResultCode.IsValid)) {
+					this.updateButton.setDisable(false);
+				} else {
+					this.updateButton.setDisable(true);
+				}
+			} else {
+				if (oldValue == null) {
+					this.systolicBPTextField.setText("");
+				} else {
+					this.systolicBPTextField.setText(oldValue);
+				}
+			}
+		});
+		
+		this.diastolicBPTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.matches("^[0-9]{1,3}") || newValue.isBlank()) {
+				if (this.viewmodel.areRoutineResultsValid().equals(ResultCode.IsValid)) {
+					this.updateButton.setDisable(false);
+				} else {
+					this.updateButton.setDisable(true);
+				}
+			} else {
+				if (oldValue == null) {
+					this.diastolicBPTextField.setText("");
+				} else {
+					this.diastolicBPTextField.setText(oldValue);
+				}
+			}
+		});
+		
+		this.pulseTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.matches("^[0-9]{1,3}") || newValue.isBlank()) {
+				if (this.viewmodel.areRoutineResultsValid().equals(ResultCode.IsValid)) {
+					this.updateButton.setDisable(false);
+				} else {
+					this.updateButton.setDisable(true);
+				}
+			} else {
+				if (oldValue == null) {
+					this.pulseTextField.setText("");
+				} else {
+					this.pulseTextField.setText(oldValue);
+				}
+			}
+		});
+		
+		this.weightTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.matches("^[1-9]{1}") || newValue.matches("^[1-9]{1}[0-9]{1,2}") || 
+					newValue.matches("^[1-9]{1}[0-9]{1,2}\\.") || newValue.matches("^[1-9]{1}[0-9]{1,2}\\.[0-9]{1,2}") || newValue.isBlank()) {
+				if (this.viewmodel.areRoutineResultsValid().equals(ResultCode.IsValid)) {
+					this.updateButton.setDisable(false);
+				} else {
+					this.updateButton.setDisable(true);
+				}
+			} else {
+				if (oldValue == null) {
+					this.weightTextField.setText("");
+				} else {
+					this.weightTextField.setText(oldValue);
+				}
+			}
+		});
+		
+		this.tempTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.matches("^[1-9]{1}") || newValue.matches("^[1-9]{1}[0-9]{1,2}") || 
+					newValue.matches("^[1-9]{1}[0-9]{1,2}\\.") || newValue.matches("^[1-9]{1}[0-9]{1,2}\\.[0-9]{1,2}") || newValue.isBlank()) {
+				if (this.viewmodel.areRoutineResultsValid().equals(ResultCode.IsValid)) {
+					this.updateButton.setDisable(false);
+				} else {
+					this.updateButton.setDisable(true);
+				}
+			} else {
+				if (oldValue == null) {
+					this.tempTextField.setText("");
+				} else {
+					this.tempTextField.setText(oldValue);
+				}
+			}
+		});
+	}
 
     @FXML
     void onBack(ActionEvent event) {
@@ -110,24 +197,38 @@ public class AppointmentDetailsCodeBehind {
 
     @FXML
     void onInputResults(ActionEvent event) {
-    	this.routineResulsLabel.setDisable(false);
-    	this.systolicBPLabel.setDisable(false);
-    	this.systolicBPTextField.setDisable(false);
-    	this.diastolicBPLabel.setDisable(false);
-    	this.diastolicBPTextField.setDisable(false);
-    	this.pulseLabel.setDisable(false);
-    	this.pulseTextField.setDisable(false);
-    	this.weightLabel.setDisable(false);
-    	this.weightTextField.setDisable(false);
-    	this.tempLabel.setDisable(false);
-    	this.tempTextField.setDisable(false);
-    	
+    	this.setDisableRoutineCheckLabels(false);
+    	this.setDisableRoutineCheckTextFields(false);
     	this.inputResultsButton.setDisable(true);
+    }
+    
+    private void setDisableRoutineCheckTextFields(boolean isDisabled) {
+    	this.systolicBPTextField.setDisable(isDisabled);
+    	this.diastolicBPTextField.setDisable(isDisabled);
+    	this.pulseTextField.setDisable(isDisabled);
+    	this.weightTextField.setDisable(isDisabled);
+    	this.tempTextField.setDisable(isDisabled);
+    }
+    
+    private void setDisableRoutineCheckLabels(boolean isDisabled) {
+    	this.routineResulsLabel.setDisable(isDisabled);
+    	this.systolicBPLabel.setDisable(isDisabled);
+    	this.diastolicBPLabel.setDisable(isDisabled);
+    	this.pulseLabel.setDisable(isDisabled);
+    	this.weightLabel.setDisable(isDisabled);
+    	this.tempLabel.setDisable(isDisabled);
     }
 
     @FXML
     void onUpdate(ActionEvent event) {
-
+    	var result = this.viewmodel.addRoutineCheckResults();
+    	
+    	if (result.equals(ResultCode.Success)) {
+    		this.setDisableRoutineCheckTextFields(true);
+    		this.updateButton.setDisable(true);
+    		this.updateButton.setVisible(false);
+    		this.inputResultsButton.setVisible(false);
+    	}
     }
     
     public void setPatientInfo(Patient patient) {

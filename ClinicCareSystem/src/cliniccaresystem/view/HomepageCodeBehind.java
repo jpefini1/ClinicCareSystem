@@ -127,7 +127,6 @@ public class HomepageCodeBehind {
 		
 		this.editPatientButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
 		this.createAppointmentButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
-		this.editAppointmentButton.disableProperty().bind(this.appointmentTableView.getSelectionModel().selectedItemProperty().isNull());
 		this.viewAppointmentDetailsButton.disableProperty().bind(this.appointmentTableView.getSelectionModel().selectedItemProperty().isNull());
 	}
 	
@@ -137,6 +136,18 @@ public class HomepageCodeBehind {
 				this.viewAppointmentsButton.setDisable(false);
 			} else {
 				this.viewAppointmentsButton.setDisable(true);
+			}
+		});
+		
+		this.appointmentTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				if (this.viewmodel.hasAppointPassed(newValue)) {
+					this.editAppointmentButton.setDisable(true);
+				} else {
+					this.editAppointmentButton.setDisable(false);
+				}
+			} else {
+				this.editAppointmentButton.setDisable(true);
 			}
 		});
 	}

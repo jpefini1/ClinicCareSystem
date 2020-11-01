@@ -48,4 +48,8 @@ public class MailingAddress {
 		this.zipcode = zipcode;
 	}
 
+	@Override
+	public String toString() {
+		return this.street + ", " + this.city + " " + this.state.toString() + " " + this.zipcode;
+	}
 }
