@@ -8,9 +8,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import cliniccaresystem.model.Appointment;
+import cliniccaresystem.model.Gender;
+import cliniccaresystem.model.MailingAddress;
+import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
+import cliniccaresystem.model.USState;
 
 public class AppointmentDatabaseClient extends DatabaseClient{
 
@@ -25,12 +31,29 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		return ResultCode.Success;
 	}
 	
+	public static List<Appointment> getAppointmentsOfPatient(Patient patient) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		
+		String getAppointmentsQuery = "SELECT * FROM appointment WHERE patientId = ?";
+		PreparedStatement selectAppointments =  con.prepareStatement(getAppointmentsQuery, Statement.RETURN_GENERATED_KEYS);		
+		selectAppointments.setInt(1, patient.getPatientId());
+		
+		ResultSet queryRS = selectAppointments.executeQuery();
+		
+		List<Appointment> appointments = new ArrayList<Appointment>();
+        while (queryRS.next()) {
+        	appointments.add(new Appointment(queryRS.getInt(1), queryRS.getInt(2), queryRS.getTimestamp(3).toLocalDateTime(), queryRS.getString(4)));
+        }
+
+		return appointments;
+	}
+	
 	public static boolean checkForAppointmentAt(Appointment appointment) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		
 		String selectAppointmentsCommand = "SELECT * FROM appointment WHERE appointmentTime = ? AND patientId = ?";	
         PreparedStatement selectAppointments =  con.prepareStatement(selectAppointmentsCommand, Statement.RETURN_GENERATED_KEYS);
-        selectAppointments.setTimestamp(1, Timestamp.valueOf(appointment.getAppointmentTime()));
+        selectAppointments.setTimestamp(1, Timestamp.valueOf(appointment.getAppointmentDateTime()));
         selectAppointments.setInt(2, appointment.getPatientId());
         
         ResultSet rs = selectAppointments.executeQuery();
@@ -47,7 +70,7 @@ public class AppointmentDatabaseClient extends DatabaseClient{
         PreparedStatement pStatement =  con.prepareStatement(insertNurse, Statement.RETURN_GENERATED_KEYS);  
 
 		pStatement.setInt(1, appointment.getPatientId());
-		pStatement.setTimestamp(2, Timestamp.valueOf(appointment.getAppointmentTime()));
+		pStatement.setTimestamp(2, Timestamp.valueOf(appointment.getAppointmentDateTime()));
 		pStatement.setString(3, appointment.getReasonForVisit());
 			
 		pStatement.executeUpdate();

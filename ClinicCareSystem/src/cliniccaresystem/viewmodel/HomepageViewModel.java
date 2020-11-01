@@ -2,10 +2,13 @@ package cliniccaresystem.viewmodel;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import cliniccaresystem.datalayer.AppointmentDatabaseClient;
 import cliniccaresystem.datalayer.PatientDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
+import cliniccaresystem.model.Appointment;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import javafx.beans.property.ListProperty;
@@ -26,10 +29,17 @@ public class HomepageViewModel {
 	private final ListProperty<Patient> patientListProperty;
 	private List<Patient> patientList;
 	
+	private final ListProperty<Appointment> appointmentListProperty;
+	private List<Appointment> appointmentList;
+	
 	public HomepageViewModel() {
 		this.patientList = ActiveUser.getPatients();
 		this.patientListProperty = new SimpleListProperty<Patient>(FXCollections.observableArrayList(this.patientList));
 		this.patientListProperty.set(FXCollections.observableArrayList(this.patientList));
+		this.appointmentList = new ArrayList<Appointment>();
+		this.appointmentListProperty = new SimpleListProperty<Appointment>(FXCollections.observableArrayList(this.appointmentList));
+		this.appointmentListProperty.set(FXCollections.observableArrayList(this.appointmentList));
+		
 		this.userInfoProperty = new SimpleStringProperty();
 		this.userInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 		this.firstNameSearchProperty = new SimpleStringProperty();
@@ -94,6 +104,10 @@ public class HomepageViewModel {
 	public ListProperty<Patient> patientListProperty() {
 		return patientListProperty;
 	}
+	
+	public ListProperty<Appointment> appointmentListProperty() {
+		return this.appointmentListProperty;
+	}
 
 	public SimpleStringProperty firstNameSearchProperty() {
 		return firstNameSearchProperty;
@@ -105,5 +119,17 @@ public class HomepageViewModel {
 
 	public SimpleObjectProperty<LocalDate> dobSearchProperty() {
 		return dobSearchProperty;
+	}
+
+	public ResultCode showAppointments(Patient patient) {
+		try {
+			this.appointmentList = AppointmentDatabaseClient.getAppointmentsOfPatient(patient);
+			this.appointmentListProperty.set(FXCollections.observableArrayList(this.appointmentList));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultCode.ConnectionError;
+		}
+		
+		return ResultCode.Success;
 	}
 }

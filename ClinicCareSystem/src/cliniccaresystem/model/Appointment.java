@@ -1,6 +1,8 @@
 package cliniccaresystem.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
 
@@ -8,22 +10,26 @@ public class Appointment {
 	
 	private int patientId;
 	
-	private LocalDateTime appointmentTime;
+	private LocalDateTime appointmentDateTime;
 	
 	private String reasonForVisit;
+	private String formattedDateTime;
+
 	
-	public Appointment(int patientId, LocalDateTime appointmentTime, String reasonForVisit) {
+	public Appointment(int patientId, LocalDateTime appointmentDateTime, String reasonForVisit) {
 		
 		this.patientId = patientId;
-		this.appointmentTime = appointmentTime;
+		this.appointmentDateTime = appointmentDateTime;
 		this.reasonForVisit = reasonForVisit;
+		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_TIME);
 	}
 	
 	public Appointment(int appointmentId, int patientId, LocalDateTime appointmentTime, String reasonForVisit) {
 		
 		this.patientId = patientId;
-		this.appointmentTime = appointmentTime;
+		this.appointmentDateTime = appointmentTime;
 		this.reasonForVisit = reasonForVisit;
+		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_TIME);
 	}
 
 	public int getAppointmentId() {
@@ -42,12 +48,12 @@ public class Appointment {
 		this.patientId = patientId;
 	}
 
-	public LocalDateTime getAppointmentTime() {
-		return this.appointmentTime;
+	public LocalDateTime getAppointmentDateTime() {
+		return this.appointmentDateTime;
 	}
 
-	public void setAppointmentTime(LocalDateTime appointmentTime) {
-		this.appointmentTime = appointmentTime;
+	public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
+		this.appointmentDateTime = appointmentDateTime;
 	}
 
 	public String getReasonForVisit() {
@@ -57,6 +63,12 @@ public class Appointment {
 	public void setReasonForVisit(String reasonForVisit) {
 		this.reasonForVisit = reasonForVisit;
 	}
-	
-	
+		
+	public String getFormattedDateTime() {
+		return this.formattedDateTime;
+	}
+
+	public void setFormattedDateTime(String formattedDateTime) {
+		this.formattedDateTime = formattedDateTime;
+	}
 }

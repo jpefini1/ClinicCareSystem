@@ -48,9 +48,8 @@
       </TableView>
       <TableView fx:id="appointmentTableView" layoutX="514.0" layoutY="66.0" prefHeight="261.0" prefWidth="254.0">
         <columns>
-          <TableColumn fx:id="appointmentDateColumn" prefWidth="75.0" text="Date" />
-          <TableColumn fx:id="appointmentTimeColumn" prefWidth="56.0" text="Time" />
-            <TableColumn fx:id="appointmentReasonColumn" prefWidth="118.4000244140625" text="Reason" />
+          <TableColumn fx:id="appointmentDateColumn" prefWidth="124.79998779296875" text="Date" />
+            <TableColumn fx:id="appointmentReasonColumn" prefWidth="128.79998779296875" text="Reason" />
         </columns>
       </TableView>
       <Button fx:id="createAppointmentButton" layoutX="527.0" layoutY="331.0" mnemonicParsing="false" onAction="#onCreateAppointment" prefHeight="43.0" prefWidth="98.0" text="Create Appointment" textAlignment="CENTER" wrapText="true" />
@@ -60,5 +59,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Button fx:id="viewAppointmentsButton" disable="true" layoutX="387.0" layoutY="375.0" mnemonicParsing="false" onAction="#onViewAppointments" text="View Appointments" />
    </children>
 </AnchorPane>

@@ -2,6 +2,8 @@ package cliniccaresystem.view;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import cliniccaresystem.Main;
 import cliniccaresystem.model.ActiveUser;
@@ -57,7 +59,7 @@ public class HomepageCodeBehind {
     private TableView<Appointment> appointmentTableView;
 
     @FXML
-    private TableColumn<Appointment, LocalDate> appointmentDateColumn;
+    private TableColumn<Appointment, String> appointmentDateColumn;
 
     @FXML
     private TableColumn<Appointment, String> appointmentTimeColumn;
@@ -92,6 +94,9 @@ public class HomepageCodeBehind {
     @FXML
     private Button showAllButton;
     
+    @FXML
+    private Button viewAppointmentsButton;
+    
     private HomepageViewModel viewmodel;
     
     public HomepageCodeBehind() {
@@ -100,13 +105,16 @@ public class HomepageCodeBehind {
 
 	@FXML 
 	void initialize() { 
-		this.initializeTableView();
+		this.initializePatientTableView();
+		this.initializeAppointmentTableView();
 		this.bindToViewModel(); 
+		this.setupChangeListener();
 	}
 
 	private void bindToViewModel() {
 		this.userInfoLabel.textProperty().bindBidirectional(this.viewmodel.userInfoProperty());
 		this.patientsTableView.setItems(this.viewmodel.patientListProperty());
+		this.appointmentTableView.setItems(this.viewmodel.appointmentListProperty());
 		this.firstNameTextField.textProperty().bindBidirectional(this.viewmodel.firstNameSearchProperty());
 		this.lastNameTextField.textProperty().bindBidirectional(this.viewmodel.lastNameSearchProperty());
 		this.dobDatePicker.valueProperty().bindBidirectional(this.viewmodel.dobSearchProperty());
@@ -116,7 +124,17 @@ public class HomepageCodeBehind {
 		this.editAppointmentButton.disableProperty().bind(this.appointmentTableView.getSelectionModel().selectedItemProperty().isNull());
 	}
 	
-	private void initializeTableView() {
+	private void setupChangeListener() {
+		this.patientsTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				this.viewAppointmentsButton.setDisable(false);
+			} else {
+				this.viewAppointmentsButton.setDisable(true);
+			}
+		});
+	}
+	
+	private void initializePatientTableView() {
 		this.firstNameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
 		this.lastNameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("lastName"));
 		this.genderColumn.setCellValueFactory(new PropertyValueFactory<Patient, Gender>("gender"));
@@ -124,6 +142,11 @@ public class HomepageCodeBehind {
 		this.addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, MailingAddress>("mailingAddress"));
 		this.phoneColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("phoneNumber"));
 		this.idColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("patientId"));
+	}
+	
+	private void initializeAppointmentTableView() {
+		this.appointmentDateColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("formattedDateTime"));
+		this.appointmentReasonColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("reasonForVisit"));
 	}
 
 
@@ -197,5 +220,14 @@ public class HomepageCodeBehind {
     @FXML
     void onEditAppointment(ActionEvent event) {
 
+    }
+    
+    @FXML
+    void onViewAppointments(ActionEvent event) {
+    	ResultCode result = this.viewmodel.showAppointments(this.patientsTableView.getSelectionModel().getSelectedItem());
+    	
+    	if (result.equals(ResultCode.ConnectionError)) {
+    		//#TODO Display error message
+    	}
     }
 }
