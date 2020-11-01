@@ -94,6 +94,7 @@ public class PatientDatabaseClient extends DatabaseClient{
 
 	public static List<Patient> searchForPatients(String fName, String lName, LocalDate dob) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING);
+		con.setAutoCommit(false);
 		
 		PreparedStatement filteredUsersStatement = getSearchStatement(con, fName, lName, dob);
 		ResultSet filteredUsers = filteredUsersStatement.executeQuery();
@@ -120,6 +121,7 @@ public class PatientDatabaseClient extends DatabaseClient{
 			}
 		}
 		
+		con.commit();
 		return filteredPatients;
 	}
 	

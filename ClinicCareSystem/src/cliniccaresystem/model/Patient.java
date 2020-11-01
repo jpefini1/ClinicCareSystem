@@ -17,7 +17,7 @@ private Gender gender;
 		super(null, firstName, lastName, dateOfBirth, mailingAddress, phoneNumber);
 		this.gender = gender;
 	}
-	
+
 	public int getPatientId() {
 		return patientId;
 	}

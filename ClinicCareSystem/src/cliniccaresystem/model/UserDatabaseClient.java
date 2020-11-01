@@ -11,7 +11,6 @@ import java.sql.Statement;
 public class UserDatabaseClient extends DatabaseClient {
 	
 	protected static int insertMailingAddress(Connection con, MailingAddress mAddress) throws SQLException {
-		
 		var existingAddressId = checkForExistingAddress(con, mAddress);
 		if (existingAddressId != -1) {
 			return existingAddressId;

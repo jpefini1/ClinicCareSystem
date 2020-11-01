@@ -11,6 +11,7 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 	
 	public static User ValidateCredentials(String username, String password) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		con.setAutoCommit(false);
 		
         PreparedStatement selectCredentials =  con.prepareStatement("SELECT * FROM credentials WHERE username = ? AND password = ?");
 		selectCredentials.setString(1, username);
@@ -30,6 +31,8 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 			
 			MailingAddress address = new MailingAddress(addressData.getString(2), addressData.getString(3), USState.valueOf(addressData.getString(4)), addressData.getString(5));
 			User activeUser = new User(user.getInt(1), username, user.getString(2), user.getString(3), user.getDate(4).toLocalDate(), address, user.getString(6));
+			
+			con.commit();
 			return activeUser;
 		}
        

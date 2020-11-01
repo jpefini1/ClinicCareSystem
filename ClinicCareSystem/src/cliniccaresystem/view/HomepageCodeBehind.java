@@ -1,9 +1,12 @@
 package cliniccaresystem.view;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import cliniccaresystem.Main;
 import cliniccaresystem.model.ActiveUser;
+import cliniccaresystem.model.Gender;
+import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.viewmodel.HomepageViewModel;
@@ -17,13 +20,37 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class HomepageCodeBehind {
 
     @FXML
-    private ListView<Patient> patientListView;
+    private TableView<Patient> patientsTableView;
+    
+    @FXML
+    private TableColumn<Patient, String> firstNameColumn;
+    
+    @FXML
+    private TableColumn<Patient, String> lastNameColumn;
+    
+    @FXML
+    private TableColumn<Patient, Gender> genderColumn;
+    
+    @FXML
+    private TableColumn<Patient, LocalDate> dobColumn;
+    
+    @FXML
+    private TableColumn<Patient, MailingAddress> addressColumn;
+    
+    @FXML
+    private TableColumn<Patient, String> phoneColumn;
+    
+    @FXML
+    private TableColumn<Patient, String> idColumn;
 
     @FXML
     private Label userInfoLabel;
@@ -54,16 +81,27 @@ public class HomepageCodeBehind {
 
 	@FXML 
 	void initialize() { 
+		this.initializeTableView();
 		this.bindToViewModel(); 
 	}
 
 	private void bindToViewModel() {
 		this.userInfoLabel.textProperty().bindBidirectional(this.viewmodel.userInfoProperty());
-		this.patientListView.setItems(this.viewmodel.patientListProperty());
-		this.editPatientButton.disableProperty().bind(this.patientListView.getSelectionModel().selectedItemProperty().isNull());
+		this.patientsTableView.setItems(this.viewmodel.patientListProperty());
+		this.editPatientButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
 		this.firstNameTextField.textProperty().bindBidirectional(this.viewmodel.firstNameSearchProperty());
 		this.lastNameTextField.textProperty().bindBidirectional(this.viewmodel.lastNameSearchProperty());
 		this.dobDatePicker.valueProperty().bindBidirectional(this.viewmodel.dobSearchProperty());
+	}
+	
+	private void initializeTableView() {
+		this.firstNameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("firstName"));
+		this.lastNameColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("lastName"));
+		this.genderColumn.setCellValueFactory(new PropertyValueFactory<Patient, Gender>("gender"));
+		this.dobColumn.setCellValueFactory(new PropertyValueFactory<Patient, LocalDate>("dateOfBirth"));
+		this.addressColumn.setCellValueFactory(new PropertyValueFactory<Patient, MailingAddress>("mailingAddress"));
+		this.phoneColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("phoneNumber"));
+		this.idColumn.setCellValueFactory(new PropertyValueFactory<Patient, String>("patientId"));
 	}
 
 
@@ -96,7 +134,7 @@ public class HomepageCodeBehind {
 		loader.load();
 		
 		var codeBehind = (EditPatientCodeBehind) loader.getController();
-		codeBehind.setSelectedPatient(this.patientListView.getSelectionModel().getSelectedItem());
+		codeBehind.setSelectedPatient(this.patientsTableView.getSelectionModel().getSelectedItem());
 		
 		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		Scene newScene = new Scene(loader.getRoot());
