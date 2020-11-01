@@ -1,6 +1,7 @@
 package cliniccaresystem.datalayer;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,6 +32,20 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		return ResultCode.Success;
 	}
 	
+	public static ResultCode editAppointment(Appointment appointment) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		con.setAutoCommit(false);
+		
+		PreparedStatement editAppointment = con.prepareStatement("UPDATE appointment SET appointmentTime = ?, reasonForVisit = ? WHERE appointmentId = ?");  
+		editAppointment.setTimestamp(1, Timestamp.valueOf(appointment.getAppointmentDateTime()));
+		editAppointment.setString(2, appointment.getReasonForVisit());
+		editAppointment.setInt(3, appointment.getAppointmentId());
+		editAppointment.executeUpdate();
+		
+		con.commit();
+		return ResultCode.Success;
+	}
+	
 	public static List<Appointment> getAppointmentsOfPatient(Patient patient) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		
@@ -48,7 +63,7 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		return appointments;
 	}
 	
-	public static boolean checkForAppointmentAt(Appointment appointment) throws SQLException {
+	public static boolean checkForDifferentAppointmentForSamePatientAtDateTimeOf(Appointment appointment) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		
 		String selectAppointmentsCommand = "SELECT * FROM appointment WHERE appointmentTime = ? AND patientId = ?";	
@@ -59,6 +74,14 @@ public class AppointmentDatabaseClient extends DatabaseClient{
         ResultSet rs = selectAppointments.executeQuery();
         
         if (rs.next()) {
+        	
+        	System.out.println("Id: " + appointment.getAppointmentId());
+        	System.out.println("From query: " + rs.getInt(1));
+        	
+        	if (appointment.getAppointmentId() == rs.getInt(1)) {
+        		return false;
+        	}
+        	
         	return true;
         }
 		return false;

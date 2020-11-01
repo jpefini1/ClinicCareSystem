@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import cliniccaresystem.datalayer.AppointmentDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
@@ -11,11 +12,10 @@ import cliniccaresystem.model.Appointment;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class CreateAppointmentViewModel {
+public class EditAppointmentViewModel {
 
 	private SimpleStringProperty nurseInfoProperty;
 	private SimpleStringProperty patientInfoProperty;
@@ -28,8 +28,9 @@ public class CreateAppointmentViewModel {
 	private SimpleBooleanProperty pmProperty;
 	
 	private Patient selectedPatient = null;
+	private Appointment selectedAppointment = null;
 
-	public CreateAppointmentViewModel() {
+	public EditAppointmentViewModel() {
 		this.appointmentDateProperty = new SimpleObjectProperty<LocalDate>();
 		this.hourProperty = new SimpleObjectProperty<Integer>();
 		this.minuteProperty = new SimpleObjectProperty<Integer>();
@@ -42,7 +43,7 @@ public class CreateAppointmentViewModel {
 		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 	}
 	
-	public ResultCode scheduleAppointment() {
+	public ResultCode editAppointment() {
 		Appointment appointment = this.makeAppointment();
 		
 		try {
@@ -50,7 +51,7 @@ public class CreateAppointmentViewModel {
 				return ResultCode.AlreadyExists;
 			}
 			
-			if (AppointmentDatabaseClient.scheduleAppointment(appointment) == ResultCode.Success) {
+			if (AppointmentDatabaseClient.editAppointment(appointment) == ResultCode.Success) {
 				return ResultCode.Success;
 			}
 		} catch (SQLException e) {
@@ -62,11 +63,11 @@ public class CreateAppointmentViewModel {
 	}
 	
 	private Appointment makeAppointment() {
-		int patientId = this.selectedPatient.getPatientId();
-		LocalDateTime appointmentTime = this.makeAppointmentDateTime();
-		String reasonForVisit = this.reasonForVisitProperty.getValue();
+		var newAppointment = this.selectedAppointment;
+		newAppointment.setAppointmentDateTime(this.makeAppointmentDateTime());
+		newAppointment.setReasonForVisit(this.reasonForVisitProperty.getValue());
 		
-		return new Appointment(patientId, appointmentTime, reasonForVisit);
+		return newAppointment;
 	} 
 	
 	private LocalDateTime makeAppointmentDateTime() {
@@ -75,26 +76,7 @@ public class CreateAppointmentViewModel {
 		return LocalDateTime.of(appointmentDate, appointmentTime);
 	}
 	
-	private LocalTime getLocalTimeIn24HourFormat() {
-		var hour = this.hourProperty.getValue();
-		
-		if (this.pmProperty.getValue()) {
-			hour += 12;
-			
-			if (hour >= 24) {
-				hour = 0;
-			}
-		} else if (this.amProperty.getValue()) {
-			if (hour == 12) {
-				hour = 0;
-			}
-		}
-		
-		return LocalTime.of(hour, this.minuteProperty.getValue());
-	}
-
 	public ResultCode checkIfAppointmentInfoIsValid() {
-
 		if (this.appointmentDateProperty.getValue() == null) {
 			return ResultCode.IncorrectInput;
 		}
@@ -116,6 +98,11 @@ public class CreateAppointmentViewModel {
 		}
 		
 		return ResultCode.IsValid;
+	}
+	
+	public boolean hasAppointmentBeenChanged() {
+		var newAppointment = this.makeAppointment();
+		return newAppointment.equals(this.selectedAppointment);
 	}
 
 	public SimpleObjectProperty<LocalDate> appointmentDateProperty() {
@@ -154,5 +141,53 @@ public class CreateAppointmentViewModel {
 		this.selectedPatient = patient;
 		this.patientInfoProperty.setValue(patient.toString());
 	}
+	
+	public void populateAppointmentInfoFields(Appointment appointment) {
+		this.selectedAppointment = appointment;
+		
+		this.appointmentDateProperty.setValue(appointment.getAppointmentDateTime().toLocalDate());
+		this.populateTimeFieldsIn12HourFormat(appointment.getAppointmentDateTime());
+		this.reasonForVisitProperty.setValue(appointment.getReasonForVisit());
+	}
+	
+	private LocalTime getLocalTimeIn24HourFormat() {
+		var hour = this.hourProperty.getValue();
+		
+		if (this.pmProperty.getValue()) {
+			hour += 12;
+			
+			if (hour >= 24) {
+				hour = 0;
+			}
+		} else if (this.amProperty.getValue()) {
+			if (hour == 12) {
+				hour = 0;
+			}
+		}
+		
+		return LocalTime.of(hour, this.minuteProperty.getValue());
+	}
 
+	private void populateTimeFieldsIn12HourFormat(LocalDateTime appointmentDateTime) {
+		var date = appointmentDateTime.toLocalDate();
+		var time = appointmentDateTime.toLocalTime();
+		
+		var hour = time.getHour();
+		if (time.isBefore(LocalTime.NOON)) {
+			this.amProperty.setValue(true);
+			
+			if (hour == 0) {
+				hour = 12;
+			}
+		} else {
+			this.pmProperty.setValue(true);
+			
+			if (hour != 12) {
+				hour -= 12;
+			}
+		}
+		
+		this.hourProperty.setValue(hour);
+		this.minuteProperty.setValue(time.getMinute());
+	}
 }

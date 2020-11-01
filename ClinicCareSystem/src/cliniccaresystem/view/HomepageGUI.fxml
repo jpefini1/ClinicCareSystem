@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.HomepageCodeBehind">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.HomepageCodeBehind">
    <children>
       <Button layoutX="11.0" layoutY="380.0" mnemonicParsing="false" onAction="#onRegisterPatient" prefHeight="49.0" prefWidth="86.0" text="Register Patient" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Button layoutX="671.0" layoutY="405.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="26.0" prefWidth="86.0" text="Logout" />
+      <Button layoutX="728.0" layoutY="403.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="26.0" prefWidth="86.0" text="Logout" />
       <Label fx:id="userInfoLabel" layoutX="10.0" layoutY="5.0" prefHeight="18.0" prefWidth="254.0" />
       <Button fx:id="editPatientButton" disable="true" layoutX="109.0" layoutY="396.0" mnemonicParsing="false" onAction="#onEditPatient" prefHeight="34.0" prefWidth="78.0" text="Edit Patient" />
       <Button fx:id="searchButton" layoutX="386.0" layoutY="33.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="23.0" prefWidth="54.0" text="Search">
@@ -46,14 +46,15 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView fx:id="appointmentTableView" layoutX="514.0" layoutY="66.0" prefHeight="261.0" prefWidth="254.0">
+      <TableView fx:id="appointmentTableView" layoutX="514.0" layoutY="66.0" prefHeight="262.0" prefWidth="304.0">
         <columns>
           <TableColumn fx:id="appointmentDateColumn" prefWidth="124.79998779296875" text="Date" />
-            <TableColumn fx:id="appointmentReasonColumn" prefWidth="128.79998779296875" text="Reason" />
+            <TableColumn fx:id="appointmentReasonColumn" minWidth="0.0" prefWidth="118.39996337890625" text="Reason" />
+            <TableColumn fx:id="appointmentIdColumn" minWidth="5.0" prefWidth="56.7999267578125" text="ID" />
         </columns>
       </TableView>
       <Button fx:id="createAppointmentButton" layoutX="527.0" layoutY="331.0" mnemonicParsing="false" onAction="#onCreateAppointment" prefHeight="43.0" prefWidth="98.0" text="Create Appointment" textAlignment="CENTER" wrapText="true" />
-      <Button fx:id="editAppointmentButton" layoutX="659.0" layoutY="331.0" mnemonicParsing="false" onAction="#onEditAppointment" prefHeight="43.0" prefWidth="98.0" text="Edit Appointment" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="editAppointmentButton" layoutX="716.0" layoutY="329.0" mnemonicParsing="false" onAction="#onEditAppointment" prefHeight="43.0" prefWidth="98.0" text="Edit Appointment" textAlignment="CENTER" wrapText="true" />
       <Label layoutX="597.0" layoutY="46.0" text="Appointments">
          <font>
             <Font size="14.0" />

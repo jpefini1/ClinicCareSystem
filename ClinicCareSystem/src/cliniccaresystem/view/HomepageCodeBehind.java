@@ -66,6 +66,9 @@ public class HomepageCodeBehind {
 
     @FXML
     private TableColumn<Appointment, String> appointmentReasonColumn;
+    
+    @FXML
+    private TableColumn<Appointment, Integer> appointmentIdColumn;
 
     @FXML
     private Label userInfoLabel;
@@ -147,6 +150,7 @@ public class HomepageCodeBehind {
 	private void initializeAppointmentTableView() {
 		this.appointmentDateColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("formattedDateTime"));
 		this.appointmentReasonColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("reasonForVisit"));
+		this.appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
 	}
 
 
@@ -218,8 +222,19 @@ public class HomepageCodeBehind {
     }
 
     @FXML
-    void onEditAppointment(ActionEvent event) {
-
+    void onEditAppointment(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource(Main.EDIT_APPOINTMENT_PAGE_PATH));
+		loader.load();
+		
+		var codeBehind = (EditAppointmentCodeBehind) loader.getController();
+		codeBehind.setSelectedPatient(this.patientsTableView.getSelectionModel().getSelectedItem());
+		codeBehind.setSelectedAppointment(this.appointmentTableView.getSelectionModel().getSelectedItem());
+		
+		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		Scene newScene = new Scene(loader.getRoot());
+		currentStage.setScene(newScene);
+		currentStage.setTitle(Main.EDIT_APPOINTMENT_PAGE_TITLE);
     }
     
     @FXML

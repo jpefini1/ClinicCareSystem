@@ -21,15 +21,19 @@ public class Appointment {
 		this.patientId = patientId;
 		this.appointmentDateTime = appointmentDateTime;
 		this.reasonForVisit = reasonForVisit;
-		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_TIME);
+		
+		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
+				appointmentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 	}
 	
 	public Appointment(int appointmentId, int patientId, LocalDateTime appointmentTime, String reasonForVisit) {
-		
+		this.appointmentId = appointmentId;
 		this.patientId = patientId;
 		this.appointmentDateTime = appointmentTime;
 		this.reasonForVisit = reasonForVisit;
-		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_TIME);
+		
+		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
+				appointmentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 	}
 
 	public int getAppointmentId() {
