@@ -3,14 +3,14 @@ package cliniccaresystem.viewmodel;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import cliniccaresystem.datalayer.DatabaseClient;
+import cliniccaresystem.datalayer.PatientDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Credentials;
-import cliniccaresystem.model.DatabaseClient;
 import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Nurse;
 import cliniccaresystem.model.Patient;
-import cliniccaresystem.model.PatientDatabaseClient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import javafx.beans.property.SimpleObjectProperty;

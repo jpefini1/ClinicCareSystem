@@ -3,9 +3,10 @@ package cliniccaresystem.viewmodel;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+
+import cliniccaresystem.datalayer.PatientDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Patient;
-import cliniccaresystem.model.PatientDatabaseClient;
 import cliniccaresystem.model.ResultCode;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;

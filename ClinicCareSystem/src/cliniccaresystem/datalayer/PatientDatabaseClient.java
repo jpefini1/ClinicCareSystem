@@ -1,4 +1,4 @@
-package cliniccaresystem.model;
+package cliniccaresystem.datalayer;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -10,6 +10,12 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import cliniccaresystem.model.Gender;
+import cliniccaresystem.model.MailingAddress;
+import cliniccaresystem.model.Patient;
+import cliniccaresystem.model.ResultCode;
+import cliniccaresystem.model.USState;
 
 public class PatientDatabaseClient extends DatabaseClient{
 	

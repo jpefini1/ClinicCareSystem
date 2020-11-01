@@ -1,4 +1,4 @@
-package cliniccaresystem.model;
+package cliniccaresystem.datalayer;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -59,6 +59,20 @@ public class DatabaseClient {
 		sendCommandToServer(createPatientTableCommand);
 		sendCommandToServer(createNurseTableCommand);
 	}
+	
+	public static void createAppointmentTable() {
+		String createAppointmentTableCommand = "CREATE TABLE IF NOT EXISTS appointment ( " +
+				"appointmentId INTEGER NOT NULL AUTO_INCREMENT, " +
+				"patientId INTEGER NOT NULL, " +
+				"appointmentTime DATETIME NOT NULL, " +
+				"reasonForVisit varchar(300) NOT NULL, " +
+				"PRIMARY KEY ( appointmentId ), " +
+				"FOREIGN KEY ( patientId ) references patient ( patientId )) ";
+		
+		sendCommandToServer(createAppointmentTableCommand);
+	}
+	
+	
 	
 	public static void dropTables() {
 		String dropAddress = "DROP TABLE address";

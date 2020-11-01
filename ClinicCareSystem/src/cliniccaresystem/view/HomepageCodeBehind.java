@@ -180,13 +180,18 @@ public class HomepageCodeBehind {
     }
     
     @FXML
-    void onCreateAppointment(ActionEvent event) {
-    	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();	
-    	try {
-			Main.changeScene(currentStage, Main.CREATE_APPOINTMENT_PAGE_PATH, Main.CREATE_APPOINTMENT_PAGE_TITLE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    void onCreateAppointment(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource(Main.CREATE_APPOINTMENT_PAGE_PATH));
+		loader.load();
+		
+		var codeBehind = (CreateAppointmentCodeBehind) loader.getController();
+		codeBehind.setSelectedPatient(this.patientsTableView.getSelectionModel().getSelectedItem());
+		
+		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		Scene newScene = new Scene(loader.getRoot());
+		currentStage.setScene(newScene);
+		currentStage.setTitle(Main.CREATE_APPOINTMENT_PAGE_TITLE);
     }
 
     @FXML

@@ -3,11 +3,9 @@ package cliniccaresystem.view;
 import java.io.IOException;
 
 import cliniccaresystem.Main;
-import cliniccaresystem.model.Gender;
+import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
-import cliniccaresystem.model.USState;
 import cliniccaresystem.viewmodel.CreateAppointmentViewModel;
-import cliniccaresystem.viewmodel.PatientRegistrationViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -51,6 +49,9 @@ public class CreateAppointmentCodeBehind {
 
     @FXML
     private RadioButton pmRadioButton;
+    
+    @FXML
+    private Label errorLabel;
 
     private CreateAppointmentViewModel viewmodel;
 
@@ -73,6 +74,8 @@ public class CreateAppointmentCodeBehind {
    		this.minuteComboBox.valueProperty().bindBidirectional(this.viewmodel.minuteProperty());
    		this.amRadioButton.selectedProperty().bindBidirectional(this.viewmodel.amProperty());
    		this.pmRadioButton.selectedProperty().bindBidirectional(this.viewmodel.pmProperty());
+   		this.nurseInfoLabel.textProperty().bindBidirectional(this.viewmodel.nurseInfoProperty());
+   		this.patientInfoLabel.textProperty().bindBidirectional(this.viewmodel.patientInfoProperty());
    	}
 
 	private void initializeTimeComboBoxes() {
@@ -143,7 +146,23 @@ public class CreateAppointmentCodeBehind {
 
     @FXML
     void onScheduleAppointment(ActionEvent event) {
-
+    	var result = this.viewmodel.scheduleAppointment();
+    	
+    	if (result.equals(ResultCode.Success)) {
+    		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        	
+        	try {
+    			Main.changeScene(currentStage, Main.HOMEPAGE_PAGE_PATH, Main.HOMEPAGE_PAGE_TITLE);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	} else if (result.equals(ResultCode.AlreadyExists)) {
+    		this.errorLabel.setText("Appointment already scheduled for this time");
+    	}
     }
+
+	public void setSelectedPatient(Patient patient) {
+		this.viewmodel.setSelectedPatient(patient);
+	}
 
 }

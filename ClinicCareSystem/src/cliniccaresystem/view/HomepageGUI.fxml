@@ -55,7 +55,6 @@
       </TableView>
       <Button fx:id="createAppointmentButton" layoutX="527.0" layoutY="331.0" mnemonicParsing="false" onAction="#onCreateAppointment" prefHeight="43.0" prefWidth="98.0" text="Create Appointment" textAlignment="CENTER" wrapText="true" />
       <Button fx:id="editAppointmentButton" layoutX="659.0" layoutY="331.0" mnemonicParsing="false" onAction="#onEditAppointment" prefHeight="43.0" prefWidth="98.0" text="Edit Appointment" textAlignment="CENTER" wrapText="true" />
-      <Label text="Label" />
       <Label layoutX="597.0" layoutY="46.0" text="Appointments">
          <font>
             <Font size="14.0" />

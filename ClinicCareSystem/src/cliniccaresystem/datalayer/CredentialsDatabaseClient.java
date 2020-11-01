@@ -1,4 +1,4 @@
-package cliniccaresystem.model;
+package cliniccaresystem.datalayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import cliniccaresystem.model.Credentials;
+import cliniccaresystem.model.MailingAddress;
+import cliniccaresystem.model.USState;
+import cliniccaresystem.model.User;
 
 public class CredentialsDatabaseClient extends DatabaseClient{
 	

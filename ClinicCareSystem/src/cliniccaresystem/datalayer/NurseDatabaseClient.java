@@ -1,10 +1,16 @@
-package cliniccaresystem.model;
+package cliniccaresystem.datalayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import cliniccaresystem.model.Credentials;
+import cliniccaresystem.model.MailingAddress;
+import cliniccaresystem.model.Nurse;
+import cliniccaresystem.model.ResultCode;
+import cliniccaresystem.model.User;
 
 public class NurseDatabaseClient extends DatabaseClient{
 	
