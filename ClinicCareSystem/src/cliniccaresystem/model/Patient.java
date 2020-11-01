@@ -36,6 +36,6 @@ private Gender gender;
 
 	@Override
 	public String toString() {
-		return this.getFirstName() + " " + this.getLastName() + " " + this.getDateOfBirth().toString() + " " + this.getGender() + " ID: " + this.patientId;
+		return this.getFirstName() + " " + this.getLastName() + ", " + this.getGender();
 	}
 }

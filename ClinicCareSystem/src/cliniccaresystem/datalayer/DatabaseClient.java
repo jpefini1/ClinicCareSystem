@@ -60,19 +60,24 @@ public class DatabaseClient {
 		sendCommandToServer(createNurseTableCommand);
 	}
 	
-	public static void createAppointmentTable() {
-		String createAppointmentTableCommand = "CREATE TABLE IF NOT EXISTS appointment ( " +
-				"appointmentId INTEGER NOT NULL AUTO_INCREMENT, " +
-				"patientId INTEGER NOT NULL, " +
-				"appointmentTime DATETIME NOT NULL, " +
-				"reasonForVisit varchar(300) NOT NULL, " +
-				"PRIMARY KEY ( appointmentId ), " +
-				"FOREIGN KEY ( patientId ) references patient ( patientId )) ";
+	public static void createRoutineCheckTable() {
+		String dropAddress = "DROP TABLE routine_check";
+		sendCommandToServer(dropAddress);
 		
-		sendCommandToServer(createAppointmentTableCommand);
+		String createRoutineCheckTableCommand = "CREATE TABLE IF NOT EXISTS routine_check ( " +
+				"appointmentId INTEGER NOT NULL, " +
+				"nurseId INTEGER NOT NULL, " +
+				"systolicBP INTEGER NOT NULL, " +
+				"diastolicBP INTEGER NOT NULL, " +
+				"pulse INTEGER NOT NULL, " +
+				"weight DECIMAL(5,2) NOT NULL, " +
+				"bodyTemp DECIMAL(4,1) NOT NULL, " +
+				"PRIMARY KEY ( appointmentId ), " +
+				"FOREIGN KEY ( nurseId ) references nurse ( nurseId )) ";
+		
+		
+		sendCommandToServer(createRoutineCheckTableCommand);
 	}
-	
-	
 	
 	public static void dropTables() {
 		String dropAddress = "DROP TABLE address";

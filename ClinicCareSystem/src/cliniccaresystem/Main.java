@@ -32,6 +32,9 @@ public class Main extends Application {
 	public static final String EDIT_APPOINTMENT_PAGE_PATH = "view/EditAppointmentGUI.fxml";
 	public static final String EDIT_APPOINTMENT_PAGE_TITLE = "Edit Appointment";
 	
+	public static final String APPOINTMENT_DETAILS_PAGE_PATH = "view/AppointmentDetailsGUI.fxml";
+	public static final String APPOINTMENT_DETAILS_PAGE_TITLE = "Appointment Details";
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
@@ -42,6 +45,8 @@ public class Main extends Application {
 		primaryStage.setTitle(Main.LOGIN_PAGE_TITLE);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		DatabaseClient.createRoutineCheckTable();
 	}
 	
 	public static void main(String[] args) {

@@ -53,13 +53,14 @@
             <TableColumn fx:id="appointmentIdColumn" minWidth="5.0" prefWidth="56.7999267578125" text="ID" />
         </columns>
       </TableView>
-      <Button fx:id="createAppointmentButton" layoutX="527.0" layoutY="331.0" mnemonicParsing="false" onAction="#onCreateAppointment" prefHeight="43.0" prefWidth="98.0" text="Create Appointment" textAlignment="CENTER" wrapText="true" />
-      <Button fx:id="editAppointmentButton" layoutX="716.0" layoutY="329.0" mnemonicParsing="false" onAction="#onEditAppointment" prefHeight="43.0" prefWidth="98.0" text="Edit Appointment" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="createAppointmentButton" layoutX="514.0" layoutY="329.0" mnemonicParsing="false" onAction="#onCreateAppointment" prefHeight="43.0" prefWidth="98.0" text="Create Appointment" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="editAppointmentButton" layoutX="617.0" layoutY="329.0" mnemonicParsing="false" onAction="#onEditAppointment" prefHeight="43.0" prefWidth="90.0" text="Edit Appointment" textAlignment="CENTER" wrapText="true" />
       <Label layoutX="597.0" layoutY="46.0" text="Appointments">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <Button fx:id="viewAppointmentsButton" disable="true" layoutX="387.0" layoutY="375.0" mnemonicParsing="false" onAction="#onViewAppointments" text="View Appointments" />
+      <Button fx:id="viewAppointmentDetailsButton" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="712.0" layoutY="329.0" mnemonicParsing="false" onAction="#onViewAppointmentDetails" prefHeight="26.0" prefWidth="106.0" text="View Details" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>

@@ -98,6 +98,9 @@ public class HomepageCodeBehind {
     private Button showAllButton;
     
     @FXML
+    private Button viewAppointmentDetailsButton;
+    
+    @FXML
     private Button viewAppointmentsButton;
     
     private HomepageViewModel viewmodel;
@@ -125,6 +128,7 @@ public class HomepageCodeBehind {
 		this.editPatientButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
 		this.createAppointmentButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
 		this.editAppointmentButton.disableProperty().bind(this.appointmentTableView.getSelectionModel().selectedItemProperty().isNull());
+		this.viewAppointmentDetailsButton.disableProperty().bind(this.appointmentTableView.getSelectionModel().selectedItemProperty().isNull());
 	}
 	
 	private void setupChangeListener() {
@@ -244,5 +248,21 @@ public class HomepageCodeBehind {
     	if (result.equals(ResultCode.ConnectionError)) {
     		//#TODO Display error message
     	}
+    }
+    
+    @FXML
+    void onViewAppointmentDetails(ActionEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource(Main.APPOINTMENT_DETAILS_PAGE_PATH));
+		loader.load();
+		
+		var codeBehind = (AppointmentDetailsCodeBehind) loader.getController();
+		codeBehind.setPatientInfo(this.patientsTableView.getSelectionModel().getSelectedItem());
+		codeBehind.setSelectedAppointment(this.appointmentTableView.getSelectionModel().getSelectedItem());
+		
+		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		Scene newScene = new Scene(loader.getRoot());
+		currentStage.setScene(newScene);
+		currentStage.setTitle(Main.APPOINTMENT_DETAILS_PAGE_TITLE);
     }
 }
