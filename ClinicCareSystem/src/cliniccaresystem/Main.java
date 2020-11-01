@@ -26,6 +26,9 @@ public class Main extends Application {
 	public static final String EDIT_PATIENT_PAGE_PATH = "view/EditPatientGUI.fxml";
 	public static final String EDIT_PATIENT_PAGE_TITLE = "Edit patient";
 	
+	public static final String CREATE_APPOINTMENT_PAGE_PATH = "view/CreateAppointmentGUI.fxml";
+	public static final String CREATE_APPOINTMENT_PAGE_TITLE = "Schedule Appointment";
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();

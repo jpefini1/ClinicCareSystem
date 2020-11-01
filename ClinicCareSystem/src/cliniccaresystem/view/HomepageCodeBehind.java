@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import cliniccaresystem.Main;
 import cliniccaresystem.model.ActiveUser;
+import cliniccaresystem.model.Appointment;
 import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Patient;
@@ -51,12 +52,30 @@ public class HomepageCodeBehind {
     
     @FXML
     private TableColumn<Patient, String> idColumn;
+    
+    @FXML
+    private TableView<Appointment> appointmentTableView;
+
+    @FXML
+    private TableColumn<Appointment, LocalDate> appointmentDateColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> appointmentTimeColumn;
+
+    @FXML
+    private TableColumn<Appointment, String> appointmentReasonColumn;
 
     @FXML
     private Label userInfoLabel;
     
     @FXML
     private Button editPatientButton;
+    
+    @FXML
+    private Button createAppointmentButton;
+    
+    @FXML
+    private Button editAppointmentButton;
     
     @FXML
     private Button searchButton;
@@ -88,10 +107,13 @@ public class HomepageCodeBehind {
 	private void bindToViewModel() {
 		this.userInfoLabel.textProperty().bindBidirectional(this.viewmodel.userInfoProperty());
 		this.patientsTableView.setItems(this.viewmodel.patientListProperty());
-		this.editPatientButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
 		this.firstNameTextField.textProperty().bindBidirectional(this.viewmodel.firstNameSearchProperty());
 		this.lastNameTextField.textProperty().bindBidirectional(this.viewmodel.lastNameSearchProperty());
 		this.dobDatePicker.valueProperty().bindBidirectional(this.viewmodel.dobSearchProperty());
+		
+		this.editPatientButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
+		this.createAppointmentButton.disableProperty().bind(this.patientsTableView.getSelectionModel().selectedItemProperty().isNull());
+		this.editAppointmentButton.disableProperty().bind(this.appointmentTableView.getSelectionModel().selectedItemProperty().isNull());
 	}
 	
 	private void initializeTableView() {
@@ -155,5 +177,20 @@ public class HomepageCodeBehind {
     void onShowAll(ActionEvent event) {
     	this.viewmodel.showAllPatients();
     	this.showAllButton.setDisable(true);
+    }
+    
+    @FXML
+    void onCreateAppointment(ActionEvent event) {
+    	Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();	
+    	try {
+			Main.changeScene(currentStage, Main.CREATE_APPOINTMENT_PAGE_PATH, Main.CREATE_APPOINTMENT_PAGE_TITLE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
+    void onEditAppointment(ActionEvent event) {
+
     }
 }
