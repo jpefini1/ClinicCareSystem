@@ -20,7 +20,7 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 		
         PreparedStatement selectCredentials =  con.prepareStatement("SELECT * FROM credentials WHERE username = ? AND password = ?");
 		selectCredentials.setString(1, username);
-		selectCredentials.setString(2, password);
+		selectCredentials.setString(2, getHash(password));
 		ResultSet credentials = selectCredentials.executeQuery();
 		
 		if (credentials.next()) {
@@ -50,7 +50,7 @@ public class CredentialsDatabaseClient extends DatabaseClient{
         PreparedStatement pStatement =  con.prepareStatement(insertCredentials, Statement.SUCCESS_NO_INFO);; 
         
 		pStatement.setString(1, credentials.getUsername());
-		pStatement.setString(2, credentials.getPassword());
+		pStatement.setString(2, getHash(credentials.getPassword()));
 		pStatement.setInt(3, userId);
 		
 		pStatement.executeUpdate();
@@ -68,5 +68,9 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 		}
         
 		return false;
+	}
+	
+	private static String getHash(String password) {
+		return Integer.toString(password.hashCode());
 	}
 }
