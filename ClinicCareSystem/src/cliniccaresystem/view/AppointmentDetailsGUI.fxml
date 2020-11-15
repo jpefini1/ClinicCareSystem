@@ -69,7 +69,7 @@
       <TextField fx:id="weightTextField" disable="true" layoutX="374.0" layoutY="148.0" prefHeight="26.0" prefWidth="68.0" />
       <TextField fx:id="tempTextField" disable="true" layoutX="374.0" layoutY="179.0" prefHeight="26.0" prefWidth="68.0" />
       <Button fx:id="inputResultsButton" disable="true" layoutX="273.0" layoutY="217.0" mnemonicParsing="false" onAction="#onInputResults" prefHeight="26.0" prefWidth="86.0" text="Input Results" wrapText="true" />
-      <Button layoutX="13.0" layoutY="551.0" mnemonicParsing="false" onAction="#onBack" text="Back" />
+      <Button layoutX="519.0" layoutY="551.0" mnemonicParsing="false" onAction="#onBack" text="Back" />
       <Button fx:id="updateButton" disable="true" layoutX="387.0" layoutY="217.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
       <TableView fx:id="testTableView" disable="true" layoutX="14.0" layoutY="300.0" prefHeight="248.0" prefWidth="425.0">
         <columns>
@@ -98,5 +98,6 @@
       <CheckBox fx:id="hepatitisATestCheckBox" disable="true" layoutX="459.0" layoutY="400.0" mnemonicParsing="false" text="Hepatitis A" />
       <CheckBox fx:id="hepatitisBTestCheckBox" disable="true" layoutX="459.0" layoutY="428.0" mnemonicParsing="false" text="Hepatitis B" />
       <CheckBox fx:id="hepatitisCTestCheckBox" disable="true" layoutX="459.0" layoutY="456.0" mnemonicParsing="false" text="Hepatitis C" />
+      <Button fx:id="inputTestResultsButton" disable="true" layoutX="13.0" layoutY="551.0" mnemonicParsing="false" onAction="#onInputTestResults" text="Input Results" />
    </children>
 </AnchorPane>

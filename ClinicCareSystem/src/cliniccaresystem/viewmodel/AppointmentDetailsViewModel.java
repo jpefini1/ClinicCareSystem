@@ -42,6 +42,12 @@ public class AppointmentDetailsViewModel {
 	private SimpleBooleanProperty testViewIsDisabled;
 	private SimpleBooleanProperty orderTestsIsDisabled;
 	
+	private SimpleBooleanProperty WBCTestIsDisabled;
+	private SimpleBooleanProperty LDLTestIsDisabled;
+	private SimpleBooleanProperty HepATestIsDisabled;
+	private SimpleBooleanProperty HepBTestIsDisabled;
+	private SimpleBooleanProperty HepCTestIsDisabled;
+	
 	private final ListProperty<Test> testListProperty;
 	private List<Test> testList;
 	
@@ -68,6 +74,12 @@ public class AppointmentDetailsViewModel {
 		this.testViewIsDisabled = new SimpleBooleanProperty();
 		this.orderTestsIsDisabled = new SimpleBooleanProperty();
 		this.orderTestsIsDisabled.setValue(true);
+		
+		this.WBCTestIsDisabled = new SimpleBooleanProperty();
+		this.LDLTestIsDisabled = new SimpleBooleanProperty();
+		this.HepATestIsDisabled = new SimpleBooleanProperty();
+		this.HepBTestIsDisabled = new SimpleBooleanProperty();
+		this.HepCTestIsDisabled = new SimpleBooleanProperty();
 		
 		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 		
@@ -115,7 +127,10 @@ public class AppointmentDetailsViewModel {
 				
 				this.testList.add(test);
 				this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+				this.unselectedTests.add(testName);
+				this.disableOrderedTests();
 			}
+			this.selectedTests.clear();
 			return ResultCode.Success;
 			
 		} catch (SQLException e) {
@@ -242,6 +257,26 @@ public class AppointmentDetailsViewModel {
 		return this.orderTestsIsDisabled;
 	}
 	
+	public SimpleBooleanProperty WBCTestIsDisabled() {
+		return this.WBCTestIsDisabled;
+	}
+	
+	public SimpleBooleanProperty LDLTestIsDisabled() {
+		return this.LDLTestIsDisabled;
+	}
+	
+	public SimpleBooleanProperty HepATestIsDisabled() {
+		return this.HepATestIsDisabled;
+	}
+	
+	public SimpleBooleanProperty HepBTestIsDisabled() {
+		return this.HepBTestIsDisabled;
+	}
+	
+	public SimpleBooleanProperty HepCTestIsDisabled() {
+		return this.HepCTestIsDisabled;
+	}
+	
 	public ListProperty<Test> testListProperty() {
 		return this.testListProperty;
 	}
@@ -262,7 +297,6 @@ public class AppointmentDetailsViewModel {
 			this.initializeRoutineCheckResults();
 			this.initializeOrderedTests();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -274,8 +308,31 @@ public class AppointmentDetailsViewModel {
 			this.testViewIsDisabled.setValue(false);
 			this.testList = testOrderResults;
 			this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+			
 		} else {
 			this.testViewIsDisabled.setValue(!this.hasAppointmentTimeElapsed());
+		}
+		
+		this.disableOrderedTests();
+	}
+
+	private void disableOrderedTests() {
+		for (Test test : this.testList) {
+			if (test.getName().equals("WBC")) {
+				this.WBCTestIsDisabled.setValue(true);
+			}
+			if (test.getName().equals("LDL")) {
+				this.LDLTestIsDisabled.setValue(true);
+			}
+			if (test.getName().equals("Hepatitis A")) {
+				this.HepATestIsDisabled.setValue(true);
+			}
+			if (test.getName().equals("Hepatitis B")) {
+				this.HepBTestIsDisabled.setValue(true);
+			}
+			if (test.getName().equals("Hepatitis C")) {
+				this.HepCTestIsDisabled.setValue(true);
+			}
 		}
 	}
 

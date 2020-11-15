@@ -120,6 +120,9 @@ public class AppointmentDetailsCodeBehind {
     @FXML
     private CheckBox hepatitisCTestCheckBox;
     
+    @FXML
+    private Button inputTestResultsButton;
+    
     private AppointmentDetailsViewModel viewmodel;
     
     public AppointmentDetailsCodeBehind() {
@@ -160,11 +163,11 @@ public class AppointmentDetailsCodeBehind {
    		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
    		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
    		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepATestIsDisabled());
+   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepBTestIsDisabled());
+   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepCTestIsDisabled());
+   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.LDLTestIsDisabled());
+   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.WBCTestIsDisabled());
    		this.orderTestButton.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
    	}
 	
@@ -341,16 +344,29 @@ public class AppointmentDetailsCodeBehind {
     
     @FXML
     void onOrderTest(ActionEvent event) {
-    	var result = this.viewmodel.orderTests();
+    	this.viewmodel.orderTests();
+    	this.disableTestCheckBoxes();
     }
     
-    public void setPatientInfo(Patient patient) {
+    private void disableTestCheckBoxes() {
+		this.hepatitisATestCheckBox.setSelected(false);
+		this.hepatitisBTestCheckBox.setSelected(false);
+		this.hepatitisCTestCheckBox.setSelected(false);
+		this.LDLTestCheckBox.setSelected(false);
+		this.WBCTestCheckBox.setSelected(false);
+	}
+
+	public void setPatientInfo(Patient patient) {
 		this.viewmodel.setPatientInfo(patient);
 	}
     
     public void setSelectedAppointment(Appointment appointment) {
 		this.viewmodel.initializeAppointmentInfo(appointment);
 	}
+    
+    @FXML
+    void onInputTestResults(ActionEvent event) {
 
+    }
 }
 
