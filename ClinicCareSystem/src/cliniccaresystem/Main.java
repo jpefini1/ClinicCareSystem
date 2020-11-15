@@ -5,6 +5,7 @@ import java.io.IOException;
 import cliniccaresystem.datalayer.DatabaseClient;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -34,6 +35,9 @@ public class Main extends Application {
 	
 	public static final String APPOINTMENT_DETAILS_PAGE_PATH = "view/AppointmentDetailsGUI.fxml";
 	public static final String APPOINTMENT_DETAILS_PAGE_TITLE = "Appointment Details";
+	
+	public static final String INPUT_TEST_RESULTS_PAGE_PATH = "view/InputTestResultsGUI.fxml";
+	public static final String INPUT_TEST_RESULTS_PAGE_TITLE = "Input Test Results";
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -68,5 +72,17 @@ public class Main extends Application {
 		Scene newScene = new Scene(loader.getRoot());
 		currentStage.setScene(newScene);
 		currentStage.setTitle(windowTitle);
+	}
+	
+	public static void showScene(String viewSourceLocation, String windowTitle) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource(viewSourceLocation));
+		loader.load();
+		Scene newScene = new Scene(loader.getRoot());
+		Stage newStage = new Stage();
+		newStage.setScene(newScene);
+		newStage.setTitle(windowTitle);
+		newStage.initModality(Modality.APPLICATION_MODAL);
+		newStage.showAndWait();
 	}
 }

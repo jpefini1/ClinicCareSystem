@@ -14,7 +14,9 @@ import cliniccaresystem.model.Test;
 import cliniccaresystem.viewmodel.AppointmentDetailsViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -293,6 +295,18 @@ public class AppointmentDetailsCodeBehind {
 				this.viewmodel.deselectTest(this.hepatitisCTestCheckBox.getText());
 			}
 		});
+		
+		this.testTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				if (newValue.getResult() != null) {
+					this.inputTestResultsButton.setDisable(true);
+				} else {
+					this.inputTestResultsButton.setDisable(false);
+				}
+			} else {
+				this.inputTestResultsButton.setDisable(true);
+			}
+		});
 	}
 
     @FXML
@@ -366,7 +380,11 @@ public class AppointmentDetailsCodeBehind {
     
     @FXML
     void onInputTestResults(ActionEvent event) {
-
+    	try {
+			Main.showScene(Main.INPUT_TEST_RESULTS_PAGE_PATH, Main.INPUT_TEST_RESULTS_PAGE_TITLE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }
 
