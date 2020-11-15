@@ -60,6 +60,13 @@ public class DatabaseClient {
 		sendCommandToServer(createNurseTableCommand);
 	}
 	
+	public static void addFinalDiagnosisColumnToAppointment() {
+		String addFinalDiagnosisColumnToAppointment = "ALTER TABLE appointment ADD finalDiagnosis Varchar(255)";
+		
+		
+		sendCommandToServer(addFinalDiagnosisColumnToAppointment);
+	}
+	
 	public static void createRoutineCheckTable() {
 		String dropAddress = "DROP TABLE routine_check";
 		sendCommandToServer(dropAddress);

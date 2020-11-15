@@ -23,6 +23,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -126,6 +127,15 @@ public class AppointmentDetailsCodeBehind {
     @FXML
     private Button inputTestResultsButton;
     
+    @FXML
+    private Label finalDiagnosisLabel;
+
+    @FXML
+    private TextArea finalDiagnosisTextArea;
+
+    @FXML
+    private Button makeDiagnosisButton;
+    
     private AppointmentDetailsViewModel viewmodel;
     
     public AppointmentDetailsCodeBehind() {
@@ -158,20 +168,23 @@ public class AppointmentDetailsCodeBehind {
    		this.dateLabel.textProperty().bindBidirectional(this.viewmodel.dateProperty());
    		this.nurseInfoLabel.textProperty().bindBidirectional(this.viewmodel.nurseInfoProperty());
    		this.patientInfoLabel.textProperty().bindBidirectional(this.viewmodel.patientInfoProperty());
-   		this.inputResultsButton.disableProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsDisabled());
+   		this.inputResultsButton.disableProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsDisabledProperty());
    		this.updateButton.visibleProperty().bindBidirectional(this.viewmodel.updateIsVisibleProperty());
    		this.inputResultsButton.visibleProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsVisible());
    		
    		this.testTableView.setItems(this.viewmodel.testListProperty());
-   		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
-   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepATestIsDisabled());
-   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepBTestIsDisabled());
-   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepCTestIsDisabled());
-   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.LDLTestIsDisabled());
-   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.WBCTestIsDisabled());
-   		this.orderTestButton.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabledProperty());
+   		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabledProperty());
+   		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabledProperty());
+   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepATestIsDisabledProperty());
+   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepBTestIsDisabledProperty());
+   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.HepCTestIsDisabledProperty());
+   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.LDLTestIsDisabledProperty());
+   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.WBCTestIsDisabledProperty());
+   		this.orderTestButton.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabledProperty());
+   		
+   		this.finalDiagnosisLabel.disableProperty().bindBidirectional(this.viewmodel.finalDiagnosisIsDisabledProperty());
+   		this.finalDiagnosisTextArea.disableProperty().bindBidirectional(this.viewmodel.finalDiagnosisIsDisabledProperty());
    	}
 	
 	private void setupChangeListeners() {
@@ -237,6 +250,14 @@ public class AppointmentDetailsCodeBehind {
 				} else {
 					this.weightTextField.setText(oldValue);
 				}
+			}
+		});
+		
+		this.finalDiagnosisTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.isBlank() || newValue.isEmpty()) {
+				this.makeDiagnosisButton.setDisable(true);
+			} else {
+				this.makeDiagnosisButton.setDisable(this.viewmodel.finalDiagnosisIsDisabledProperty().getValue());
 			}
 		});
 		
@@ -401,6 +422,11 @@ public class AppointmentDetailsCodeBehind {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    @FXML
+    void onMakeDiagnosis(ActionEvent event) {
+
     }
 }
 

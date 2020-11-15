@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cliniccaresystem.datalayer.AppointmentDatabaseClient;
 import cliniccaresystem.datalayer.NurseDatabaseClient;
 import cliniccaresystem.datalayer.RoutineCheckDatabaseClient;
 import cliniccaresystem.datalayer.TestOrderDatabaseClient;
@@ -36,17 +37,21 @@ public class AppointmentDetailsViewModel {
 	private SimpleStringProperty nurseInfoProperty;
 	private SimpleStringProperty patientInfoProperty;
 	
-	private SimpleBooleanProperty inputCheckResultsIsDisabled;
+	private SimpleBooleanProperty inputCheckResultsIsDisabledProperty;
 	private SimpleBooleanProperty updateIsVisibleProperty;
-	private SimpleBooleanProperty inputCheckResultsIsVisible;
-	private SimpleBooleanProperty testViewIsDisabled;
-	private SimpleBooleanProperty orderTestsIsDisabled;
+	private SimpleBooleanProperty inputCheckResultsIsVisibleProperty;
+	private SimpleBooleanProperty testViewIsDisabledProperty;
+	private SimpleBooleanProperty orderTestsIsDisabledProperty;
 	
-	private SimpleBooleanProperty WBCTestIsDisabled;
-	private SimpleBooleanProperty LDLTestIsDisabled;
-	private SimpleBooleanProperty HepATestIsDisabled;
-	private SimpleBooleanProperty HepBTestIsDisabled;
-	private SimpleBooleanProperty HepCTestIsDisabled;
+	private SimpleBooleanProperty WBCTestIsDisabledProperty;
+	private SimpleBooleanProperty LDLTestIsDisabledProperty;
+	private SimpleBooleanProperty HepATestIsDisabledProperty;
+	private SimpleBooleanProperty HepBTestIsDisabledProperty;
+	private SimpleBooleanProperty HepCTestIsDisabledProperty;
+	
+	private SimpleBooleanProperty finalDiagnosisIsDisabledProperty;
+	private SimpleBooleanProperty makeDiagnosisIsDisabledProperty;
+	private SimpleStringProperty finalDiagnosisProperty;
 	
 	private final ListProperty<Test> testListProperty;
 	private List<Test> testList;
@@ -68,18 +73,22 @@ public class AppointmentDetailsViewModel {
 		this.nurseInfoProperty = new SimpleStringProperty();
 		this.patientInfoProperty = new SimpleStringProperty();
 		
-		this.inputCheckResultsIsDisabled = new SimpleBooleanProperty();
+		this.inputCheckResultsIsDisabledProperty = new SimpleBooleanProperty();
 		this.updateIsVisibleProperty = new SimpleBooleanProperty();
-		this.inputCheckResultsIsVisible = new SimpleBooleanProperty();
-		this.testViewIsDisabled = new SimpleBooleanProperty();
-		this.orderTestsIsDisabled = new SimpleBooleanProperty();
-		this.orderTestsIsDisabled.setValue(true);
+		this.inputCheckResultsIsVisibleProperty = new SimpleBooleanProperty();
+		this.testViewIsDisabledProperty = new SimpleBooleanProperty();
+		this.orderTestsIsDisabledProperty = new SimpleBooleanProperty();
+		this.orderTestsIsDisabledProperty.setValue(true);
 		
-		this.WBCTestIsDisabled = new SimpleBooleanProperty();
-		this.LDLTestIsDisabled = new SimpleBooleanProperty();
-		this.HepATestIsDisabled = new SimpleBooleanProperty();
-		this.HepBTestIsDisabled = new SimpleBooleanProperty();
-		this.HepCTestIsDisabled = new SimpleBooleanProperty();
+		this.WBCTestIsDisabledProperty = new SimpleBooleanProperty();
+		this.LDLTestIsDisabledProperty = new SimpleBooleanProperty();
+		this.HepATestIsDisabledProperty = new SimpleBooleanProperty();
+		this.HepBTestIsDisabledProperty = new SimpleBooleanProperty();
+		this.HepCTestIsDisabledProperty = new SimpleBooleanProperty();
+		
+		this.finalDiagnosisIsDisabledProperty = new SimpleBooleanProperty();
+		this.makeDiagnosisIsDisabledProperty = new SimpleBooleanProperty();
+		this.finalDiagnosisProperty = new SimpleStringProperty();
 		
 		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 		
@@ -105,14 +114,14 @@ public class AppointmentDetailsViewModel {
 		this.unselectedTests.remove(testName);
 		this.selectedTests.add(testName);
 		
-		this.orderTestsIsDisabled.setValue(this.selectedTests.isEmpty());
+		this.orderTestsIsDisabledProperty.setValue(this.selectedTests.isEmpty());
 	}
 	
 	public void deselectTest(String testName) {
 		this.selectedTests.remove(testName);
 		this.unselectedTests.add(testName);
 		
-		this.orderTestsIsDisabled.setValue(this.selectedTests.isEmpty());
+		this.orderTestsIsDisabledProperty.setValue(this.selectedTests.isEmpty());
 	}
 	
 	public ResultCode orderTests() {
@@ -142,7 +151,12 @@ public class AppointmentDetailsViewModel {
 	public ResultCode addRoutineCheckResults() {
 		try {
 			var routineCheckResults = this.makeRoutineCheckResults();
-			return RoutineCheckDatabaseClient.addRoutineCheck(routineCheckResults);
+			ResultCode result = RoutineCheckDatabaseClient.addRoutineCheck(routineCheckResults);
+			
+			if (result == ResultCode.Success) {
+				this.finalDiagnosisIsDisabledProperty.setValue(false);
+			}
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return ResultCode.ConnectionError;
@@ -241,44 +255,56 @@ public class AppointmentDetailsViewModel {
 		return this.patientInfoProperty;
 	}
 	
-	public SimpleBooleanProperty inputCheckResultsIsDisabled() {
-		return this.inputCheckResultsIsDisabled;
+	public SimpleBooleanProperty inputCheckResultsIsDisabledProperty() {
+		return this.inputCheckResultsIsDisabledProperty;
 	}
 	
-	public SimpleBooleanProperty testViewIsDisabled() {
-		return this.testViewIsDisabled;
+	public SimpleBooleanProperty testViewIsDisabledProperty() {
+		return this.testViewIsDisabledProperty;
 	}
 	
 	public SimpleBooleanProperty updateIsVisibleProperty() {
 		return this.updateIsVisibleProperty;
 	}
 	
-	public SimpleBooleanProperty orderTestsIsDisabled() {
-		return this.orderTestsIsDisabled;
+	public SimpleBooleanProperty orderTestsIsDisabledProperty() {
+		return this.orderTestsIsDisabledProperty;
 	}
 	
-	public SimpleBooleanProperty WBCTestIsDisabled() {
-		return this.WBCTestIsDisabled;
+	public SimpleBooleanProperty WBCTestIsDisabledProperty() {
+		return this.WBCTestIsDisabledProperty;
 	}
 	
-	public SimpleBooleanProperty LDLTestIsDisabled() {
-		return this.LDLTestIsDisabled;
+	public SimpleBooleanProperty LDLTestIsDisabledProperty() {
+		return this.LDLTestIsDisabledProperty;
 	}
 	
-	public SimpleBooleanProperty HepATestIsDisabled() {
-		return this.HepATestIsDisabled;
+	public SimpleBooleanProperty HepATestIsDisabledProperty() {
+		return this.HepATestIsDisabledProperty;
 	}
 	
-	public SimpleBooleanProperty HepBTestIsDisabled() {
-		return this.HepBTestIsDisabled;
+	public SimpleBooleanProperty HepBTestIsDisabledProperty() {
+		return this.HepBTestIsDisabledProperty;
 	}
 	
-	public SimpleBooleanProperty HepCTestIsDisabled() {
-		return this.HepCTestIsDisabled;
+	public SimpleBooleanProperty HepCTestIsDisabledProperty() {
+		return this.HepCTestIsDisabledProperty;
 	}
 	
 	public ListProperty<Test> testListProperty() {
 		return this.testListProperty;
+	}
+	
+	public SimpleBooleanProperty finalDiagnosisIsDisabledProperty() {
+		return this.finalDiagnosisIsDisabledProperty;
+	}
+	
+	public SimpleBooleanProperty makeDiagnosisIsDisabledProperty() {
+		return this.makeDiagnosisIsDisabledProperty;
+	}
+	
+	public SimpleStringProperty finalDiagnosisProperty() {
+		return this.finalDiagnosisProperty;
 	}
 
 	public void setPatientInfo(Patient patient) {
@@ -296,6 +322,7 @@ public class AppointmentDetailsViewModel {
 			
 			this.initializeRoutineCheckResults();
 			this.initializeOrderedTests();
+			this.initializeFinalDiagnosis();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -305,35 +332,54 @@ public class AppointmentDetailsViewModel {
 		var testOrderResults = TestOrderDatabaseClient.getTestOrdersIfExists(this.selectedAppointment);
 		
 		if (!testOrderResults.isEmpty()) {
-			this.testViewIsDisabled.setValue(false);
+			this.testViewIsDisabledProperty.setValue(false);
 			this.testList = testOrderResults;
 			this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+			this.disableOrderedTests();
 			
 		} else {
-			this.testViewIsDisabled.setValue(!this.hasAppointmentTimeElapsed());
+			this.testViewIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.HepATestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.HepBTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.HepCTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.LDLTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.WBCTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
 		}
 		
-		this.disableOrderedTests();
+		
 	}
 
 	private void disableOrderedTests() {
 		for (Test test : this.testList) {
 			if (test.getName().equals("WBC")) {
-				this.WBCTestIsDisabled.setValue(true);
+				this.WBCTestIsDisabledProperty.setValue(true);
 			}
 			if (test.getName().equals("LDL")) {
-				this.LDLTestIsDisabled.setValue(true);
+				this.LDLTestIsDisabledProperty.setValue(true);
 			}
 			if (test.getName().equals("Hepatitis A")) {
-				this.HepATestIsDisabled.setValue(true);
+				this.HepATestIsDisabledProperty.setValue(true);
 			}
 			if (test.getName().equals("Hepatitis B")) {
-				this.HepBTestIsDisabled.setValue(true);
+				this.HepBTestIsDisabledProperty.setValue(true);
 			}
 			if (test.getName().equals("Hepatitis C")) {
-				this.HepCTestIsDisabled.setValue(true);
+				this.HepCTestIsDisabledProperty.setValue(true);
 			}
 		}
+	}
+	
+	private void initializeFinalDiagnosis() throws SQLException {
+		var diagnosisResults = AppointmentDatabaseClient.getFinalDiagnosis(this.selectedAppointment);
+		
+		if (diagnosisResults != null) {
+			this.finalDiagnosisProperty.setValue(diagnosisResults);
+			this.finalDiagnosisIsDisabledProperty.setValue(true);
+			this.testViewIsDisabledProperty.setValue(true);
+		} else {
+				this.finalDiagnosisIsDisabledProperty.setValue(this.areRoutineResultsValid() != ResultCode.IsValid);		
+		}
+		
 	}
 
 	private void initializeRoutineCheckResults() throws SQLException {
@@ -345,11 +391,11 @@ public class AppointmentDetailsViewModel {
 			this.weightProperty.setValue(Double.toString(routineCheckResults.getWeight()));
 			this.tempProperty.setValue(Double.toString(routineCheckResults.getBodyTemp()));
 			
-			this.inputCheckResultsIsDisabled.setValue(true);
+			this.inputCheckResultsIsDisabledProperty.setValue(true);
 			this.updateIsVisibleProperty.setValue(false);
 		} else {
-			this.inputCheckResultsIsDisabled.setValue(!this.hasAppointmentTimeElapsed());
-			this.inputCheckResultsIsVisible.setValue(this.hasAppointmentTimeElapsed());
+			this.inputCheckResultsIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.inputCheckResultsIsVisibleProperty.setValue(this.hasAppointmentTimeElapsed());
 			this.updateIsVisibleProperty.setValue(true);
 		}
 	}
@@ -359,7 +405,7 @@ public class AppointmentDetailsViewModel {
 	}
 
 	public SimpleBooleanProperty inputCheckResultsIsVisible() {
-		return this.inputCheckResultsIsVisible;
+		return this.inputCheckResultsIsVisibleProperty;
 	}
 
 	public void refreshTestList() {

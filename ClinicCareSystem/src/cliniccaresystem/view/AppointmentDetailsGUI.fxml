@@ -5,11 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.AppointmentDetailsCodeBehind">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.AppointmentDetailsCodeBehind">
    <children>
       <Label fx:id="nurseInfoLabel" layoutX="2.0" layoutY="3.0" prefHeight="18.0" prefWidth="220.0" />
       <Label layoutX="10.0" layoutY="59.0" text="Patient:">
@@ -69,7 +70,7 @@
       <TextField fx:id="weightTextField" disable="true" layoutX="374.0" layoutY="148.0" prefHeight="26.0" prefWidth="68.0" />
       <TextField fx:id="tempTextField" disable="true" layoutX="374.0" layoutY="179.0" prefHeight="26.0" prefWidth="68.0" />
       <Button fx:id="inputResultsButton" disable="true" layoutX="273.0" layoutY="217.0" mnemonicParsing="false" onAction="#onInputResults" prefHeight="26.0" prefWidth="86.0" text="Input Results" wrapText="true" />
-      <Button layoutX="519.0" layoutY="551.0" mnemonicParsing="false" onAction="#onBack" text="Back" />
+      <Button layoutX="523.0" layoutY="676.0" mnemonicParsing="false" onAction="#onBack" text="Back" />
       <Button fx:id="updateButton" disable="true" layoutX="387.0" layoutY="217.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
       <TableView fx:id="testTableView" disable="true" layoutX="14.0" layoutY="300.0" prefHeight="248.0" prefWidth="425.0">
         <columns>
@@ -99,5 +100,8 @@
       <CheckBox fx:id="hepatitisBTestCheckBox" disable="true" layoutX="459.0" layoutY="428.0" mnemonicParsing="false" text="Hepatitis B" />
       <CheckBox fx:id="hepatitisCTestCheckBox" disable="true" layoutX="459.0" layoutY="456.0" mnemonicParsing="false" text="Hepatitis C" />
       <Button fx:id="inputTestResultsButton" disable="true" layoutX="13.0" layoutY="551.0" mnemonicParsing="false" onAction="#onInputTestResults" text="Input Results" />
+      <Label fx:id="finalDiagnosisLabel" disable="true" layoutX="15.0" layoutY="590.0" text="Final Diagnosis:" />
+      <TextArea fx:id="finalDiagnosisTextArea" disable="true" layoutX="102.0" layoutY="590.0" prefHeight="102.0" prefWidth="338.0" wrapText="true" />
+      <Button fx:id="makeDiagnosisButton" alignment="CENTER" disable="true" layoutX="30.0" layoutY="650.0" mnemonicParsing="false" onAction="#onMakeDiagnosis" prefHeight="42.0" prefWidth="68.0" text="Make Diagnosis" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>

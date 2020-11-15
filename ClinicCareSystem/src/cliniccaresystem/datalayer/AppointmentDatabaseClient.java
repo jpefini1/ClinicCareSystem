@@ -102,4 +102,19 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		generatedUserKeyResult.next();
 		return Integer.parseInt(generatedUserKeyResult.getString(1));
 	}
+
+	public static String getFinalDiagnosis(Appointment selectedAppointment) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		
+		String getAppointmentsQuery = "SELECT finalDiagnosis FROM appointment WHERE appointmentId = ?";
+		PreparedStatement selectAppointments =  con.prepareStatement(getAppointmentsQuery, Statement.RETURN_GENERATED_KEYS);		
+		selectAppointments.setInt(1, selectedAppointment.getAppointmentId());
+		
+		ResultSet queryRS = selectAppointments.executeQuery();
+		
+		if (queryRS.next()) {
+			return queryRS.getString(1);
+		} 
+		return null;
+	}
 }

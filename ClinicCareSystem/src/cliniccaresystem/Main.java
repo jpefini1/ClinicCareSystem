@@ -50,7 +50,7 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		//DatabaseClient.createTestResultTable();
+		//DatabaseClient.addFinalDiagnosisColumnToAppointment();
 	}
 	
 	public static void main(String[] args) {
