@@ -11,6 +11,7 @@ import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.Test;
+import cliniccaresystem.model.TestResult;
 import cliniccaresystem.viewmodel.AppointmentDetailsViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -152,7 +153,7 @@ public class AppointmentDetailsCodeBehind {
    	private void initializeTestsTableView() {
 		this.testNameTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("name"));
 		this.testTimeTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("formattedTimePerformed"));
-		this.testResultTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("result"));
+		this.testResultTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("testResultsSummary"));
 		this.isTestAbnormalTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("isAbnormal"));
 	}
 
@@ -327,7 +328,7 @@ public class AppointmentDetailsCodeBehind {
 		
 		this.testTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
-				if (newValue.getResult() != null) {
+				if (newValue.getTestResults() != null) {
 					this.inputTestResultsButton.setDisable(true);
 				} else {
 					this.inputTestResultsButton.setDisable(false);

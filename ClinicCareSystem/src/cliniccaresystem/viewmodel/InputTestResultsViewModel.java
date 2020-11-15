@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import cliniccaresystem.datalayer.TestResultDatabaseClient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.Test;
+import cliniccaresystem.model.TestResult;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,9 +40,7 @@ public class InputTestResultsViewModel {
 	}
 	
 	public ResultCode inputResults() {
-		this.selectedTest.setTimePerformed(this.makePerformedDateTime());
-		this.selectedTest.setResult(this.resultsProperty.getValue());
-		this.selectedTest.setAbnormal(this.isAbnormalProperty.getValue().toString());
+		this.selectedTest.setResult(this.makeTestResult());
 		
 		try {
 			return TestResultDatabaseClient.addResultsToTable(this.selectedTest);
@@ -49,6 +48,13 @@ public class InputTestResultsViewModel {
 			e.printStackTrace();
 			return ResultCode.ConnectionError;
 		}
+	}
+	
+	private TestResult makeTestResult() {
+		var performedDateTime = this.makePerformedDateTime();
+		var results = this.resultsProperty.getValue();
+		var isAbnormal = this.isAbnormalProperty.getValue().toString();
+		return new TestResult(performedDateTime, results, isAbnormal);
 	}
 	
 	private LocalDateTime makePerformedDateTime() {

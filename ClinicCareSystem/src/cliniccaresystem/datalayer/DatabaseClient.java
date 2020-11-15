@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,7 +157,7 @@ public class DatabaseClient {
 		sendCommandToServer(dropAddress);
 	}
 	
-	private static boolean sendCommandToServer(String sqlCommand) {
+	protected static boolean sendCommandToServer(String sqlCommand) {
 		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING); 
         		Statement stmt =  con.createStatement();  
         	)
@@ -170,5 +171,32 @@ public class DatabaseClient {
         }
 		
 		return false;
+	}
+	
+	protected static boolean executePreparedStatement(PreparedStatement pStatement) {
+		try ( Connection con = DriverManager.getConnection(CONNECTION_STRING))
+		{ 
+			boolean rs = pStatement.execute();
+			return rs;
+        }
+        catch (Exception e) 
+        {
+            System.out.println(e.toString());
+        }
+		
+		return false;
+	}
+	
+	public static void createPreparedStatements() throws SQLException {
+		String dropProcedureIfExists = "drop procedure if exists credentials_add;";
+		sendCommandToServer(dropProcedureIfExists);
+		
+		var setupInsertCredentialsProcedureCommand = "CREATE PROCEDURE credentials_add( IN username VARCHAR(20), IN password VARCHAR(20), IN uid INT) " +
+		"BEGIN " +
+		"INSERT INTO credentials " +
+		"VALUES(username,password, uid); " +
+		"END";
+		
+        sendCommandToServer(setupInsertCredentialsProcedureCommand);
 	}
 }

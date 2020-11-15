@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.RoutineCheckResults;
 import cliniccaresystem.model.Test;
+import cliniccaresystem.model.TestResult;
 
 public class TestResultDatabaseClient extends DatabaseClient{
 
@@ -18,15 +19,14 @@ public class TestResultDatabaseClient extends DatabaseClient{
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		
 		String getTestResultQuery = "SELECT * FROM test_result WHERE testOrderId = ?";
-		PreparedStatement testResult =  con.prepareStatement(getTestResultQuery, Statement.RETURN_GENERATED_KEYS);		
-		testResult.setInt(1, test.getTestId());
+		PreparedStatement testResultStatement =  con.prepareStatement(getTestResultQuery, Statement.RETURN_GENERATED_KEYS);		
+		testResultStatement.setInt(1, test.getTestId());
 		
-		ResultSet queryRS = testResult.executeQuery();
+		ResultSet queryRS = testResultStatement.executeQuery();
 		
 		if (queryRS.next()) {
-			test.setTimePerformed(queryRS.getTimestamp(2).toLocalDateTime());
-			test.setResult(queryRS.getString(3));
-			test.setAbnormal(Boolean.toString(queryRS.getBoolean(4)));
+			var testResult = new TestResult(queryRS.getTimestamp(2).toLocalDateTime(), queryRS.getString(3), Boolean.toString(queryRS.getBoolean(4)));
+			test.setResult(testResult);
 		}
 
 		return test;
@@ -48,9 +48,10 @@ public class TestResultDatabaseClient extends DatabaseClient{
         PreparedStatement pStatement =  con.prepareStatement(insertRoutineCheck);  
 
 		pStatement.setInt(1, test.getTestId());
-		pStatement.setTimestamp(2, Timestamp.valueOf(test.getTimePerformed()));
-		pStatement.setString(3, test.getResult());
-		pStatement.setBoolean(4, Boolean.parseBoolean(test.getIsAbnormal()));
+		
+		pStatement.setTimestamp(2, Timestamp.valueOf(test.getTestResults().getTimePerformed()));
+		pStatement.setString(3, test.getTestResults().getResult());
+		pStatement.setBoolean(4, Boolean.parseBoolean(test.getTestResults().getIsAbnormal()));
 			
 		pStatement.executeUpdate();
 	}

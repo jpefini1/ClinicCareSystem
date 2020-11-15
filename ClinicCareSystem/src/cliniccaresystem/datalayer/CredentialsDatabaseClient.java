@@ -45,17 +45,15 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 	}
 	
 	public static void insertCredentials(Connection con, Credentials credentials, int userId) throws SQLException {
-		String insertCredentials = "INSERT INTO credentials ( username, password, uid ) VALUES (?,?,?)";
+		String callCredentialsAddProcedure = "call credentials_add(?,?,?);";
 		
-        PreparedStatement pStatement =  con.prepareStatement(insertCredentials, Statement.SUCCESS_NO_INFO);; 
-        
-		pStatement.setString(1, credentials.getUsername());
-		pStatement.setString(2, getHash(credentials.getPassword()));
+		PreparedStatement pStatement = con.prepareStatement(callCredentialsAddProcedure, Statement.SUCCESS_NO_INFO);; 
+		pStatement.setString(1, credentials.getUsername()); 
+		pStatement.setString(2,getHash(credentials.getPassword())); 
 		pStatement.setInt(3, userId);
-		
-		pStatement.executeUpdate();
+		executePreparedStatement(pStatement);
 	}
-	
+
 	public static boolean isUsernameTaken(Connection con, String username) throws SQLException {
         Statement stmt =  con.createStatement();  
         	
