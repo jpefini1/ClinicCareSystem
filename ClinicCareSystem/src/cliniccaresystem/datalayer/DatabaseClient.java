@@ -79,6 +79,62 @@ public class DatabaseClient {
 		sendCommandToServer(createRoutineCheckTableCommand);
 	}
 	
+	public static void createStandardTestsTable() {
+		//String dropTable = "DROP TABLE standard_tests";
+		//sendCommandToServer(dropTable);
+		
+		String createStandardTestsTableCommand = "CREATE TABLE IF NOT EXISTS standard_tests ( " +
+				"testCode INTEGER NOT NULL, " +
+				"name VARCHAR(20) NOT NULL, " +
+				"PRIMARY KEY ( testCode ))";
+		
+		sendCommandToServer(createStandardTestsTableCommand);
+	}
+	
+	public static void createTestOrderTable() {
+		String dropTable = "DROP TABLE test_order";
+		sendCommandToServer(dropTable);
+		
+		String createTestOrderTableCommand = "CREATE TABLE IF NOT EXISTS test_order ( " +
+				"id INTEGER NOT NULL AUTO_INCREMENT, " +
+				"appointmentId INTEGER NOT NULL, " +
+				"testCode INTEGER NOT NULL, " +
+				"PRIMARY KEY ( id ), " +
+				"FOREIGN KEY ( appointmentId ) references appointment ( appointmentId ), " +
+				"FOREIGN KEY ( testCode ) references standard_tests ( testCode )) ";
+		
+		sendCommandToServer(createTestOrderTableCommand);
+	}
+	
+	public static void createTestResultTable() {
+		//String dropTable = "DROP TABLE test_result";
+		//sendCommandToServer(dropTable);
+		
+		String createTestResultTableCommand = "CREATE TABLE IF NOT EXISTS test_result ( " +
+				"testOrderId INTEGER NOT NULL, " +
+				"performed DATETIME NOT NULL, " +
+				"result VARCHAR(25) NOT NULL, " +
+				"isAbnormal BOOLEAN NOT NULL, " +
+				"PRIMARY KEY ( testOrderId ), " +
+				"FOREIGN KEY ( testOrderId ) references test_order ( id )) ";
+		
+		sendCommandToServer(createTestResultTableCommand);
+	}
+	
+	public static void populateStandardTestsTable() {
+		String insertTestWBCCommand = "INSERT INTO standard_tests VALUES (1, 'WBC')";
+		String insertTestLDLCommand = "INSERT INTO standard_tests VALUES (2, 'LDL')";
+		String insertTestHepACommand = "INSERT INTO standard_tests VALUES (3, 'Hepatitis A')";
+		String insertTestHepBCommand = "INSERT INTO standard_tests VALUES (4, 'Hepatitis B')";
+		String insertTestHepCCommand = "INSERT INTO standard_tests VALUES (5, 'Hepatitis C')";
+		
+		sendCommandToServer(insertTestWBCCommand);
+		sendCommandToServer(insertTestLDLCommand);
+		sendCommandToServer(insertTestHepACommand);
+		sendCommandToServer(insertTestHepBCommand);
+		sendCommandToServer(insertTestHepCCommand);
+	}
+	
 	public static void dropTables() {
 		String dropAddress = "DROP TABLE address";
 		String dropNurse = "DROP TABLE nurse";

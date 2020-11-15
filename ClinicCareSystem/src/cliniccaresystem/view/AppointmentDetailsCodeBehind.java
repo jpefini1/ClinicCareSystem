@@ -6,12 +6,17 @@ import cliniccaresystem.Main;
 import cliniccaresystem.model.Appointment;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
+import cliniccaresystem.model.Test;
 import cliniccaresystem.viewmodel.AppointmentDetailsViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -71,6 +76,45 @@ public class AppointmentDetailsCodeBehind {
     @FXML
     private Button updateButton;
     
+    @FXML
+    private TableView<Test> testTableView;
+
+    @FXML
+    private TableColumn<?, ?> testNameTableColumn;
+
+    @FXML
+    private TableColumn<?, ?> testTimeTableColumn;
+
+    @FXML
+    private TableColumn<?, ?> testResultTableColumn;
+
+    @FXML
+    private TableColumn<?, ?> isTestAbnormalTableColumn;
+
+    @FXML
+    private Label testsOrderedLabel;
+
+    @FXML
+    private Button orderTestButton;
+
+    @FXML
+    private CheckBox WBCTestCheckBox;
+
+    @FXML
+    private Label availableTestsLabel;
+
+    @FXML
+    private CheckBox LDLTestCheckBox;
+
+    @FXML
+    private CheckBox hepatitisATestCheckBox;
+
+    @FXML
+    private CheckBox hepatitisBTestCheckBox;
+
+    @FXML
+    private CheckBox hepatitisCTestCheckBox;
+    
     private AppointmentDetailsViewModel viewmodel;
     
     public AppointmentDetailsCodeBehind() {
@@ -98,6 +142,15 @@ public class AppointmentDetailsCodeBehind {
    		this.inputResultsButton.disableProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsDisabled());
    		this.updateButton.visibleProperty().bindBidirectional(this.viewmodel.updateIsVisibleProperty());
    		this.inputResultsButton.visibleProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsVisible());
+   		
+   		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
    	}
 	
 	private void setupChangeListeners() {
@@ -229,6 +282,11 @@ public class AppointmentDetailsCodeBehind {
     		this.updateButton.setVisible(false);
     		this.inputResultsButton.setVisible(false);
     	}
+    }
+    
+    @FXML
+    void onOrderTest(ActionEvent event) {
+
     }
     
     public void setPatientInfo(Patient patient) {

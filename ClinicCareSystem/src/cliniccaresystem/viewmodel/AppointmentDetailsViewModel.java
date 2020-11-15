@@ -3,18 +3,25 @@ package cliniccaresystem.viewmodel;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import cliniccaresystem.datalayer.NurseDatabaseClient;
 import cliniccaresystem.datalayer.RoutineCheckDatabaseClient;
+import cliniccaresystem.datalayer.TestOrderDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Appointment;
 import cliniccaresystem.model.Nurse;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.RoutineCheckResults;
+import cliniccaresystem.model.Test;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 
 public class AppointmentDetailsViewModel {
 	
@@ -28,9 +35,14 @@ public class AppointmentDetailsViewModel {
 	private SimpleStringProperty dateProperty;
 	private SimpleStringProperty nurseInfoProperty;
 	private SimpleStringProperty patientInfoProperty;
+	
 	private SimpleBooleanProperty inputCheckResultsIsDisabled;
 	private SimpleBooleanProperty updateIsVisibleProperty;
 	private SimpleBooleanProperty inputCheckResultsIsVisible;
+	private SimpleBooleanProperty orderTestsIsDisabled;
+	
+	private final ListProperty<Test> testListProperty;
+	private List<Test> testList;
 	
 	private Appointment selectedAppointment = null;
 	
@@ -46,11 +58,17 @@ public class AppointmentDetailsViewModel {
 		this.dateProperty = new SimpleStringProperty();
 		this.nurseInfoProperty = new SimpleStringProperty();
 		this.patientInfoProperty = new SimpleStringProperty();
+		
 		this.inputCheckResultsIsDisabled = new SimpleBooleanProperty();
 		this.updateIsVisibleProperty = new SimpleBooleanProperty();
 		this.inputCheckResultsIsVisible = new SimpleBooleanProperty();
+		this.orderTestsIsDisabled = new SimpleBooleanProperty();
 		
 		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
+		
+		this.testList = new ArrayList<Test>();
+		this.testListProperty = new SimpleListProperty<Test>(FXCollections.observableArrayList(this.testList));
+		this.testListProperty.set(FXCollections.observableArrayList(this.testList));
 	}
 	
 	public ResultCode addRoutineCheckResults() {
@@ -159,10 +177,17 @@ public class AppointmentDetailsViewModel {
 		return this.inputCheckResultsIsDisabled;
 	}
 	
+	public SimpleBooleanProperty orderTestsIsDisabled() {
+		return this.orderTestsIsDisabled;
+	}
+	
 	public SimpleBooleanProperty updateIsVisibleProperty() {
 		return this.updateIsVisibleProperty;
 	}
-
+	
+	public ListProperty<Test> testListProperty() {
+		return this.testListProperty;
+	}
 
 	public void setPatientInfo(Patient patient) {
 		this.patientInfoProperty.setValue(patient.toString());
@@ -178,12 +203,25 @@ public class AppointmentDetailsViewModel {
 			this.reasonForVisitProperty.setValue(appointment.getReasonForVisit());
 			
 			this.initializeRoutineCheckResults();
+			this.initializeOrderedTests();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
+	private void initializeOrderedTests() throws SQLException {
+		var testOrderResults = TestOrderDatabaseClient.getTestOrdersIfExists(this.selectedAppointment);
+		
+		if (!testOrderResults.isEmpty()) {
+			this.orderTestsIsDisabled.setValue(false);
+			this.testList = testOrderResults;
+			this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+		} else {
+			this.orderTestsIsDisabled.setValue(!this.hasAppointmentTimeElapsed());
+		}
+	}
+
 	private void initializeRoutineCheckResults() throws SQLException {
 		var routineCheckResults = RoutineCheckDatabaseClient.getRoutineCheckIfExists(this.selectedAppointment);
 		if (routineCheckResults != null) {

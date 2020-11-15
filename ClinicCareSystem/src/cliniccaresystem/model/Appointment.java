@@ -3,6 +3,8 @@ package cliniccaresystem.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Appointment {
 
@@ -14,13 +16,17 @@ public class Appointment {
 	
 	private String reasonForVisit;
 	private String formattedDateTime;
-
+	
+	private List<Test> orderedTests;
+	private String finalDiagnosis;
 	
 	public Appointment(int patientId, LocalDateTime appointmentDateTime, String reasonForVisit) {
-		
 		this.patientId = patientId;
 		this.appointmentDateTime = appointmentDateTime;
 		this.reasonForVisit = reasonForVisit;
+		
+		this.orderedTests = new ArrayList<Test>();
+		this.finalDiagnosis = "";
 		
 		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
 				appointmentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
@@ -31,6 +37,9 @@ public class Appointment {
 		this.patientId = patientId;
 		this.appointmentDateTime = appointmentTime;
 		this.reasonForVisit = reasonForVisit;
+		
+		this.orderedTests = new ArrayList<Test>();
+		this.finalDiagnosis = "";
 		
 		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
 				appointmentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
@@ -74,5 +83,21 @@ public class Appointment {
 
 	public void setFormattedDateTime(String formattedDateTime) {
 		this.formattedDateTime = formattedDateTime;
+	}
+
+	public List<Test> getOrderedTests() {
+		return orderedTests;
+	}
+
+	public void setOrderedTests(List<Test> orderedTests) {
+		this.orderedTests = orderedTests;
+	}
+
+	public String getFinalDiagnosis() {
+		return finalDiagnosis;
+	}
+
+	public void setFinalDiagnosis(String finalDiagnosis) {
+		this.finalDiagnosis = finalDiagnosis;
 	}
 }
