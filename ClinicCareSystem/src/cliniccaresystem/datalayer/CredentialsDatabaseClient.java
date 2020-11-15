@@ -18,14 +18,16 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		con.setAutoCommit(false);
 		
-        PreparedStatement selectCredentials =  con.prepareStatement("SELECT * FROM credentials WHERE username = ? AND password = ?");
+		String callCredentialsValidateProcedure = "call credentials_validate(?,?);";
+		
+		PreparedStatement selectCredentials = con.prepareStatement(callCredentialsValidateProcedure, Statement.SUCCESS_NO_INFO);; 
 		selectCredentials.setString(1, username);
 		selectCredentials.setString(2, getHash(password));
-		ResultSet credentials = selectCredentials.executeQuery();
+		ResultSet userId = selectCredentials.executeQuery();
 		
-		if (credentials.next()) {
+		if (userId.next()) {
 			PreparedStatement selectUser = con.prepareStatement("SELECT * FROM user WHERE id= ?");
-			selectUser.setInt(1, credentials.getInt(3));
+			selectUser.setInt(1, userId.getInt(1));
 			ResultSet user = selectUser.executeQuery();
 			user.next();
 			
@@ -40,7 +42,6 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 			con.commit();
 			return activeUser;
 		}
-       
 		return null;
 	}
 	
@@ -64,7 +65,6 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 				return true;
 			}
 		}
-        
 		return false;
 	}
 	

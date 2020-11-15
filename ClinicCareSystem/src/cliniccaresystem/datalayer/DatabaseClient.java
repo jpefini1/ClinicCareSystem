@@ -187,7 +187,7 @@ public class DatabaseClient {
 		return false;
 	}
 	
-	public static void createPreparedStatements() throws SQLException {
+	public static void createAddCredentialsProcedure() throws SQLException {
 		String dropProcedureIfExists = "drop procedure if exists credentials_add;";
 		sendCommandToServer(dropProcedureIfExists);
 		
@@ -198,5 +198,17 @@ public class DatabaseClient {
 		"END";
 		
         sendCommandToServer(setupInsertCredentialsProcedureCommand);
+	}
+	
+	public static void createValidateCredentialsProcedure() throws SQLException {
+		String dropProcedureIfExists = "drop procedure if exists credentials_validate;";
+		sendCommandToServer(dropProcedureIfExists);
+		
+		var setupValidateCredentialsProcedureCommand = "CREATE PROCEDURE credentials_validate( IN username VARCHAR(20), IN password VARCHAR(20)) " +
+		"BEGIN " +
+		"SELECT uid FROM credentials WHERE username = username AND password = password; " +
+		"END";
+		
+        sendCommandToServer(setupValidateCredentialsProcedureCommand);
 	}
 }
