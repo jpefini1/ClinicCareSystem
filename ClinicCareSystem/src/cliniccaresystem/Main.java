@@ -73,16 +73,4 @@ public class Main extends Application {
 		currentStage.setScene(newScene);
 		currentStage.setTitle(windowTitle);
 	}
-	
-	public static void showScene(String viewSourceLocation, String windowTitle) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource(viewSourceLocation));
-		loader.load();
-		Scene newScene = new Scene(loader.getRoot());
-		Stage newStage = new Stage();
-		newStage.setScene(newScene);
-		newStage.setTitle(windowTitle);
-		newStage.initModality(Modality.APPLICATION_MODAL);
-		newStage.showAndWait();
-	}
 }

@@ -28,8 +28,7 @@ public class Appointment {
 		this.orderedTests = new ArrayList<Test>();
 		this.finalDiagnosis = "";
 		
-		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
-				appointmentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
+		this.updateFormattedAppointmentTime();
 	}
 	
 	public Appointment(int appointmentId, int patientId, LocalDateTime appointmentTime, String reasonForVisit) {
@@ -41,6 +40,10 @@ public class Appointment {
 		this.orderedTests = new ArrayList<Test>();
 		this.finalDiagnosis = "";
 		
+		this.updateFormattedAppointmentTime();
+	}
+	
+	private void updateFormattedAppointmentTime() {
 		this.formattedDateTime = appointmentDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
 				appointmentDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 	}
@@ -67,6 +70,7 @@ public class Appointment {
 
 	public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
 		this.appointmentDateTime = appointmentDateTime;
+		this.updateFormattedAppointmentTime();
 	}
 
 	public String getReasonForVisit() {
@@ -79,10 +83,6 @@ public class Appointment {
 		
 	public String getFormattedDateTime() {
 		return this.formattedDateTime;
-	}
-
-	public void setFormattedDateTime(String formattedDateTime) {
-		this.formattedDateTime = formattedDateTime;
 	}
 
 	public List<Test> getOrderedTests() {

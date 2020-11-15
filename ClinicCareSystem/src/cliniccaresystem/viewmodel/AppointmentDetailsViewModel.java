@@ -361,5 +361,9 @@ public class AppointmentDetailsViewModel {
 	public SimpleBooleanProperty inputCheckResultsIsVisible() {
 		return this.inputCheckResultsIsVisible;
 	}
+
+	public void refreshTestList() {
+		this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+	}
 	
 }

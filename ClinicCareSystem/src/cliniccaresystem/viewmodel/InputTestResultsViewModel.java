@@ -1,6 +1,13 @@
 package cliniccaresystem.viewmodel;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import cliniccaresystem.datalayer.TestResultDatabaseClient;
+import cliniccaresystem.model.ResultCode;
+import cliniccaresystem.model.Test;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,6 +24,7 @@ public class InputTestResultsViewModel {
 	private SimpleBooleanProperty pmProperty;
 	private SimpleBooleanProperty isAbnormalProperty;
 	
+	private Test selectedTest = null;
 	
 	public InputTestResultsViewModel() {
 		this.resultsProperty = new SimpleStringProperty();
@@ -28,6 +36,43 @@ public class InputTestResultsViewModel {
 		this.amProperty = new SimpleBooleanProperty();
 		this.pmProperty = new SimpleBooleanProperty();
 		this.isAbnormalProperty = new SimpleBooleanProperty();
+	}
+	
+	public ResultCode inputResults() {
+		this.selectedTest.setTimePerformed(this.makePerformedDateTime());
+		this.selectedTest.setResult(this.resultsProperty.getValue());
+		this.selectedTest.setAbnormal(this.isAbnormalProperty.getValue().toString());
+		
+		try {
+			return TestResultDatabaseClient.addResultsToTable(this.selectedTest);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultCode.ConnectionError;
+		}
+	}
+	
+	private LocalDateTime makePerformedDateTime() {
+		LocalDate testDate = this.testPerformedDateProperty().getValue();
+		LocalTime testTime = this.getLocalTimeIn24HourFormat();
+		return LocalDateTime.of(testDate, testTime);
+	}
+	
+	private LocalTime getLocalTimeIn24HourFormat() {
+		var hour = this.hourProperty.getValue();
+		
+		if (this.pmProperty.getValue()) {
+			hour += 12;
+			
+			if (hour >= 24) {
+				hour = 0;
+			}
+		} else if (this.amProperty.getValue()) {
+			if (hour == 12) {
+				hour = 0;
+			}
+		}
+		
+		return LocalTime.of(hour, Integer.parseInt(this.minuteProperty.getValue()));
 	}
 	
 	public boolean areTestResultsValid() {
@@ -97,6 +142,8 @@ public class InputTestResultsViewModel {
 	public SimpleBooleanProperty isAbnormalProperty() {
 		return this.isAbnormalProperty;
 	}
-	
-	
+
+	public void setSelectedTest(Test test) {
+		this.selectedTest = test;
+	}
 }

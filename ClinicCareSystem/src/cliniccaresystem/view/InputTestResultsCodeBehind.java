@@ -1,5 +1,7 @@
 package cliniccaresystem.view;
 
+import cliniccaresystem.model.ResultCode;
+import cliniccaresystem.model.Test;
 import cliniccaresystem.viewmodel.CreateAppointmentViewModel;
 import cliniccaresystem.viewmodel.InputTestResultsViewModel;
 import javafx.event.ActionEvent;
@@ -76,7 +78,7 @@ public class InputTestResultsCodeBehind {
    		this.testTypeLabel.textProperty().bindBidirectional(this.viewmodel.testTypeProperty());
    		this.isAbnormalCheckBox.selectedProperty().bindBidirectional(this.viewmodel.isAbnormalProperty());
    	}
-
+	
 	private void initializeTimeComboBoxes() {
 		this.hourComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
    		this.minuteComboBox.getItems().addAll("00", "15", "30", "45");
@@ -166,13 +168,25 @@ public class InputTestResultsCodeBehind {
 	
 	@FXML
     void onCancel(ActionEvent event) {
+		this.closeStage();
+    }
+	
+	private void closeStage() {
 		Stage stage = (Stage) this.cancelButton.getScene().getWindow();
 	    stage.close();
-    }
+	}
 
     @FXML
     void onInputResults(ActionEvent event) {
-
+    	var result = this.viewmodel.inputResults();
+    	
+    	if (result.equals(ResultCode.Success)) {
+    		this.closeStage();
+    	}
+    }
+    
+    public void setSelectedTest(Test test) {
+    	this.viewmodel.setSelectedTest(test);
     }
 
 }

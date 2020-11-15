@@ -1,15 +1,18 @@
 package cliniccaresystem.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Test {
 
-	int testId;
-	int appointmentId;
-	String name;
-	LocalDateTime timePerformed;
-	String result;
-	String isAbnormal;
+	private int testId;
+	private int appointmentId;
+	private String name;
+	private LocalDateTime timePerformed;
+	private String result;
+	private String isAbnormal;
+	
+	private String formattedTimePerformed;
 	
 	public Test(int appointmentId, String name) {
 		this.appointmentId = appointmentId;
@@ -29,6 +32,13 @@ public class Test {
 		this.timePerformed = timePerformed;
 		this.result = result;
 		this.isAbnormal = isAbnormal;
+		
+		this.updateFormattedTimePerfomed();
+	}
+	
+	private void updateFormattedTimePerfomed() {
+		this.formattedTimePerformed = this.timePerformed.format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + 
+				this.timePerformed.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 	}
 	
 	public String getName() {
@@ -41,6 +51,7 @@ public class Test {
 
 	public void setTimePerformed(LocalDateTime timePerformed) {
 		this.timePerformed = timePerformed;
+		this.updateFormattedTimePerfomed();
 	}
 
 	public String getResult() {
@@ -73,5 +84,9 @@ public class Test {
 
 	public void setAppointmentId(int appointmentId) {
 		this.appointmentId = appointmentId;
+	}
+	
+	public String getFormattedTimePerformed() {
+		return this.formattedTimePerformed;
 	}
 }

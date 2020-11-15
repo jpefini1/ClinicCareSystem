@@ -25,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AppointmentDetailsCodeBehind {
@@ -90,7 +91,7 @@ public class AppointmentDetailsCodeBehind {
     private TableColumn<Test, String> testNameTableColumn;
 
     @FXML
-    private TableColumn<Test, LocalDateTime> testTimeTableColumn;
+    private TableColumn<Test, String> testTimeTableColumn;
 
     @FXML
     private TableColumn<Test, String> testResultTableColumn;
@@ -140,7 +141,7 @@ public class AppointmentDetailsCodeBehind {
    	
    	private void initializeTestsTableView() {
 		this.testNameTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("name"));
-		this.testTimeTableColumn.setCellValueFactory(new PropertyValueFactory<Test, LocalDateTime>("timePerformed"));
+		this.testTimeTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("formattedTimePerformed"));
 		this.testResultTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("result"));
 		this.isTestAbnormalTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("isAbnormal"));
 	}
@@ -380,9 +381,24 @@ public class AppointmentDetailsCodeBehind {
     
     @FXML
     void onInputTestResults(ActionEvent event) {
-    	try {
-			Main.showScene(Main.INPUT_TEST_RESULTS_PAGE_PATH, Main.INPUT_TEST_RESULTS_PAGE_TITLE);
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource(Main.INPUT_TEST_RESULTS_PAGE_PATH));
+			loader.load();
+			
+			var codeBehind = (InputTestResultsCodeBehind) loader.getController();
+			codeBehind.setSelectedTest(this.testTableView.getSelectionModel().getSelectedItem());
+			
+			Scene newScene = new Scene(loader.getRoot());
+			Stage newStage = new Stage();
+			newStage.setScene(newScene);
+			newStage.setTitle(Main.INPUT_TEST_RESULTS_PAGE_TITLE);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.showAndWait();
+			
+			this.viewmodel.refreshTestList();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
