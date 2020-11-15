@@ -39,13 +39,16 @@ public class AppointmentDetailsViewModel {
 	private SimpleBooleanProperty inputCheckResultsIsDisabled;
 	private SimpleBooleanProperty updateIsVisibleProperty;
 	private SimpleBooleanProperty inputCheckResultsIsVisible;
+	private SimpleBooleanProperty testViewIsDisabled;
 	private SimpleBooleanProperty orderTestsIsDisabled;
 	
 	private final ListProperty<Test> testListProperty;
 	private List<Test> testList;
 	
-	private Appointment selectedAppointment = null;
+	private List<String> selectedTests;
+	private List<String> unselectedTests;
 	
+	private Appointment selectedAppointment = null;
 	
 	public AppointmentDetailsViewModel() {
 		this.systolicBPProperty = new SimpleStringProperty();
@@ -62,13 +65,42 @@ public class AppointmentDetailsViewModel {
 		this.inputCheckResultsIsDisabled = new SimpleBooleanProperty();
 		this.updateIsVisibleProperty = new SimpleBooleanProperty();
 		this.inputCheckResultsIsVisible = new SimpleBooleanProperty();
+		this.testViewIsDisabled = new SimpleBooleanProperty();
 		this.orderTestsIsDisabled = new SimpleBooleanProperty();
+		this.orderTestsIsDisabled.setValue(true);
 		
 		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 		
 		this.testList = new ArrayList<Test>();
 		this.testListProperty = new SimpleListProperty<Test>(FXCollections.observableArrayList(this.testList));
 		this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+		
+		this.setupSelectedAndUnselectedTests();
+	}
+	
+	private void setupSelectedAndUnselectedTests() {
+		this.selectedTests = new ArrayList<String>();
+		
+		this.unselectedTests = new ArrayList<String>();
+		this.unselectedTests.add("WBC");
+		this.unselectedTests.add("LDL");
+		this.unselectedTests.add("Hepatitis A");
+		this.unselectedTests.add("Hepatitis B");
+		this.unselectedTests.add("Hepatitis C");
+	}
+	
+	public void selectTest(String testName) {
+		this.unselectedTests.remove(testName);
+		this.selectedTests.add(testName);
+		
+		this.orderTestsIsDisabled.setValue(this.selectedTests.isEmpty());
+	}
+	
+	public void deselectTest(String testName) {
+		this.selectedTests.remove(testName);
+		this.unselectedTests.add(testName);
+		
+		this.orderTestsIsDisabled.setValue(this.selectedTests.isEmpty());
 	}
 	
 	public ResultCode addRoutineCheckResults() {
@@ -177,12 +209,16 @@ public class AppointmentDetailsViewModel {
 		return this.inputCheckResultsIsDisabled;
 	}
 	
-	public SimpleBooleanProperty orderTestsIsDisabled() {
-		return this.orderTestsIsDisabled;
+	public SimpleBooleanProperty testViewIsDisabled() {
+		return this.testViewIsDisabled;
 	}
 	
 	public SimpleBooleanProperty updateIsVisibleProperty() {
 		return this.updateIsVisibleProperty;
+	}
+	
+	public SimpleBooleanProperty orderTestsIsDisabled() {
+		return this.orderTestsIsDisabled;
 	}
 	
 	public ListProperty<Test> testListProperty() {
@@ -214,11 +250,11 @@ public class AppointmentDetailsViewModel {
 		var testOrderResults = TestOrderDatabaseClient.getTestOrdersIfExists(this.selectedAppointment);
 		
 		if (!testOrderResults.isEmpty()) {
-			this.orderTestsIsDisabled.setValue(false);
+			this.testViewIsDisabled.setValue(false);
 			this.testList = testOrderResults;
 			this.testListProperty.set(FXCollections.observableArrayList(this.testList));
 		} else {
-			this.orderTestsIsDisabled.setValue(!this.hasAppointmentTimeElapsed());
+			this.testViewIsDisabled.setValue(!this.hasAppointmentTimeElapsed());
 		}
 	}
 

@@ -143,14 +143,15 @@ public class AppointmentDetailsCodeBehind {
    		this.updateButton.visibleProperty().bindBidirectional(this.viewmodel.updateIsVisibleProperty());
    		this.inputResultsButton.visibleProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsVisible());
    		
-   		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
-   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
+   		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.hepatitisATestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.hepatitisBTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.hepatitisCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.LDLTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
+   		this.orderTestButton.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabled());
    	}
 	
 	private void setupChangeListeners() {
@@ -233,6 +234,46 @@ public class AppointmentDetailsCodeBehind {
 				} else {
 					this.tempTextField.setText(oldValue);
 				}
+			}
+		});
+		
+		this.WBCTestCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.booleanValue()) {
+				this.viewmodel.selectTest(this.WBCTestCheckBox.getText());
+			} else {
+				this.viewmodel.deselectTest(this.WBCTestCheckBox.getText());
+			}
+		});
+		
+		this.LDLTestCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.booleanValue()) {
+				this.viewmodel.selectTest(this.LDLTestCheckBox.getText());
+			} else {
+				this.viewmodel.deselectTest(this.LDLTestCheckBox.getText());
+			}
+		});
+		
+		this.hepatitisATestCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.booleanValue()) {
+				this.viewmodel.selectTest(this.hepatitisATestCheckBox.getText());
+			} else {
+				this.viewmodel.deselectTest(this.hepatitisATestCheckBox.getText());
+			}
+		});
+		
+		this.hepatitisBTestCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.booleanValue()) {
+				this.viewmodel.selectTest(this.hepatitisBTestCheckBox.getText());
+			} else {
+				this.viewmodel.deselectTest(this.hepatitisBTestCheckBox.getText());
+			}
+		});
+		
+		this.hepatitisCTestCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue.booleanValue()) {
+				this.viewmodel.selectTest(this.hepatitisCTestCheckBox.getText());
+			} else {
+				this.viewmodel.deselectTest(this.hepatitisCTestCheckBox.getText());
 			}
 		});
 	}
