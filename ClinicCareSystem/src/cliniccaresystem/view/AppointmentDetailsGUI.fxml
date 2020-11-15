@@ -13,65 +13,65 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="568.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.AppointmentDetailsCodeBehind">
    <children>
       <Label fx:id="nurseInfoLabel" layoutX="2.0" layoutY="3.0" prefHeight="18.0" prefWidth="220.0" />
-      <Label layoutX="10.0" layoutY="59.0" text="Patient:">
+      <Label layoutX="19.0" layoutY="59.0" text="Patient:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="patientInfoLabel" layoutX="64.0" layoutY="59.0" prefHeight="20.0" prefWidth="174.0">
+      <Label fx:id="patientInfoLabel" layoutX="73.0" layoutY="59.0" prefHeight="20.0" prefWidth="174.0">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label layoutX="10.0" layoutY="94.0" text="Date:">
+      <Label layoutX="19.0" layoutY="94.0" text="Date:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="dateLabel" layoutX="64.0" layoutY="95.0" prefHeight="20.0" prefWidth="174.0">
+      <Label fx:id="dateLabel" layoutX="73.0" layoutY="95.0" prefHeight="20.0" prefWidth="174.0">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label layoutX="10.0" layoutY="130.0" text="Time:">
+      <Label layoutX="19.0" layoutY="130.0" text="Time:">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="timeLabel" layoutX="64.0" layoutY="130.0" prefHeight="20.0" prefWidth="174.0">
+      <Label fx:id="timeLabel" layoutX="73.0" layoutY="130.0" prefHeight="20.0" prefWidth="174.0">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label layoutX="10.0" layoutY="167.0" text="Reason for Visit:" />
-      <Label layoutX="12.0" layoutY="22.0" text="Appointment Details:">
+      <Label layoutX="19.0" layoutY="167.0" text="Reason for Visit:" />
+      <Label layoutX="21.0" layoutY="22.0" text="Appointment Details:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="routineResulsLabel" disable="true" layoutX="283.0" layoutY="25.0" text="Routine Check Results:">
+      <Label fx:id="routineResulsLabel" disable="true" layoutX="379.0" layoutY="26.0" text="Routine Check Results:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="reasonForVisitLabel" alignment="TOP_LEFT" layoutX="112.0" layoutY="167.0" prefHeight="77.0" prefWidth="132.0" wrapText="true">
+      <Label fx:id="reasonForVisitLabel" alignment="TOP_LEFT" layoutX="121.0" layoutY="167.0" prefHeight="78.0" prefWidth="186.0" wrapText="true">
          <font>
             <Font size="10.0" />
          </font>
       </Label>
-      <Label fx:id="systolicBPLabel" disable="true" layoutX="283.0" layoutY="60.0" text="Systolic BP:" />
-      <Label fx:id="diastolicBPLabel" disable="true" layoutX="278.0" layoutY="92.0" text="Diastolic BP:" />
-      <Label fx:id="pulseLabel" disable="true" layoutX="315.0" layoutY="122.0" text="Pulse:" />
-      <Label fx:id="weightLabel" disable="true" layoutX="304.0" layoutY="153.0" text="Weight:" />
-      <Label fx:id="tempLabel" disable="true" layoutX="286.0" layoutY="184.0" text="BodyTemp:" />
-      <TextField fx:id="systolicBPTextField" disable="true" layoutX="375.0" layoutY="55.0" prefHeight="26.0" prefWidth="68.0" />
-      <TextField fx:id="diastolicBPTextField" disable="true" layoutX="375.0" layoutY="86.0" prefHeight="26.0" prefWidth="68.0" />
-      <TextField fx:id="pulseTextField" disable="true" layoutX="374.0" layoutY="117.0" prefHeight="26.0" prefWidth="68.0" />
-      <TextField fx:id="weightTextField" disable="true" layoutX="374.0" layoutY="148.0" prefHeight="26.0" prefWidth="68.0" />
-      <TextField fx:id="tempTextField" disable="true" layoutX="374.0" layoutY="179.0" prefHeight="26.0" prefWidth="68.0" />
-      <Button fx:id="inputResultsButton" disable="true" layoutX="273.0" layoutY="217.0" mnemonicParsing="false" onAction="#onInputResults" prefHeight="26.0" prefWidth="86.0" text="Input Results" wrapText="true" />
+      <Label fx:id="systolicBPLabel" disable="true" layoutX="380.0" layoutY="63.0" text="Systolic BP:" />
+      <Label fx:id="diastolicBPLabel" disable="true" layoutX="375.0" layoutY="95.0" text="Diastolic BP:" />
+      <Label fx:id="pulseLabel" disable="true" layoutX="412.0" layoutY="125.0" text="Pulse:" />
+      <Label fx:id="weightLabel" disable="true" layoutX="401.0" layoutY="156.0" text="Weight:" />
+      <Label fx:id="tempLabel" disable="true" layoutX="383.0" layoutY="187.0" text="BodyTemp:" />
+      <TextField fx:id="systolicBPTextField" disable="true" layoutX="472.0" layoutY="58.0" prefHeight="26.0" prefWidth="68.0" />
+      <TextField fx:id="diastolicBPTextField" disable="true" layoutX="472.0" layoutY="89.0" prefHeight="26.0" prefWidth="68.0" />
+      <TextField fx:id="pulseTextField" disable="true" layoutX="471.0" layoutY="120.0" prefHeight="26.0" prefWidth="68.0" />
+      <TextField fx:id="weightTextField" disable="true" layoutX="471.0" layoutY="151.0" prefHeight="26.0" prefWidth="68.0" />
+      <TextField fx:id="tempTextField" disable="true" layoutX="471.0" layoutY="182.0" prefHeight="26.0" prefWidth="68.0" />
+      <Button fx:id="inputResultsButton" disable="true" layoutX="370.0" layoutY="220.0" mnemonicParsing="false" onAction="#onInputResults" prefHeight="26.0" prefWidth="86.0" text="Input Results" wrapText="true" />
       <Button layoutX="523.0" layoutY="676.0" mnemonicParsing="false" onAction="#onBack" text="Back" />
-      <Button fx:id="updateButton" disable="true" layoutX="387.0" layoutY="217.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
+      <Button fx:id="updateButton" disable="true" layoutX="484.0" layoutY="220.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
       <TableView fx:id="testTableView" disable="true" layoutX="14.0" layoutY="300.0" prefHeight="248.0" prefWidth="425.0">
         <columns>
           <TableColumn fx:id="testNameTableColumn" prefWidth="75.0" text="Name" />
@@ -102,6 +102,6 @@
       <Button fx:id="inputTestResultsButton" disable="true" layoutX="13.0" layoutY="551.0" mnemonicParsing="false" onAction="#onInputTestResults" text="Input Results" />
       <Label fx:id="finalDiagnosisLabel" disable="true" layoutX="15.0" layoutY="590.0" text="Final Diagnosis:" />
       <TextArea fx:id="finalDiagnosisTextArea" disable="true" layoutX="102.0" layoutY="590.0" prefHeight="102.0" prefWidth="338.0" wrapText="true" />
-      <Button fx:id="makeDiagnosisButton" alignment="CENTER" disable="true" layoutX="30.0" layoutY="650.0" mnemonicParsing="false" onAction="#onMakeDiagnosis" prefHeight="42.0" prefWidth="68.0" text="Make Diagnosis" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="makeDiagnosisButton" alignment="CENTER" disable="true" layoutX="30.0" layoutY="651.0" mnemonicParsing="false" onAction="#onMakeDiagnosis" prefHeight="42.0" prefWidth="68.0" text="Make Diagnosis" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>

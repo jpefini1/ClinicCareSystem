@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="385.0" prefWidth="181.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.InputTestResultsCodeBehind">
    <children>
       <Label fx:id="nurseInfoLabel" layoutX="4.0" layoutY="4.0" prefHeight="18.0" prefWidth="166.0" />
@@ -20,7 +19,7 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <Label fx:id="testTypeLabel" layoutX="76.0" layoutY="55.0" prefHeight="18.0" prefWidth="96.0" />
+      <Label fx:id="testTypeLabel" layoutX="76.0" layoutY="57.0" prefHeight="18.0" prefWidth="96.0" />
       <DatePicker fx:id="datePerformedDatePicker" layoutX="7.0" layoutY="106.0" prefHeight="26.0" prefWidth="166.0" promptText="Select Date Performed" />
       <ComboBox fx:id="hourComboBox" layoutX="8.0" layoutY="141.0" prefHeight="26.0" prefWidth="74.0" promptText="Hour" visibleRowCount="12" />
       <ComboBox fx:id="minuteComboBox" layoutX="87.0" layoutY="141.0" prefHeight="26.0" prefWidth="86.0" promptText="Minutes" visibleRowCount="12" />

@@ -145,5 +145,6 @@ public class InputTestResultsViewModel {
 
 	public void setSelectedTest(Test test) {
 		this.selectedTest = test;
+		this.testTypeProperty.setValue(test.getName());
 	}
 }

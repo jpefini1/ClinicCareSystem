@@ -338,15 +338,17 @@ public class AppointmentDetailsViewModel {
 			this.disableOrderedTests();
 			
 		} else {
-			this.testViewIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
-			this.HepATestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
-			this.HepBTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
-			this.HepCTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
-			this.LDLTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
-			this.WBCTestIsDisabledProperty.setValue(!this.hasAppointmentTimeElapsed());
+			this.toggleTestOrders(!this.hasAppointmentTimeElapsed());
 		}
-		
-		
+	}
+	
+	private void toggleTestOrders(Boolean isDisabled) {
+		this.testViewIsDisabledProperty.setValue(isDisabled);
+		this.HepATestIsDisabledProperty.setValue(isDisabled);
+		this.HepBTestIsDisabledProperty.setValue(isDisabled);
+		this.HepCTestIsDisabledProperty.setValue(isDisabled);
+		this.LDLTestIsDisabledProperty.setValue(isDisabled);
+		this.WBCTestIsDisabledProperty.setValue(isDisabled);
 	}
 
 	private void disableOrderedTests() {
@@ -372,12 +374,16 @@ public class AppointmentDetailsViewModel {
 	private void initializeFinalDiagnosis() throws SQLException {
 		var diagnosisResults = AppointmentDatabaseClient.getFinalDiagnosis(this.selectedAppointment);
 		
+		System.out.println(diagnosisResults);
+		
 		if (diagnosisResults != null) {
 			this.finalDiagnosisProperty.setValue(diagnosisResults);
 			this.finalDiagnosisIsDisabledProperty.setValue(true);
 			this.testViewIsDisabledProperty.setValue(true);
+			this.makeDiagnosisIsDisabledProperty.setValue(true);
+			this.toggleTestOrders(true);
 		} else {
-				this.finalDiagnosisIsDisabledProperty.setValue(this.areRoutineResultsValid() != ResultCode.IsValid);		
+			this.finalDiagnosisIsDisabledProperty.setValue(this.areRoutineResultsValid() != ResultCode.IsValid);		
 		}
 		
 	}
@@ -410,6 +416,24 @@ public class AppointmentDetailsViewModel {
 
 	public void refreshTestList() {
 		this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+	}
+
+	public void makeFinalDiagnosis() {
+		try {
+			ResultCode result = AppointmentDatabaseClient.makeFinalDiagnosis(this.selectedAppointment, this.finalDiagnosisProperty().getValue());
+			
+			if (result == ResultCode.Success) {
+				this.selectedAppointment.setFinalDiagnosis(this.finalDiagnosisProperty().getValue());
+			}
+			
+			this.finalDiagnosisIsDisabledProperty.setValue(true);
+			this.orderTestsIsDisabledProperty.setValue(true);
+			this.makeDiagnosisIsDisabledProperty.setValue(true);
+			this.toggleTestOrders(true);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

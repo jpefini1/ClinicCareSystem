@@ -183,6 +183,7 @@ public class AppointmentDetailsCodeBehind {
    		this.WBCTestCheckBox.disableProperty().bindBidirectional(this.viewmodel.WBCTestIsDisabledProperty());
    		this.orderTestButton.disableProperty().bindBidirectional(this.viewmodel.orderTestsIsDisabledProperty());
    		
+   		this.finalDiagnosisTextArea.textProperty().bindBidirectional(this.viewmodel.finalDiagnosisProperty());
    		this.finalDiagnosisLabel.disableProperty().bindBidirectional(this.viewmodel.finalDiagnosisIsDisabledProperty());
    		this.finalDiagnosisTextArea.disableProperty().bindBidirectional(this.viewmodel.finalDiagnosisIsDisabledProperty());
    	}
@@ -257,7 +258,13 @@ public class AppointmentDetailsCodeBehind {
 			if (newValue.isBlank() || newValue.isEmpty()) {
 				this.makeDiagnosisButton.setDisable(true);
 			} else {
-				this.makeDiagnosisButton.setDisable(this.viewmodel.finalDiagnosisIsDisabledProperty().getValue());
+				this.makeDiagnosisButton.setDisable(this.viewmodel.makeDiagnosisIsDisabledProperty().getValue());
+			}
+		});
+		
+		this.finalDiagnosisTextArea.disableProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				this.makeDiagnosisButton.setDisable(true);
 			}
 		});
 		
@@ -426,7 +433,7 @@ public class AppointmentDetailsCodeBehind {
     
     @FXML
     void onMakeDiagnosis(ActionEvent event) {
-
+    	this.viewmodel.makeFinalDiagnosis();
     }
 }
 

@@ -106,15 +106,28 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 	public static String getFinalDiagnosis(Appointment selectedAppointment) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		
-		String getAppointmentsQuery = "SELECT finalDiagnosis FROM appointment WHERE appointmentId = ?";
-		PreparedStatement selectAppointments =  con.prepareStatement(getAppointmentsQuery, Statement.RETURN_GENERATED_KEYS);		
-		selectAppointments.setInt(1, selectedAppointment.getAppointmentId());
+		String getFinalDiagnosisQuery = "SELECT finalDiagnosis FROM appointment WHERE appointmentId = ?";
+		PreparedStatement selectFinalDiagnosis =  con.prepareStatement(getFinalDiagnosisQuery, Statement.RETURN_GENERATED_KEYS);		
+		selectFinalDiagnosis.setInt(1, selectedAppointment.getAppointmentId());
 		
-		ResultSet queryRS = selectAppointments.executeQuery();
+		ResultSet queryRS = selectFinalDiagnosis.executeQuery();
 		
 		if (queryRS.next()) {
 			return queryRS.getString(1);
 		} 
 		return null;
+	}
+
+	public static ResultCode makeFinalDiagnosis(Appointment selectedAppointment, String finalDiagnosis) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		con.setAutoCommit(false);
+		
+		PreparedStatement editFinalDiagnosis = con.prepareStatement("UPDATE appointment SET finalDiagnosis = ? WHERE appointmentId = ?");  
+		editFinalDiagnosis.setString(1, finalDiagnosis);
+		editFinalDiagnosis.setInt(2, selectedAppointment.getAppointmentId());
+		editFinalDiagnosis.executeUpdate();
+		
+		con.commit();
+		return ResultCode.Success;
 	}
 }
