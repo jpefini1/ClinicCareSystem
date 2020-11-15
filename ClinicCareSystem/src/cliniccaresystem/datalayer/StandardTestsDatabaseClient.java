@@ -28,4 +28,20 @@ public class StandardTestsDatabaseClient extends DatabaseClient {
 		
 		return null;
 	}
+	
+	public static String getTestCode(String testName) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		
+		String getTestNameQuery = "SELECT testCode FROM standard_tests WHERE name = ?";
+		PreparedStatement selectName =  con.prepareStatement(getTestNameQuery, Statement.RETURN_GENERATED_KEYS);		
+		selectName.setString(1, testName);
+		
+		ResultSet queryRS = selectName.executeQuery();
+		
+		if (queryRS.next()) {
+			return queryRS.getString(1);
+		}
+		
+		return null;
+	}
 }

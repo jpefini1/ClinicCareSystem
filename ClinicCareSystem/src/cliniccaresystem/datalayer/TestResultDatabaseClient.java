@@ -22,7 +22,7 @@ public class TestResultDatabaseClient extends DatabaseClient{
 		if (queryRS.next()) {
 			test.setTimePerformed(queryRS.getTimestamp(2).toLocalDateTime());
 			test.setResult(queryRS.getString(3));
-			test.setAbnormal(queryRS.getBoolean(4));
+			test.setAbnormal(Boolean.toString(queryRS.getBoolean(4)));
 		}
 
 		return test;

@@ -103,6 +103,27 @@ public class AppointmentDetailsViewModel {
 		this.orderTestsIsDisabled.setValue(this.selectedTests.isEmpty());
 	}
 	
+	public ResultCode orderTests() {
+		try {
+			for (String testName : this.selectedTests) {
+				var test = new Test(this.selectedAppointment.getAppointmentId(), testName);
+				var orderTestResult = TestOrderDatabaseClient.orderTest(test);
+				
+				if (!orderTestResult.equals(ResultCode.Success)) {
+					return orderTestResult;
+				}
+				
+				this.testList.add(test);
+				this.testListProperty.set(FXCollections.observableArrayList(this.testList));
+			}
+			return ResultCode.Success;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultCode.ConnectionError;
+		}
+	}
+	
 	public ResultCode addRoutineCheckResults() {
 		try {
 			var routineCheckResults = this.makeRoutineCheckResults();
@@ -283,6 +304,5 @@ public class AppointmentDetailsViewModel {
 	public SimpleBooleanProperty inputCheckResultsIsVisible() {
 		return this.inputCheckResultsIsVisible;
 	}
-
 	
 }

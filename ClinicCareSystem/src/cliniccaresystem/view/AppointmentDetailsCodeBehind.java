@@ -1,9 +1,13 @@
 package cliniccaresystem.view;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import cliniccaresystem.Main;
 import cliniccaresystem.model.Appointment;
+import cliniccaresystem.model.Gender;
+import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.Test;
@@ -18,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class AppointmentDetailsCodeBehind {
@@ -80,16 +85,16 @@ public class AppointmentDetailsCodeBehind {
     private TableView<Test> testTableView;
 
     @FXML
-    private TableColumn<?, ?> testNameTableColumn;
+    private TableColumn<Test, String> testNameTableColumn;
 
     @FXML
-    private TableColumn<?, ?> testTimeTableColumn;
+    private TableColumn<Test, LocalDateTime> testTimeTableColumn;
 
     @FXML
-    private TableColumn<?, ?> testResultTableColumn;
+    private TableColumn<Test, String> testResultTableColumn;
 
     @FXML
-    private TableColumn<?, ?> isTestAbnormalTableColumn;
+    private TableColumn<Test, String> isTestAbnormalTableColumn;
 
     @FXML
     private Label testsOrderedLabel;
@@ -125,7 +130,15 @@ public class AppointmentDetailsCodeBehind {
    	void initialize() { 
    		this.bindToViewModel(); 
    		this.setupChangeListeners();
+   		this.initializeTestsTableView();
    	}
+   	
+   	private void initializeTestsTableView() {
+		this.testNameTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("name"));
+		this.testTimeTableColumn.setCellValueFactory(new PropertyValueFactory<Test, LocalDateTime>("timePerformed"));
+		this.testResultTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("result"));
+		this.isTestAbnormalTableColumn.setCellValueFactory(new PropertyValueFactory<Test, String>("isAbnormal"));
+	}
 
 	private void bindToViewModel() {
    		this.systolicBPTextField.textProperty().bindBidirectional(this.viewmodel.systolicBPProperty());
@@ -143,6 +156,7 @@ public class AppointmentDetailsCodeBehind {
    		this.updateButton.visibleProperty().bindBidirectional(this.viewmodel.updateIsVisibleProperty());
    		this.inputResultsButton.visibleProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsVisible());
    		
+   		this.testTableView.setItems(this.viewmodel.testListProperty());
    		this.testsOrderedLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
    		this.testTableView.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
    		this.availableTestsLabel.disableProperty().bindBidirectional(this.viewmodel.testViewIsDisabled());
@@ -327,7 +341,7 @@ public class AppointmentDetailsCodeBehind {
     
     @FXML
     void onOrderTest(ActionEvent event) {
-
+    	var result = this.viewmodel.orderTests();
     }
     
     public void setPatientInfo(Patient patient) {
