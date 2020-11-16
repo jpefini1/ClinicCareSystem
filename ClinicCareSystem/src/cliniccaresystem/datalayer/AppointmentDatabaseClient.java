@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cliniccaresystem.model.Appointment;
+import cliniccaresystem.model.Doctor;
 import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.MailingAddress;
 import cliniccaresystem.model.Patient;
@@ -36,10 +37,12 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
 		con.setAutoCommit(false);
 		
-		PreparedStatement editAppointment = con.prepareStatement("UPDATE appointment SET appointmentTime = ?, reasonForVisit = ? WHERE appointmentId = ?");  
+		PreparedStatement editAppointment = con.prepareStatement("UPDATE appointment SET appointmentTime = ?, reasonForVisit = ?, doctorId = ? "
+																+ "WHERE appointmentId = ?");  
 		editAppointment.setTimestamp(1, Timestamp.valueOf(appointment.getAppointmentDateTime()));
 		editAppointment.setString(2, appointment.getReasonForVisit());
-		editAppointment.setInt(3, appointment.getAppointmentId());
+		editAppointment.setInt(3, appointment.getDoctor().getDoctorId());
+		editAppointment.setInt(4, appointment.getAppointmentId());
 		editAppointment.executeUpdate();
 		
 		con.commit();
@@ -57,7 +60,9 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		
 		List<Appointment> appointments = new ArrayList<Appointment>();
         while (queryRS.next()) {
-        	appointments.add(new Appointment(queryRS.getInt(1), queryRS.getInt(2), queryRS.getTimestamp(3).toLocalDateTime(), queryRS.getString(4)));
+        	
+        	Doctor doctor = DoctorDatabaseClient.getDoctor(queryRS.getInt(6));
+        	appointments.add(new Appointment(queryRS.getInt(1), queryRS.getInt(2), queryRS.getTimestamp(3).toLocalDateTime(), queryRS.getString(4), doctor));
         }
 
 		return appointments;
@@ -75,9 +80,6 @@ public class AppointmentDatabaseClient extends DatabaseClient{
         
         if (rs.next()) {
         	
-        	System.out.println("Id: " + appointment.getAppointmentId());
-        	System.out.println("From query: " + rs.getInt(1));
-        	
         	if (appointment.getAppointmentId() == rs.getInt(1)) {
         		return false;
         	}
@@ -88,13 +90,14 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 	}
 	
 	private static int insertAppointment(Connection con, Appointment appointment) throws SQLException {
-		String insertNurse = "INSERT INTO appointment ( patientId, appointmentTime, reasonForVisit ) VALUES (?,?,?)";
+		String insertNurse = "INSERT INTO appointment ( patientId, appointmentTime, reasonForVisit, doctorId ) VALUES (?,?,?,?)";
 		
         PreparedStatement pStatement =  con.prepareStatement(insertNurse, Statement.RETURN_GENERATED_KEYS);  
 
 		pStatement.setInt(1, appointment.getPatientId());
 		pStatement.setTimestamp(2, Timestamp.valueOf(appointment.getAppointmentDateTime()));
 		pStatement.setString(3, appointment.getReasonForVisit());
+		pStatement.setInt(4, appointment.getDoctor().getDoctorId());
 			
 		pStatement.executeUpdate();
 			

@@ -3,6 +3,7 @@ package cliniccaresystem.view;
 import java.io.IOException;
 
 import cliniccaresystem.Main;
+import cliniccaresystem.model.Doctor;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.viewmodel.CreateAppointmentViewModel;
@@ -52,6 +53,9 @@ public class CreateAppointmentCodeBehind {
     
     @FXML
     private Label errorLabel;
+    
+    @FXML
+    private ComboBox<Doctor> doctorComboBox;
 
     private CreateAppointmentViewModel viewmodel;
 
@@ -81,6 +85,8 @@ public class CreateAppointmentCodeBehind {
 	private void initializeTimeComboBoxes() {
 		this.hourComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
    		this.minuteComboBox.getItems().addAll(00, 15, 30, 45);
+   		
+   		this.doctorComboBox.getItems().addAll(this.viewmodel.getAllDoctors());
 	}
 	
    	private void setupChangeListeners() {
@@ -93,6 +99,18 @@ public class CreateAppointmentCodeBehind {
 		});
 		
 		this.datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfAppointmentInfoIsValid().equals(ResultCode.IsValid)) {
+				this.scheduleAppointmentButton.setDisable(false);
+			} else {
+				this.scheduleAppointmentButton.setDisable(true);
+			}
+		});
+		
+		this.doctorComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				this.viewmodel.setSelectedDoctor(newValue);
+			}
+			
 			if (this.viewmodel.checkIfAppointmentInfoIsValid().equals(ResultCode.IsValid)) {
 				this.scheduleAppointmentButton.setDisable(false);
 			} else {

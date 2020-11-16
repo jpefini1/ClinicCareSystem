@@ -16,14 +16,16 @@ public class Appointment {
 	
 	private String reasonForVisit;
 	private String formattedDateTime;
-	
+
 	private List<Test> orderedTests;
 	private String finalDiagnosis;
+	private Doctor doctor;
 	
-	public Appointment(int patientId, LocalDateTime appointmentDateTime, String reasonForVisit) {
+	public Appointment(int patientId, LocalDateTime appointmentDateTime, String reasonForVisit, Doctor doctor) {
 		this.patientId = patientId;
 		this.appointmentDateTime = appointmentDateTime;
 		this.reasonForVisit = reasonForVisit;
+		this.doctor = doctor;
 		
 		this.orderedTests = new ArrayList<Test>();
 		this.finalDiagnosis = "";
@@ -31,11 +33,12 @@ public class Appointment {
 		this.updateFormattedAppointmentTime();
 	}
 	
-	public Appointment(int appointmentId, int patientId, LocalDateTime appointmentTime, String reasonForVisit) {
+	public Appointment(int appointmentId, int patientId, LocalDateTime appointmentTime, String reasonForVisit, Doctor doctor) {
 		this.appointmentId = appointmentId;
 		this.patientId = patientId;
 		this.appointmentDateTime = appointmentTime;
 		this.reasonForVisit = reasonForVisit;
+		this.doctor = doctor;
 		
 		this.orderedTests = new ArrayList<Test>();
 		this.finalDiagnosis = "";
@@ -99,5 +102,13 @@ public class Appointment {
 
 	public void setFinalDiagnosis(String finalDiagnosis) {
 		this.finalDiagnosis = finalDiagnosis;
+	}
+	
+	public Doctor getDoctor() {
+		return this.doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
 	}
 }

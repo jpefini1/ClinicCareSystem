@@ -12,10 +12,10 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="331.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cliniccaresystem.view.EditAppointmentCodeBehind">
    <children>
-      <Label layoutX="20.0" layoutY="71.0" text="Patient:" />
+      <Label layoutX="20.0" layoutY="50.0" text="Patient:" />
       <Label fx:id="nurseInfoLabel" layoutX="3.0" layoutY="4.0" prefHeight="18.0" prefWidth="173.0" />
-      <Label fx:id="patientInfoLabel" layoutX="63.0" layoutY="70.0" prefHeight="18.0" prefWidth="142.0" />
-      <Label layoutX="37.0" layoutY="22.0" text="Edit Appointment:">
+      <Label fx:id="patientInfoLabel" layoutX="63.0" layoutY="49.0" prefHeight="18.0" prefWidth="142.0" />
+      <Label layoutX="37.0" layoutY="14.0" text="Edit Appointment:">
          <font>
             <Font size="18.0" />
          </font>
@@ -38,5 +38,6 @@
       </RadioButton>
       <RadioButton fx:id="pmRadioButton" layoutX="70.0" layoutY="178.0" mnemonicParsing="false" text="PM" toggleGroup="$periodGroup" />
       <Label fx:id="errorLabel" layoutX="53.0" layoutY="266.0" prefHeight="18.0" prefWidth="114.0" textAlignment="CENTER" textFill="RED" />
+      <ComboBox fx:id="doctorComboBox" layoutX="20.0" layoutY="76.0" prefWidth="150.0" promptText="Select Doctor" />
    </children>
 </AnchorPane>

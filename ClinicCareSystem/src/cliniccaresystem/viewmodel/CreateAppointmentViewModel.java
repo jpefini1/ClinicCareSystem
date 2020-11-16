@@ -4,10 +4,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import cliniccaresystem.datalayer.AppointmentDatabaseClient;
+import cliniccaresystem.datalayer.DoctorDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Appointment;
+import cliniccaresystem.model.Doctor;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,6 +31,7 @@ public class CreateAppointmentViewModel {
 	private SimpleBooleanProperty pmProperty;
 	
 	private Patient selectedPatient = null;
+	private Doctor selectedDoctor = null;
 
 	public CreateAppointmentViewModel() {
 		this.appointmentDateProperty = new SimpleObjectProperty<LocalDate>();
@@ -66,7 +70,7 @@ public class CreateAppointmentViewModel {
 		LocalDateTime appointmentTime = this.makeAppointmentDateTime();
 		String reasonForVisit = this.reasonForVisitProperty.getValue();
 		
-		return new Appointment(patientId, appointmentTime, reasonForVisit);
+		return new Appointment(patientId, appointmentTime, reasonForVisit, this.selectedDoctor);
 	} 
 	
 	private LocalDateTime makeAppointmentDateTime() {
@@ -115,6 +119,10 @@ public class CreateAppointmentViewModel {
 			return ResultCode.IncorrectInput;
 		}
 		
+		if (this.selectedDoctor == null) {
+			return ResultCode.IncorrectInput;
+		}
+		
 		return ResultCode.IsValid;
 	}
 
@@ -155,4 +163,16 @@ public class CreateAppointmentViewModel {
 		this.patientInfoProperty.setValue(patient.toString());
 	}
 
+	public List<Doctor> getAllDoctors() {
+		try {
+			return DoctorDatabaseClient.getAllDoctors();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void setSelectedDoctor(Doctor doctor) {
+		this.selectedDoctor = doctor;
+	}
 }

@@ -5,12 +5,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import cliniccaresystem.datalayer.AppointmentDatabaseClient;
+import cliniccaresystem.datalayer.DoctorDatabaseClient;
 import cliniccaresystem.model.ActiveUser;
 import cliniccaresystem.model.Appointment;
+import cliniccaresystem.model.Doctor;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,6 +30,7 @@ public class EditAppointmentViewModel {
 	private SimpleStringProperty reasonForVisitProperty;
 	private SimpleBooleanProperty amProperty;
 	private SimpleBooleanProperty pmProperty;
+	private SimpleObjectProperty<Doctor> doctorProperty;
 	
 	private Patient selectedPatient = null;
 	private Appointment selectedAppointment = null;
@@ -39,6 +44,7 @@ public class EditAppointmentViewModel {
 		this.pmProperty = new SimpleBooleanProperty();
 		this.nurseInfoProperty = new SimpleStringProperty();
 		this.patientInfoProperty = new SimpleStringProperty();
+		this.doctorProperty = new SimpleObjectProperty<Doctor>();
 		
 		this.nurseInfoProperty.setValue(ActiveUser.getActiveUser().toString());
 	}
@@ -66,6 +72,7 @@ public class EditAppointmentViewModel {
 		var newAppointment = this.selectedAppointment;
 		newAppointment.setAppointmentDateTime(this.makeAppointmentDateTime());
 		newAppointment.setReasonForVisit(this.reasonForVisitProperty.getValue());
+		newAppointment.setDoctor(this.doctorProperty.getValue());
 		
 		return newAppointment;
 	} 
@@ -97,12 +104,25 @@ public class EditAppointmentViewModel {
 			return ResultCode.IncorrectInput;
 		}
 		
+		if (this.doctorProperty.getValue() == null) {
+			return ResultCode.IncorrectInput;
+		}
+		
 		return ResultCode.IsValid;
 	}
 	
 	public boolean hasAppointmentBeenChanged() {
 		var newAppointment = this.makeAppointment();
 		return newAppointment.equals(this.selectedAppointment);
+	}
+	
+	public List<Doctor> getAllDoctors() {
+		try {
+			return DoctorDatabaseClient.getAllDoctors();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public SimpleObjectProperty<LocalDate> appointmentDateProperty() {
@@ -148,6 +168,7 @@ public class EditAppointmentViewModel {
 		this.appointmentDateProperty.setValue(appointment.getAppointmentDateTime().toLocalDate());
 		this.populateTimeFieldsIn12HourFormat(appointment.getAppointmentDateTime());
 		this.reasonForVisitProperty.setValue(appointment.getReasonForVisit());
+		this.doctorProperty.setValue(appointment.getDoctor());
 	}
 	
 	private LocalTime getLocalTimeIn24HourFormat() {
@@ -189,5 +210,9 @@ public class EditAppointmentViewModel {
 		
 		this.hourProperty.setValue(hour);
 		this.minuteProperty.setValue(time.getMinute());
+	}
+
+	public SimpleObjectProperty<Doctor> doctorProperty() {
+		return this.doctorProperty;
 	}
 }

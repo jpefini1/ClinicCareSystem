@@ -36,6 +36,7 @@ public class AppointmentDetailsViewModel {
 	private SimpleStringProperty dateProperty;
 	private SimpleStringProperty nurseInfoProperty;
 	private SimpleStringProperty patientInfoProperty;
+	private SimpleStringProperty doctorProperty;
 	
 	private SimpleBooleanProperty inputCheckResultsIsDisabledProperty;
 	private SimpleBooleanProperty updateIsVisibleProperty;
@@ -72,6 +73,7 @@ public class AppointmentDetailsViewModel {
 		this.dateProperty = new SimpleStringProperty();
 		this.nurseInfoProperty = new SimpleStringProperty();
 		this.patientInfoProperty = new SimpleStringProperty();
+		this.doctorProperty = new SimpleStringProperty();
 		
 		this.inputCheckResultsIsDisabledProperty = new SimpleBooleanProperty();
 		this.updateIsVisibleProperty = new SimpleBooleanProperty();
@@ -306,6 +308,10 @@ public class AppointmentDetailsViewModel {
 	public SimpleStringProperty finalDiagnosisProperty() {
 		return this.finalDiagnosisProperty;
 	}
+	
+	public SimpleStringProperty doctorProperty() {
+		return this.doctorProperty;
+	}
 
 	public void setPatientInfo(Patient patient) {
 		this.patientInfoProperty.setValue(patient.toString());
@@ -316,6 +322,7 @@ public class AppointmentDetailsViewModel {
 		try {
 			this.selectedAppointment = appointment;
 			
+			this.doctorProperty.setValue(appointment.getDoctor().toString());
 			this.dateProperty.setValue(appointment.getAppointmentDateTime().toLocalDate().toString());
 			this.timeProperty.setValue(appointment.getAppointmentDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a")));
 			this.reasonForVisitProperty.setValue(appointment.getReasonForVisit());

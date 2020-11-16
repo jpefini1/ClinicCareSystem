@@ -68,6 +68,12 @@ public class DatabaseClient {
 		sendCommandToServer(addFinalDiagnosisColumnToAppointment);
 	}
 	
+	public static void addDoctorColumnToAppointment() {
+		String addDoctorColumnToAppointment = "ALTER TABLE appointment ADD doctorId INT";
+		
+		sendCommandToServer(addDoctorColumnToAppointment);
+	}
+	
 	public static void createRoutineCheckTable() {
 		String dropAddress = "DROP TABLE routine_check";
 		sendCommandToServer(dropAddress);
@@ -85,6 +91,19 @@ public class DatabaseClient {
 		
 		
 		sendCommandToServer(createRoutineCheckTableCommand);
+	}
+	
+	public static void createDoctorTable() {
+		//String dropTable = "DROP TABLE standard_tests";
+		//sendCommandToServer(dropTable);
+		
+		String createDoctorTableCommand = "CREATE TABLE IF NOT EXISTS doctor ( " +
+				"userId INTEGER NOT NULL UNIQUE, " +
+				"doctorId INTEGER NOT NULL AUTO_INCREMENT, " +
+				"PRIMARY KEY ( doctorId ), " +
+				"FOREIGN KEY ( userId ) references user ( id )) ";
+		
+		sendCommandToServer(createDoctorTableCommand);
 	}
 	
 	public static void createStandardTestsTable() {
@@ -183,7 +202,6 @@ public class DatabaseClient {
         {
             System.out.println(e.toString());
         }
-		
 		return false;
 	}
 	

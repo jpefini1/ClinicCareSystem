@@ -9,6 +9,7 @@ import cliniccaresystem.viewmodel.SignUpViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -49,6 +50,15 @@ public class SignUpCodeBehind {
 
     @FXML
     private Label errorLabel;
+    
+    @FXML
+    private Label usernameLabel;
+
+    @FXML
+    private Label passwordLabel;
+
+    @FXML
+    private CheckBox registerAsDoctorCheckBox;
 
     private SignUpViewModel viewmodel;
 
@@ -76,6 +86,12 @@ public class SignUpCodeBehind {
 		
 		this.stateComboBox.getItems().addAll(USState.values());
 		this.stateComboBox.valueProperty().bindBidirectional(this.viewmodel.stateProperty());
+		
+		this.registerAsDoctorCheckBox.selectedProperty().bindBidirectional(this.viewmodel.registerAsDoctorProperty());
+		this.usernameTextField.disableProperty().bindBidirectional(this.viewmodel.registerAsDoctorProperty());
+		this.usernameLabel.disableProperty().bindBidirectional(this.viewmodel.registerAsDoctorProperty());
+		this.passwordTextField.disableProperty().bindBidirectional(this.viewmodel.registerAsDoctorProperty());
+		this.passwordLabel.disableProperty().bindBidirectional(this.viewmodel.registerAsDoctorProperty());
 	}
 	
 	private void setupChangeListeners() {

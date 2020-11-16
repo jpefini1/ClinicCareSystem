@@ -137,6 +137,9 @@ public class AppointmentDetailsCodeBehind {
     @FXML
     private Button makeDiagnosisButton;
     
+    @FXML
+    private Label doctorLabel;
+    
     private AppointmentDetailsViewModel viewmodel;
     
     public AppointmentDetailsCodeBehind() {
@@ -169,6 +172,7 @@ public class AppointmentDetailsCodeBehind {
    		this.dateLabel.textProperty().bindBidirectional(this.viewmodel.dateProperty());
    		this.nurseInfoLabel.textProperty().bindBidirectional(this.viewmodel.nurseInfoProperty());
    		this.patientInfoLabel.textProperty().bindBidirectional(this.viewmodel.patientInfoProperty());
+   		this.doctorLabel.textProperty().bindBidirectional(this.viewmodel.doctorProperty());
    		this.inputResultsButton.disableProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsDisabledProperty());
    		this.updateButton.visibleProperty().bindBidirectional(this.viewmodel.updateIsVisibleProperty());
    		this.inputResultsButton.visibleProperty().bindBidirectional(this.viewmodel.inputCheckResultsIsVisible());

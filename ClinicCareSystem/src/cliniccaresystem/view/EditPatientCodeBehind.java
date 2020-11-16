@@ -3,6 +3,7 @@ package cliniccaresystem.view;
 import java.io.IOException;
 
 import cliniccaresystem.Main;
+import cliniccaresystem.model.Doctor;
 import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
@@ -26,7 +27,7 @@ public class EditPatientCodeBehind {
 
     @FXML
     private TextField lastNameTextField;
-
+    
     @FXML
     private DatePicker dobDatePicker;
 

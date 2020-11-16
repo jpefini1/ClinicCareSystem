@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import cliniccaresystem.Main;
 import cliniccaresystem.model.Appointment;
+import cliniccaresystem.model.Doctor;
 import cliniccaresystem.model.Gender;
 import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
@@ -29,6 +30,9 @@ public class EditAppointmentCodeBehind {
 
     @FXML
     private Label patientInfoLabel;
+    
+    @FXML
+    private ComboBox<Doctor> doctorComboBox;
 
     @FXML
     private DatePicker datePicker;
@@ -79,11 +83,13 @@ public class EditAppointmentCodeBehind {
 		this.pmRadioButton.selectedProperty().bindBidirectional(this.viewmodel.pmProperty());
 		this.nurseInfoLabel.textProperty().bindBidirectional(this.viewmodel.nurseInfoProperty());
 		this.patientInfoLabel.textProperty().bindBidirectional(this.viewmodel.patientInfoProperty());
+		this.doctorComboBox.valueProperty().bindBidirectional(this.viewmodel.doctorProperty());
 	}
 
 	private void initializeTimeComboBoxes() {
 		this.hourComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 		this.minuteComboBox.getItems().addAll(00, 15, 30, 45);
+		this.doctorComboBox.getItems().addAll(this.viewmodel.getAllDoctors());
 	}
 	
 	private void setupChangeListeners() {
@@ -134,6 +140,14 @@ public class EditAppointmentCodeBehind {
 				this.editAppointmentButton.setDisable(true);
 			}
 		});
+		
+		this.doctorComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if (this.viewmodel.checkIfAppointmentInfoIsValid().equals(ResultCode.IsValid)) {
+				this.editAppointmentButton.setDisable(false);
+			} else {
+				this.editAppointmentButton.setDisable(true);
+			}
+		});
 	}
 
     @FXML
@@ -171,6 +185,5 @@ public class EditAppointmentCodeBehind {
     public void setSelectedAppointment(Appointment appointment) {
 		this.viewmodel.populateAppointmentInfoFields(appointment);
 	}
-
 }
 
