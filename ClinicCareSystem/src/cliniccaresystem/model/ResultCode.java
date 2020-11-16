@@ -2,5 +2,5 @@ package cliniccaresystem.model;
 
 public enum ResultCode {
 	
-	Success, IncorrectInput, AlreadyExists, IsValid, UsernameUnavailable, InvalidLogin, ConnectionError
+	Success, IncorrectInput, AlreadyExists, IsValid, UsernameUnavailable, InvalidLogin, ConnectionError, DoubleBooked
 }

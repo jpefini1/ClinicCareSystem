@@ -37,7 +37,7 @@
          </toggleGroup>
       </RadioButton>
       <RadioButton fx:id="pmRadioButton" layoutX="70.0" layoutY="178.0" mnemonicParsing="false" text="PM" toggleGroup="$periodGroup" />
-      <Label fx:id="errorLabel" layoutX="53.0" layoutY="266.0" prefHeight="18.0" prefWidth="114.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="errorLabel" layoutX="1.0" layoutY="266.0" prefHeight="18.0" prefWidth="226.0" textAlignment="CENTER" textFill="RED" />
       <ComboBox fx:id="doctorComboBox" layoutX="20.0" layoutY="76.0" prefWidth="150.0" promptText="Select Doctor" />
    </children>
 </AnchorPane>

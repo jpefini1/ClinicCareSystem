@@ -49,6 +49,8 @@ public class Main extends Application {
 		primaryStage.setTitle(Main.LOGIN_PAGE_TITLE);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		DatabaseClient.clearAllTables();
 	}
 	
 	public static void main(String[] args) {

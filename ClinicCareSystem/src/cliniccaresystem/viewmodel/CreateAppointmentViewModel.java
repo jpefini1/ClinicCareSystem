@@ -54,6 +54,10 @@ public class CreateAppointmentViewModel {
 				return ResultCode.AlreadyExists;
 			}
 			
+			if (AppointmentDatabaseClient.checkForDoubleBookForDoctor(appointment)) {
+				return ResultCode.DoubleBooked;
+			}
+			
 			if (AppointmentDatabaseClient.scheduleAppointment(appointment) == ResultCode.Success) {
 				return ResultCode.Success;
 			}

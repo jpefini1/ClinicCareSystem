@@ -89,14 +89,10 @@ public class DatabaseClient {
 				"PRIMARY KEY ( appointmentId ), " +
 				"FOREIGN KEY ( nurseId ) references nurse ( nurseId )) ";
 		
-		
 		sendCommandToServer(createRoutineCheckTableCommand);
 	}
 	
 	public static void createDoctorTable() {
-		//String dropTable = "DROP TABLE standard_tests";
-		//sendCommandToServer(dropTable);
-		
 		String createDoctorTableCommand = "CREATE TABLE IF NOT EXISTS doctor ( " +
 				"userId INTEGER NOT NULL UNIQUE, " +
 				"doctorId INTEGER NOT NULL AUTO_INCREMENT, " +
@@ -107,9 +103,6 @@ public class DatabaseClient {
 	}
 	
 	public static void createStandardTestsTable() {
-		//String dropTable = "DROP TABLE standard_tests";
-		//sendCommandToServer(dropTable);
-		
 		String createStandardTestsTableCommand = "CREATE TABLE IF NOT EXISTS standard_tests ( " +
 				"testCode INTEGER NOT NULL, " +
 				"name VARCHAR(20) NOT NULL, " +
@@ -134,9 +127,6 @@ public class DatabaseClient {
 	}
 	
 	public static void createTestResultTable() {
-		//String dropTable = "DROP TABLE test_result";
-		//sendCommandToServer(dropTable);
-		
 		String createTestResultTableCommand = "CREATE TABLE IF NOT EXISTS test_result ( " +
 				"testOrderId INTEGER NOT NULL, " +
 				"performed DATETIME NOT NULL, " +
@@ -222,11 +212,24 @@ public class DatabaseClient {
 		String dropProcedureIfExists = "drop procedure if exists credentials_validate;";
 		sendCommandToServer(dropProcedureIfExists);
 		
-		var setupValidateCredentialsProcedureCommand = "CREATE PROCEDURE credentials_validate( IN username VARCHAR(20), IN password VARCHAR(20)) " +
+		var setupValidateCredentialsProcedureCommand = "CREATE PROCEDURE credentials_validate( IN uName VARCHAR(20), IN pWord VARCHAR(20)) " +
 		"BEGIN " +
-		"SELECT uid FROM credentials WHERE username = username AND password = password; " +
+		"SELECT uid FROM credentials WHERE username = uName AND password = pWord; " +
 		"END";
 		
         sendCommandToServer(setupValidateCredentialsProcedureCommand);
+	}
+	
+	public static void clearAllTables() {
+		sendCommandToServer("DELETE FROM credentials");
+		sendCommandToServer("DELETE FROM test_result");
+		sendCommandToServer("DELETE FROM test_order");
+		sendCommandToServer("DELETE FROM routine_check");
+		sendCommandToServer("DELETE FROM appointment");
+		sendCommandToServer("DELETE FROM nurse");
+		sendCommandToServer("DELETE FROM patient");
+		sendCommandToServer("DELETE FROM doctor");
+		sendCommandToServer("DELETE FROM user");
+		sendCommandToServer("DELETE FROM address");
 	}
 }

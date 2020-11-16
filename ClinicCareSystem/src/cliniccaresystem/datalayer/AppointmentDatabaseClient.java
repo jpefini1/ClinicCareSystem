@@ -133,4 +133,24 @@ public class AppointmentDatabaseClient extends DatabaseClient{
 		con.commit();
 		return ResultCode.Success;
 	}
+
+	public static boolean checkForDoubleBookForDoctor(Appointment appointment) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		
+		String selectAppointmentsCommand = "SELECT appointmentId FROM appointment WHERE appointmentTime = ? AND doctorId = ?";	
+        PreparedStatement selectAppointments =  con.prepareStatement(selectAppointmentsCommand, Statement.RETURN_GENERATED_KEYS);
+        selectAppointments.setTimestamp(1, Timestamp.valueOf(appointment.getAppointmentDateTime()));
+        selectAppointments.setInt(2, appointment.getDoctor().getDoctorId());
+        
+        ResultSet rs = selectAppointments.executeQuery();
+        
+        if (rs.next()) {
+        	if (appointment.getAppointmentId() == rs.getInt(1)) {
+        		return false;
+        	}
+        	
+        	return true;
+        }
+		return false;
+	}
 }

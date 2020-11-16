@@ -176,6 +176,8 @@ public class CreateAppointmentCodeBehind {
     		}
     	} else if (result.equals(ResultCode.AlreadyExists)) {
     		this.errorLabel.setText("Appointment already scheduled for this time");
+    	} else if (result.equals(ResultCode.DoubleBooked)) {
+    		this.errorLabel.setText(this.doctorComboBox.getValue().toString() + " is unavailable at this time");
     	}
     }
 

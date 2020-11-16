@@ -20,11 +20,11 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 		
 		String callCredentialsValidateProcedure = "call credentials_validate(?,?);";
 		
-		PreparedStatement selectCredentials = con.prepareStatement(callCredentialsValidateProcedure, Statement.SUCCESS_NO_INFO);; 
+		PreparedStatement selectCredentials = con.prepareStatement(callCredentialsValidateProcedure);
 		selectCredentials.setString(1, username);
 		selectCredentials.setString(2, getHash(password));
 		ResultSet userId = selectCredentials.executeQuery();
-		
+
 		if (userId.next()) {
 			PreparedStatement selectUser = con.prepareStatement("SELECT * FROM user WHERE id= ?");
 			selectUser.setInt(1, userId.getInt(1));
@@ -50,7 +50,7 @@ public class CredentialsDatabaseClient extends DatabaseClient{
 		
 		PreparedStatement pStatement = con.prepareStatement(callCredentialsAddProcedure, Statement.SUCCESS_NO_INFO);; 
 		pStatement.setString(1, credentials.getUsername()); 
-		pStatement.setString(2,getHash(credentials.getPassword())); 
+		pStatement.setString(2, getHash(credentials.getPassword())); 
 		pStatement.setInt(3, userId);
 		executePreparedStatement(pStatement);
 	}
