@@ -359,6 +359,12 @@ public class AppointmentDetailsViewModel {
 	}
 
 	private void disableOrderedTests() {
+		this.WBCTestIsDisabledProperty.setValue(false);
+		this.LDLTestIsDisabledProperty.setValue(false);
+		this.HepATestIsDisabledProperty.setValue(false);
+		this.HepBTestIsDisabledProperty.setValue(false);
+		this.HepCTestIsDisabledProperty.setValue(false);
+		
 		for (Test test : this.testList) {
 			if (test.getName().equals("WBC")) {
 				this.WBCTestIsDisabledProperty.setValue(true);
@@ -441,6 +447,22 @@ public class AppointmentDetailsViewModel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ResultCode removeTest(Test selectedTest) {
+		try {
+			TestOrderDatabaseClient.removeTest(selectedTest);
+			this.testList.remove(selectedTest);
+			this.disableOrderedTests();
+			this.refreshTestList();
+			
+			return ResultCode.Success;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return ResultCode.ConnectionError;
+		}
+		
+		
 	}
 	
 }

@@ -113,5 +113,6 @@
             <Font size="10.0" />
          </font>
       </Label>
+      <Button fx:id="removeTestButton" disable="true" layoutX="102.0" layoutY="551.0" mnemonicParsing="false" onAction="#onRemoveTest" text="Remove Test" />
    </children>
 </AnchorPane>

@@ -35,6 +35,23 @@ public class TestOrderDatabaseClient extends DatabaseClient{
         
 		return tests;
 	}
+	
+	public static void removeTest(Test test) throws SQLException {
+		Connection con = DriverManager.getConnection(CONNECTION_STRING); 
+		con.setAutoCommit(false);
+		
+		String removeTestOrder = "DELETE FROM test_order WHERE id = ?";
+		PreparedStatement removeTestOrderStatement =  con.prepareStatement(removeTestOrder);	
+		removeTestOrderStatement.setInt(1, test.getTestId());
+		removeTestOrderStatement.executeUpdate();
+		
+		String removeTestResult = "DELETE FROM test_result WHERE testOrderId = ?";
+		PreparedStatement removeTestResultStatement =  con.prepareStatement(removeTestResult);	
+		removeTestResultStatement.setInt(1, test.getTestId());
+		removeTestResultStatement.executeUpdate();
+		
+		con.commit();
+	}
 
 	public static ResultCode orderTest(Test test) throws SQLException {
 		Connection con = DriverManager.getConnection(CONNECTION_STRING); 

@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cliniccaresystem.datalayer.AppointmentDatabaseClient;
 import cliniccaresystem.datalayer.DatabaseClient;
 import cliniccaresystem.model.ActiveUser;
-import cliniccaresystem.model.Appointment;
-import cliniccaresystem.model.Patient;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.TestSummary;
 import cliniccaresystem.model.VisitInformation;

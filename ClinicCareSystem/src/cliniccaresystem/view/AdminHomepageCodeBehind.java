@@ -142,7 +142,7 @@ public class AdminHomepageCodeBehind {
 		this.dateSearchResultTableView.setVisible(true);
 		this.testTableView.setDisable(false);
 
-		var result = this.viewmodel.searchDates();
+		this.viewmodel.searchDates();
 		
 		this.dateSearchResultTableView.setItems(this.viewmodel.dateSearchResultListProperty());
 		
@@ -182,8 +182,6 @@ public class AdminHomepageCodeBehind {
 			this.addColumnsToTable(resultMap);
 			this.viewmodel.addDataToTable(resultMap, this.searchResultTableView.getColumns().get(0).getText());
 			this.searchResultTableView.setItems(this.viewmodel.queryResultListProperty());
-			
-			System.out.println(this.searchResultTableView.getItems());
 		}
 	}
 
@@ -207,7 +205,6 @@ public class AdminHomepageCodeBehind {
             });
 
             this.searchResultTableView.getColumns().addAll(col); 
-            System.out.println("Column ["+i+"] ");
         }
 	}
 	

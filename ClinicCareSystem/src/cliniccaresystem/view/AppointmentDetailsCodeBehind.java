@@ -140,6 +140,9 @@ public class AppointmentDetailsCodeBehind {
     @FXML
     private Label doctorLabel;
     
+    @FXML
+    private Button removeTestButton;
+    
     private AppointmentDetailsViewModel viewmodel;
     
     public AppointmentDetailsCodeBehind() {
@@ -332,6 +335,8 @@ public class AppointmentDetailsCodeBehind {
 		
 		this.testTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
+				this.removeTestButton.setDisable(false);
+				
 				if (newValue.getTestResults() != null) {
 					this.inputTestResultsButton.setDisable(true);
 				} else {
@@ -339,6 +344,7 @@ public class AppointmentDetailsCodeBehind {
 				}
 			} else {
 				this.inputTestResultsButton.setDisable(true);
+				this.removeTestButton.setDisable(true);
 			}
 		});
 	}
@@ -431,7 +437,6 @@ public class AppointmentDetailsCodeBehind {
 			
 			this.viewmodel.refreshTestList();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -439,6 +444,11 @@ public class AppointmentDetailsCodeBehind {
     @FXML
     void onMakeDiagnosis(ActionEvent event) {
     	this.viewmodel.makeFinalDiagnosis();
+    }
+    
+    @FXML
+    void onRemoveTest(ActionEvent event) {
+    	this.viewmodel.removeTest(this.testTableView.getSelectionModel().getSelectedItem());
     }
 }
 
