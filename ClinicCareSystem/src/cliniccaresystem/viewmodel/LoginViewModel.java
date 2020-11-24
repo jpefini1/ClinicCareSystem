@@ -13,24 +13,37 @@ import cliniccaresystem.model.Nurse;
 import cliniccaresystem.model.ResultCode;
 import cliniccaresystem.model.USState;
 import cliniccaresystem.model.User;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class LoginViewModel {
 	
 	private SimpleStringProperty usernameProperty;
 	private SimpleStringProperty passwordProperty;
+	private SimpleBooleanProperty nurseLoginProperty;
+	private SimpleBooleanProperty adminLoginProperty;
 	
 	public LoginViewModel() {
 		this.usernameProperty = new SimpleStringProperty();
 		this.passwordProperty = new SimpleStringProperty();
+		this.nurseLoginProperty = new SimpleBooleanProperty();
+		this.adminLoginProperty = new SimpleBooleanProperty();
 	}
 	
 	public SimpleStringProperty usernameProperty() {
-		return usernameProperty;
+		return this.usernameProperty;
 	}
 
 	public SimpleStringProperty passwordProperty() {
-		return passwordProperty;
+		return this.passwordProperty;
+	}
+	
+	public SimpleBooleanProperty nurseLoginProperty() {
+		return this.nurseLoginProperty;
+	}
+	
+	public SimpleBooleanProperty adminLoginProperty() {
+		return this.adminLoginProperty;
 	}
 	
 	public ResultCode Login() {
@@ -39,7 +52,11 @@ public class LoginViewModel {
 		
 		try {
 			if (isInfoValid) {
-				activeUser = CredentialsDatabaseClient.ValidateCredentials(this.usernameProperty.getValue(), this.passwordProperty.getValue());
+				if (this.nurseLoginProperty.getValue()) {
+					activeUser = CredentialsDatabaseClient.validateNurseLogin(this.usernameProperty.getValue(), this.passwordProperty.getValue());
+				} else {
+					activeUser = CredentialsDatabaseClient.validateAdminLogin(this.usernameProperty.getValue(), this.passwordProperty.getValue());
+				}
 			}
 		
 			if (activeUser != null) {

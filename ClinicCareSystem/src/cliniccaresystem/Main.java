@@ -1,8 +1,14 @@
 package cliniccaresystem;
 	
 import java.io.IOException;
+import java.time.LocalDate;
 
+import cliniccaresystem.datalayer.AdminDatabaseClient;
 import cliniccaresystem.datalayer.DatabaseClient;
+import cliniccaresystem.model.Admin;
+import cliniccaresystem.model.Credentials;
+import cliniccaresystem.model.MailingAddress;
+import cliniccaresystem.model.USState;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Modality;
@@ -17,6 +23,9 @@ public class Main extends Application {
 	
 	public static final String HOMEPAGE_PAGE_PATH = "view/HomepageGUI.fxml";
 	public static final String HOMEPAGE_PAGE_TITLE = "Home";
+	
+	public static final String ADMIN_HOMEPAGE_PAGE_PATH = "view/AdminHomepageGUI.fxml";
+	public static final String ADMIN_HOMEPAGE_PAGE_TITLE = "Admin";
 	
 	public static final String PATIENT_REGISTRATION_PAGE_PATH = "view/PatientRegistrationGUI.fxml";
 	public static final String PATIENT_REGISTRATION_PAGE_TITLE = "Register patient";
@@ -49,8 +58,14 @@ public class Main extends Application {
 		primaryStage.setTitle(Main.LOGIN_PAGE_TITLE);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		
-		DatabaseClient.clearAllTables();
+		/*
+		 * MailingAddress address = new MailingAddress("75 Road", "Atlantis",
+		 * USState.AK, "30119"); Admin admin = new Admin("Chad", "Chadmin",
+		 * LocalDate.of(1986, 2, 19), address, "7775775555"); Credentials credentials =
+		 * new Credentials("admin1", "chadmin");
+		 * 
+		 * AdminDatabaseClient.AddAdmin(admin, credentials);
+		 */
 	}
 	
 	public static void main(String[] args) {

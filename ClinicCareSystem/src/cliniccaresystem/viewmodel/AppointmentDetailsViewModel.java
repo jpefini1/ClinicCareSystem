@@ -336,7 +336,7 @@ public class AppointmentDetailsViewModel {
 	}
 	
 	private void initializeOrderedTests() throws SQLException {
-		var testOrderResults = TestOrderDatabaseClient.getTestOrdersIfExists(this.selectedAppointment);
+		var testOrderResults = TestOrderDatabaseClient.getTestOrdersIfExists(this.selectedAppointment.getAppointmentId());
 		
 		if (!testOrderResults.isEmpty()) {
 			this.testViewIsDisabledProperty.setValue(false);
