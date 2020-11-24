@@ -195,7 +195,7 @@ public class AdminHomepageCodeBehind {
 	private void addColumnsToTable(HashMap<String, ArrayList<String>> map) {
 		
 		for(int i=0 ; i < map.size(); i++){
-            //We are using non property style for making dynamic table
+			
             final int j = i;                
             TableColumn col = new TableColumn((String) map.keySet().toArray()[i]);
             col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){                    
